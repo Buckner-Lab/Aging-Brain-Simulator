@@ -1,0 +1,2709 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parallax</title>
+<meta name="description" content="Parallax: a brain and cognitive aging simulator. Define the world's aging biology, simulate every life year by year, and see the population a study will sample from.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: a sticky rail holds the wordmark and the six study stages as icon buttons; the chosen stage's view fills the right. */
+:root {
+  --bg: #fcfbf8; --rail: #f4f3ee; --card: #f7f6f2; --surface: #ffffff;
+  --line: #d9d7d0; --line-2: #e6e4de; --grid: #eeece6;
+  --ink: #1c1c1e; --ink-2: #55534f; --muted: #85827b;
+  --accent: #d9622e; --accent-soft: #ebb79c; --accent-wash: rgba(217, 98, 46, 0.09);
+  --context: #b0aea7; --icon-gray: #9a9890; --icon-line: #b5b3ac; --blue: #4f81d2;
+  --band: rgba(28, 28, 30, 0.045); --spread: rgba(28, 28, 30, 0.07);
+  --ramp-0: #e8a27c; --ramp-1: #d2602a; --ramp-2: #8e3311;
+  --ord-0: #c9c7bf; --ord-1: #8a8780; --ord-2: #1c1c1e;
+  --pair-b: #55534f; --shadow: rgba(28, 28, 30, 0.10);
+  --super: #009e73; --dementia: #a61b1b; --dementia-wash: rgba(166, 27, 27, 0.08);
+  --logo-ink: #14343b;
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131312; --rail: #191917; --card: #1d1d1b; --surface: #171716;
+    --line: #3a3833; --line-2: #2c2b27; --grid: #272623;
+    --ink: #f1f0eb; --ink-2: #c4c2ba; --muted: #8f8c85;
+    --accent: #e2733d; --accent-soft: #7a4128; --accent-wash: rgba(226, 115, 61, 0.13);
+    --context: #6a6862; --icon-gray: #8a8780; --icon-line: #5d5b55; --blue: #6e9be6;
+    --band: rgba(255, 255, 255, 0.05); --spread: rgba(255, 255, 255, 0.075);
+    --ramp-0: #7a5240; --ramp-1: #d2672f; --ramp-2: #f2a57a;
+    --ord-0: #4a4844; --ord-1: #8f8c85; --ord-2: #f1f0eb;
+    --pair-b: #c9c7bf; --shadow: rgba(0, 0, 0, 0.45);
+    --super: #2fb487; --dementia: #be2a2a; --dementia-wash: rgba(190, 42, 42, 0.18);
+    --logo-ink: #f3f0ea;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131312; --rail: #191917; --card: #1d1d1b; --surface: #171716;
+  --line: #3a3833; --line-2: #2c2b27; --grid: #272623;
+  --ink: #f1f0eb; --ink-2: #c4c2ba; --muted: #8f8c85;
+  --accent: #e2733d; --accent-soft: #7a4128; --accent-wash: rgba(226, 115, 61, 0.13);
+  --context: #6a6862; --icon-gray: #8a8780; --icon-line: #5d5b55; --blue: #6e9be6;
+  --band: rgba(255, 255, 255, 0.05); --spread: rgba(255, 255, 255, 0.075);
+  --ramp-0: #7a5240; --ramp-1: #d2672f; --ramp-2: #f2a57a;
+  --ord-0: #4a4844; --ord-1: #8f8c85; --ord-2: #f1f0eb;
+  --pair-b: #c9c7bf; --shadow: rgba(0, 0, 0, 0.45);
+  --super: #2fb487; --dementia: #be2a2a; --dementia-wash: rgba(190, 42, 42, 0.18);
+  --logo-ink: #f3f0ea;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font: 14px/1.45 var(--font); margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3 { text-wrap: balance; }
+
+.app { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 22px; align-items: start;
+  max-width: 1720px; margin: 0 auto; padding-inline: 16px; padding-block: 16px 48px; }
+
+/* rail */
+.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); max-height: calc(100vh - 32px); overflow-y: auto;
+  background: var(--rail); border: 1px solid var(--line-2); border-radius: 14px; padding: 16px 12px 12px;
+  display: flex; flex-direction: column; gap: 14px; }
+.brand { padding: 0 4px; }
+.plx-mark { display: block; width: 150px; max-width: 100%; height: auto; }
+.plx-mark .plx-ink { stroke: var(--logo-ink); }
+.plx-mark .plx-inkf { fill: var(--logo-ink); }
+.tagline { margin: 7px 0 0; font-size: 12px; line-height: 1.3; color: var(--ink-2); }
+.steps { display: flex; flex-direction: column; align-items: stretch; }
+.step { appearance: none; border: 1px solid var(--line); background: var(--card); border-radius: 10px; padding: 8px 8px 6px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; color: var(--ink); text-align: center; }
+.step svg { display: block; width: 100%; max-width: 128px; height: auto; }
+.step-name { font-weight: 600; font-size: 13px; letter-spacing: -0.005em; }
+.step:hover { border-color: var(--muted); }
+.step[aria-selected="true"] { background: var(--surface); border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.flow { flex: none; align-self: center; width: 10px; height: 14px; position: relative; }
+.flow::before { content: ""; position: absolute; left: 4.25px; top: 1px; width: 1.5px; height: 7px; background: var(--ink-2); }
+.flow::after { content: ""; position: absolute; left: 1px; top: 7px; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid var(--ink-2); }
+.status { margin-top: auto; display: flex; flex-direction: column; gap: 5px; font: 11.5px/1.3 var(--mono); color: var(--muted); padding: 2px 4px 0; }
+.status-row { display: flex; align-items: center; gap: 7px; }
+.status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-2); flex: none; }
+.status.busy .dot { background: var(--accent); animation: pulse .8s ease-in-out infinite alternate; }
+.status .bar { height: 3px; border-radius: 2px; background: var(--line-2); overflow: hidden; opacity: 0; transition: opacity .2s; }
+.status.busy .bar { opacity: 1; }
+.status .sub2 { padding-left: 14px; font-size: 11px; }
+.status .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .12s linear; }
+@keyframes pulse { from { opacity: .35; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .status.busy .dot { animation: none; } .status .bar i { transition: none; } }
+
+/* views */
+.main { min-width: 0; }
+.panel { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.panel-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 16px; }
+h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.15; margin: 0; }
+h2 { font-size: 16px; font-weight: 600; margin: 0; letter-spacing: -0.005em; }
+.lede { margin: 3px 0 0; color: var(--ink-2); font-size: 13.5px; max-width: 70ch; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 13px; color: var(--ink); white-space: nowrap; }
+.btn:hover { border-color: var(--muted); }
+.btn.quiet { background: transparent; }
+
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.kpi { background: var(--card); border: 1px solid var(--line-2); border-radius: 10px; padding: 10px 12px 9px; min-width: 0; }
+.kpi .k { font-size: 12px; color: var(--ink-2); }
+.kpi .v { font-size: 25px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2; margin-top: 2px; }
+.kpi .s { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+.kpi.pool { border-color: var(--accent-soft); background: var(--accent-wash); }
+
+.stale-able { transition: opacity .15s; }
+.is-stale .stale-able { opacity: .5; }
+
+/* population */
+.pop { background: var(--surface); border: 1px solid var(--line-2); border-radius: 12px; padding: 12px 14px 14px; min-width: 0; }
+.pop-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.pop-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: 13px; color: var(--ink-2); }
+.pop-ctl label { display: inline-flex; align-items: center; gap: 6px; }
+.sel { border: 1px solid var(--line); background: var(--surface); border-radius: 7px; padding: 4px 8px; font-size: 13px; color: var(--ink); }
+.count { font-variant-numeric: tabular-nums; color: var(--ink); }
+.legend { display: flex; flex-wrap: wrap; gap: 3px 14px; font-size: 12px; color: var(--ink-2); margin-top: 9px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { display: inline-block; flex: none; }
+.lg-line { width: 16px; border-top: 2px solid; }
+.lg-mean { width: 16px; border-top: 2.5px solid var(--ink); }
+.lg-band { width: 14px; height: 10px; background: var(--spread); border-radius: 2px; }
+.lg-study { width: 14px; height: 10px; background: var(--band); border: 1px solid var(--line); border-radius: 2px; }
+.lg-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ink-2); }
+.plots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 18px; row-gap: 10px; margin-top: 8px; align-items: start; }
+.plot { min-width: 0; }
+.plot-main { position: relative; min-width: 0; }
+.person-slot { grid-column: 1 / -1; min-width: 0; }
+.plot-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; min-height: 26px; }
+.var-sel { appearance: none; -webkit-appearance: none; border: 0; background: transparent; font-weight: 600; font-size: 13.5px; color: var(--ink);
+  padding: 2px 18px 2px 0; cursor: pointer; max-width: 100%; min-width: 0; field-sizing: content;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink-2) 50%), linear-gradient(135deg, var(--ink-2) 50%, transparent 50%);
+  background-position: calc(100% - 9px) 55%, calc(100% - 5px) 55%; background-size: 4px 4px, 4px 4px; background-repeat: no-repeat; }
+.var-sel option { background: var(--surface); color: var(--ink); }
+.unit { font: 11.5px var(--mono); color: var(--muted); white-space: nowrap; }
+.plot canvas { display: block; width: 100%; height: 248px; cursor: crosshair; touch-action: pan-y; }
+.tip { position: absolute; z-index: 4; pointer-events: none; background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+  padding: 6px 9px; font-size: 12px; line-height: 1.35; box-shadow: 0 6px 18px var(--shadow); white-space: nowrap; color: var(--ink); }
+.tip .t-sub { color: var(--muted); }
+.tip b { font-weight: 600; }
+.hint { font-size: 12px; color: var(--muted); margin: 2px 0 0; }
+
+.person { margin-top: 2px; border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); padding-block: 10px; display: flex; flex-direction: column; gap: 8px; }
+.person-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.pid-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.pid-k { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.pid { font: 600 15px var(--mono); letter-spacing: .05em; color: var(--blue); }
+.pid.empty { color: var(--context); font-weight: 500; }
+.pid-actions { margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.dl-note { font-size: 12px; color: var(--muted); }
+.person-body { min-height: 170px; display: flex; flex-direction: column; gap: 8px; }
+.person-body > .hint { margin: 0; }
+.pheno-h { margin: 0; font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.pheno { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0 16px; margin: 4px 0 0; font-size: 12px; }
+.pheno > div { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 3px 0; border-bottom: 1px solid var(--line-2); min-width: 0; }
+.pheno dt { color: var(--ink-2); }
+.pheno dd { margin: 0; font: 500 12px var(--mono); color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.person-head b { font-size: 14px; }
+.person-head .who { color: var(--ink-2); font-size: 13px; }
+.person-head .pin-age { margin-left: auto; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.fact { display: inline-flex; align-items: baseline; gap: 6px; border: 1px solid var(--line-2); background: var(--card); border-radius: 999px; padding: 3px 10px; font-size: 12px; color: var(--ink-2); }
+.fact b { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.fact.hl { border-color: var(--accent-soft); background: var(--accent-wash); }
+.fact.dem { border-color: var(--dementia); background: var(--dementia-wash); }
+.who .sa { color: var(--super); font-weight: 600; }
+
+/* world features */
+.feat-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-top: 6px; }
+.feat-head p { margin: 0; color: var(--ink-2); font-size: 13px; }
+/* People and outcomes: a page-level banner, closed by default */
+.sect { background: var(--surface); border: 1px solid var(--line-2); border-radius: 12px; min-width: 0; }
+.sect > summary { list-style: none; display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 10px; padding: 11px 14px; cursor: pointer; border-radius: 11px; }
+.sect > summary::-webkit-details-marker { display: none; }
+.sect > summary:hover { background: var(--band); }
+.sect[open] > summary { border-radius: 11px 11px 0 0; }
+.sect .chev { flex: none; align-self: center; width: 0; height: 0; border-left: 6px solid var(--accent); border-top: 5px solid transparent; border-bottom: 5px solid transparent; transition: transform .15s; }
+.sect[open] .chev { transform: rotate(90deg); }
+.sect-say { color: var(--ink-2); font-size: 13px; min-width: 0; }
+.sect-chg { color: var(--accent); font-size: 12px; white-space: nowrap; margin-left: auto; }
+.sect-body { padding: 4px 14px 14px; }
+@media (prefers-reduced-motion: reduce) { .sect .chev { transition: none; } }
+.group { display: flex; flex-direction: column; gap: 9px; }
+.group-title { font: 500 11px/1.2 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin: 4px 0 0; }
+.boxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(max(286px, calc((100% - 25px) / 3)), 1fr)); gap: 12px; align-items: start; }
+.box { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.box-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.box h3 { font-size: 14.5px; font-weight: 600; margin: 0; line-height: 1.25; }
+.box .sub { font-size: 12px; color: var(--ink-2); margin: 2px 0 0; }
+.box-body { display: flex; flex-direction: column; gap: 8px; transition: opacity .15s; }
+.box.off .box-body { opacity: .42; }
+.mini { position: relative; background: var(--surface); border: 1px solid var(--line-2); border-radius: 8px; padding: 6px 8px 4px; }
+.mini canvas { display: block; width: 100%; height: 104px; }
+.mini .legend { margin: 0 0 3px; font-size: 11px; gap: 2px 10px; }
+.mini .lg-line { width: 12px; }
+.mini .lg-sq { width: 9px; height: 9px; border-radius: 2px; }
+.params { display: flex; flex-direction: column; gap: 5px; }
+.prm { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 10px; align-items: baseline; }
+.prm label { font-size: 12.5px; color: var(--ink-2); min-width: 0; }
+.prm output { font: 500 12px var(--mono); color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.prm input[type="range"] { grid-column: 1 / -1; width: 100%; margin: 2px 0 3px; height: 16px; cursor: pointer; -webkit-appearance: none; appearance: none; background: transparent; --fill: 50%; }
+.prm input[type="range"]::-webkit-slider-runnable-track { height: 3px; border-radius: 2px; background: linear-gradient(to right, var(--ink-2) var(--fill), var(--line) var(--fill)); }
+.prm input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--surface); border: 2px solid var(--ink-2); margin-top: -5.5px; }
+.prm input[type="range"]::-moz-range-track { height: 3px; border-radius: 2px; background: var(--line); }
+.prm input[type="range"]::-moz-range-progress { height: 3px; border-radius: 2px; background: var(--ink-2); }
+.prm input[type="range"]::-moz-range-thumb { width: 11px; height: 11px; border-radius: 50%; background: var(--surface); border: 2px solid var(--ink-2); }
+.prm input[type="range"]:focus-visible { outline: none; }
+.prm input[type="range"]:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--accent); outline-offset: 2px; }
+.prm.changed input[type="range"]::-webkit-slider-thumb { border-color: var(--accent); }
+.prm.changed input[type="range"]::-moz-range-thumb { border-color: var(--accent); }
+.prm .sel { grid-column: 1 / -1; margin-top: 3px; }
+.prm.changed output { color: var(--accent); }
+.switch { position: relative; flex: none; width: 34px; height: 20px; margin-top: 1px; }
+.switch input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; z-index: 1; }
+.switch span { position: absolute; inset: 0; border-radius: 999px; background: var(--line); transition: background .15s; }
+.switch span::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--surface); box-shadow: 0 1px 2px var(--shadow); transition: transform .15s; }
+.switch input:checked + span { background: var(--ink-2); }
+.switch input:checked + span::after { transform: translateX(14px); }
+.switch input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* stage stubs */
+.stub { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 28px 24px; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: center; }
+.stub svg { width: 100%; height: auto; display: block; }
+.stub p { margin: 6px 0 0; color: var(--ink-2); max-width: 62ch; }
+.stub .pool { color: var(--ink); }
+.stub .next { font: 500 11px/1.2 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin-top: 14px; }
+
+/* icon strokes */
+.ic-ctx { stroke: var(--icon-gray); }
+.ic-acc { stroke: var(--accent); }
+.ic-accf { fill: var(--accent); }
+.ic-ink { stroke: var(--ink); }
+.ic-dark { stroke: var(--ink-2); }
+.ic-darkf { fill: var(--ink-2); }
+.ic-grayf { fill: var(--icon-gray); }
+.ic-funnel { stroke: var(--icon-line); fill: var(--surface); }
+.ic-base { stroke: var(--icon-line); }
+.ic-tail { fill: var(--accent-soft); }
+.ic-blue { fill: var(--blue); }
+.ic-ring { fill: var(--card); stroke: var(--accent); }
+.step[aria-selected="true"] .ic-ring { fill: var(--surface); }
+
+/* chain banners under each population plot */
+.chain { border: 1px solid var(--line-2); border-radius: 8px; background: var(--card); min-width: 0; }
+.chain > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 6px 10px; font-size: 12.5px; color: var(--ink-2); border-radius: 8px; }
+.chain > summary::-webkit-details-marker { display: none; }
+.chain > summary:hover { background: var(--band); }
+.chain .chev { flex: none; width: 0; height: 0; border-left: 5px solid var(--ink-2); border-top: 4px solid transparent; border-bottom: 4px solid transparent; transition: transform .15s; }
+.chain[open] .chev { transform: rotate(90deg); }
+.chain .c-title { font-weight: 600; color: var(--ink); }
+.chain .c-n { margin-left: auto; font: 11px/1.2 var(--mono); color: var(--muted); white-space: nowrap; }
+.chain .c-n.pv { color: var(--blue); }
+.chain-body { padding: 0 10px 10px; display: flex; flex-direction: column; gap: 8px; }
+.c-eq { margin: 0; font: 11.5px/1.45 var(--mono); color: var(--ink-2); }
+.c-who { margin: 0; font-size: 12px; color: var(--blue); }
+.terms { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.term { background: var(--surface); border: 1px solid var(--line-2); border-radius: 7px; padding: 6px 8px 7px; transition: opacity .15s; }
+.term.off { opacity: .45; }
+.t-head { display: flex; align-items: baseline; gap: 6px; }
+.t-op { flex: none; width: 12px; text-align: center; font: 600 13px/1 var(--mono); color: var(--accent); }
+.t-name { font-weight: 600; font-size: 12.5px; color: var(--ink); }
+.t-pv { margin-left: auto; font: 500 12px var(--mono); color: var(--blue); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.t-desc { margin: 2px 0 0 18px; font-size: 11.5px; line-height: 1.35; color: var(--muted); }
+.t-who { margin: 3px 0 0 18px; font-size: 11.5px; line-height: 1.35; color: var(--blue); }
+.t-params { display: flex; flex-direction: column; gap: 3px; margin: 6px 0 0 4px; }
+.kv { display: grid; grid-template-columns: minmax(0, 1fr) 62px 44px auto; align-items: center; column-gap: 6px; font-size: 12px; line-height: 1.3; color: var(--ink-2); }
+.kv .pv { font: 500 11.5px var(--mono); color: var(--blue); white-space: nowrap; text-align: right; min-width: 0; font-variant-numeric: tabular-nums; }
+.kv.info > span:first-child { color: var(--ink); padding-left: 10px; }
+.pinned .kv { grid-template-columns: minmax(0, 1fr) 58px 40px 76px; }
+.procs { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 12px; align-items: start; }
+.cflow { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 6px; padding: 8px; background: var(--surface); border: 1px solid var(--line-2); border-radius: 8px; }
+.cfl { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; min-width: 0; }
+.chip { font-size: 11px; line-height: 1.25; padding: 2px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-2); background: var(--card); white-space: nowrap; }
+.chip.via { background: var(--accent-wash); border-color: var(--accent-soft); color: var(--ink); font-weight: 600; }
+.chip.out { color: var(--ink); background: var(--surface); }
+.fl-arrow, .fl-sep { color: var(--accent); font: 600 12px/1 var(--mono); }
+.p-who { margin: 0; font-size: 12px; line-height: 1.4; color: var(--blue); }
+.pg { display: flex; flex-direction: column; gap: 4px; }
+.pg h4, .pg > summary { margin: 2px 0 0; font: 500 10.5px/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.pg > summary { cursor: pointer; list-style: none; padding: 2px 0; }
+.pg > summary::-webkit-details-marker { display: none; }
+.pg > summary::before { content: "+ "; color: var(--accent); }
+.pg[open] > summary::before { content: "− "; }
+.pg[open] > summary { margin-bottom: 4px; }
+.rows { display: flex; flex-direction: column; gap: 3px; }
+.box.spec .box-body { gap: 10px; }
+.box.wide { grid-column: 1 / -1; }
+/* up to three balanced columns; a block never splits, and when only two fit the third stacks under the shorter one */
+.spec-cols { columns: 3 250px; column-gap: 28px; }
+.spec-col { break-inside: avoid; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.spec-col + .spec-col { margin-top: 14px; }
+.kv > span { min-width: 0; }
+.kv input { width: 100%; min-width: 0; font: 12px var(--mono); padding: 2px 5px; border: 1px solid var(--line); border-radius: 5px; background: var(--card); color: var(--ink); text-align: right; -moz-appearance: textfield; appearance: textfield; font-variant-numeric: tabular-nums; }
+.kv input::-webkit-outer-spin-button, .kv input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.kv input.changed { border-color: var(--accent); color: var(--accent); }
+.kv em { font: normal 11px var(--mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kv b { font: 500 12px var(--mono); text-align: right; color: var(--ink-2); padding-right: 6px; }
+.term.total { display: flex; align-items: baseline; gap: 6px; background: transparent; border-style: dashed; }
+.is-stale .chain .t-pv, .is-stale .chain .t-who, .is-stale .chain .c-n.pv { opacity: .5; }
+.pin-age { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--ink-2); }
+.pin-age input { width: 58px; font: 12px var(--mono); padding: 3px 5px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--blue); text-align: right; }
+/* causal diagrams */
+.dgm, .bnr { border: 1px solid var(--line-2); border-radius: 8px; background: var(--surface); }
+.dgm > summary, .bnr > summary { list-style: none; display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 8px; padding: 6px 10px; cursor: pointer; font-size: 12.5px; color: var(--ink); border-radius: 7px; }
+.dgm > summary::-webkit-details-marker, .bnr > summary::-webkit-details-marker { display: none; }
+.dgm > summary:hover, .bnr > summary:hover { background: var(--band); }
+.dgm .chev, .bnr .chev { flex: none; align-self: center; width: 0; height: 0; border-left: 5px solid var(--accent); border-top: 4px solid transparent; border-bottom: 4px solid transparent; transition: transform .15s; }
+.dgm[open] .chev, .bnr[open] .chev { transform: rotate(90deg); }
+.dgm .dg-t, .bnr .bn-t { font-weight: 600; white-space: nowrap; }
+.dgm .dg-say, .bnr .bn-say { color: var(--muted); font-size: 11.5px; min-width: 0; }
+.bnr .bn-chg { color: var(--accent); font-size: 11.5px; white-space: nowrap; }
+.bnr-body { padding: 2px 10px 10px; }
+.dg-body { position: relative; margin: 0; padding: 2px 10px 10px; }
+.dg-box { min-height: 40px; }
+.dg-svg { display: block; width: 100%; height: auto; font-family: var(--font); font-size: 11px; overflow: visible; }
+.dg-lab { fill: var(--ink-2); font-size: 11px; }
+.dg-drv { fill: var(--ink-2); font-size: 10.5px; }
+.dg-ext .dg-drv, .dg-ext .dg-lab { fill: var(--muted); }
+.dg-ext { cursor: pointer; }
+.dg-ext:hover .dg-drv, .dg-ext:hover .dg-lab, .dg-ext:hover .dg-val, .dg-node.dg-ext:hover text { fill: var(--accent); }
+.dg-edge { fill: none; stroke: var(--muted); stroke-width: 1.1; }
+.dg-edge.ext { stroke-dasharray: 3 2.5; }
+.dg-edge.mod { stroke-dasharray: 2 2; }
+.dg-modpt { fill: var(--muted); }
+.dg-sex { cursor: default; }
+.dg-keyw { fill: var(--context); }
+.dg-keyt { fill: var(--muted); font-size: 9.5px; }
+.dg-ah { fill: var(--muted); }
+.dg-node rect { fill: var(--card); stroke-width: 1.4; }
+.dg-node text { font-size: 11px; font-weight: 600; fill: var(--ink); }
+.dg-node.dg-ext rect { stroke-dasharray: 3.5 2.5; }
+.dg-s0 { stroke: var(--ramp-1); } .dg-s1 { stroke: var(--ramp-2); }
+.dg-f0 { fill: var(--ramp-1); } .dg-f1 { fill: var(--ramp-2); }
+.dg-trunk { stroke-width: 1.4; opacity: .55; }
+.dg-halo { stroke: var(--surface); stroke-width: 5; }
+.dg-guide { stroke: var(--line-2); stroke-width: 1; }
+.dg-guide.ext { stroke: var(--line); stroke-dasharray: 3 2.5; }
+.dg-dot.hollow { fill: var(--surface); stroke-width: 1.3; }
+.dg-area { opacity: .9; }
+.dg-base { stroke: var(--line); stroke-width: 1; }
+.dg-pin { fill: none; stroke: var(--blue); stroke-width: 1.3; stroke-linejoin: round; }
+.dg-85 { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 2 3; opacity: .5; }
+.dg-ax { fill: var(--muted); font-family: var(--mono); font-size: 9.5px; }
+.dg-ax.k { fill: var(--ink); }
+.dg-val { fill: var(--ink-2); font-family: var(--mono); font-size: 10px; }
+.dg-link { fill: var(--muted); font-family: var(--mono); font-size: 9.5px; }
+.dg-oh { fill: var(--muted); font-family: var(--mono); font-size: 9.5px; letter-spacing: .08em; }
+.dg-hl { fill: var(--band); }
+.dg-cap { margin: 4px 0 0; font-size: 12px; line-height: 1.4; color: var(--ink); }
+.dg-cap b { font-weight: 600; }
+.dg-cap .k { display: block; margin-top: 2px; font-size: 11px; color: var(--muted); }
+.dg-cap .pin, .tip .t-pin { color: var(--blue); }
+.proc.dg-open .cflow { display: none; }
+.box.off .dgm .dg-body { opacity: .5; }
+.proc { transition: box-shadow .4s; }
+.proc.flash { box-shadow: 0 0 0 2px var(--accent); }
+.btn.sm { padding: 4px 10px; font-size: 12.5px; }
+@media (max-width: 1100px) { .plots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 900px) {
+  .app { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .rail { position: static; max-height: none; overflow: visible; padding: 12px; }
+  .brand { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+  .tagline { margin: 0; }
+  .plx-mark { width: 132px; }
+  .steps { flex-direction: row; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
+  .step { flex: 0 0 96px; padding: 6px 6px 4px; }
+  .step-name { font-size: 12px; }
+  .flow { transform: rotate(-90deg); margin: 0 1px; }
+  .status { margin-top: 0; }
+  .stub { grid-template-columns: minmax(0, 1fr); }
+  .stub svg { max-width: 220px; }
+}
+@media (max-width: 560px) {
+  .plots { grid-template-columns: minmax(0, 1fr); }
+  .procs { grid-template-columns: minmax(0, 1fr); }
+  h1 { font-size: 22px; }
+  .kpi .v { font-size: 22px; }
+  .boxes { grid-template-columns: minmax(0, 1fr); }
+  .pinned .kv { grid-template-columns: minmax(0, 1fr) 54px 34px 72px; column-gap: 5px; }
+}
+</style>
+</head><body>
+
+
+<div class="app">
+  <aside class="rail" aria-label="Parallax">
+    <div class="brand">
+      <svg class="plx-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 739.2 112.0" role="img" aria-label="Parallax" focusable="false"><defs><mask id="plx-pm" maskUnits="userSpaceOnUse" x="0" y="0" width="739.2" height="112.0"><rect width="739.2" height="112.0" fill="black"></rect><path d="M0.00 91.00 L0.00 9.00 L21.60 9.00 L21.60 9.00 L23.12 9.05 L24.64 9.20 L26.14 9.46 L27.62 9.81 L29.08 10.26 L30.50 10.81 L31.88 11.45 L33.22 12.18 L34.50 13.00 L35.73 13.91 L36.89 14.89 L37.99 15.95 L39.01 17.08 L39.96 18.28 L40.82 19.53 L41.59 20.84 L42.28 22.20 L42.88 23.61 L43.38 25.04 L43.78 26.51 L44.08 28.01 L44.29 29.52 L44.39 31.04 L44.39 32.56 L44.29 34.08 L44.08 35.59 L43.78 37.09 L43.38 38.56 L42.88 39.99 L42.28 41.40 L41.59 42.76 L40.82 44.07 L39.96 45.32 L39.01 46.52 L37.99 47.65 L36.89 48.71 L35.73 49.69 L34.50 50.60 L33.22 51.42 L31.88 52.15 L30.50 52.79 L29.08 53.34 L27.62 53.79 L26.14 54.14 L24.64 54.40 L23.12 54.55 L21.60 54.60 L0.00 54.60" transform="translate(-3.0 0)" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="white"></path></mask><linearGradient id="plx-xg" x1="631.0509858077755" y1="86.0" x2="701.0509858077755" y2="13.0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#009E73"></stop><stop offset=".55" stop-color="#009E73"></stop><stop offset="1" stop-color="#009E73" stop-opacity=".28"></stop></linearGradient><linearGradient id="plx-xb" x1="701.0509858077755" y1="86.0" x2="631.0509858077755" y2="13.0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0072B2"></stop><stop offset=".55" stop-color="#0072B2"></stop><stop offset="1" stop-color="#0072B2" stop-opacity=".28"></stop></linearGradient><mask id="plx-xm" maskUnits="userSpaceOnUse" x="0" y="0" width="739.2" height="112.0"><rect width="739.2" height="112.0" fill="white"></rect><circle cx="666.0509858077755" cy="49.5" r="20.5" fill="black"></circle></mask></defs><g transform="translate(18.10 6)"><path d="M0.00 91.00 L0.00 9.00 L21.60 9.00 L21.60 9.00 L23.12 9.05 L24.64 9.20 L26.14 9.46 L27.62 9.81 L29.08 10.26 L30.50 10.81 L31.88 11.45 L33.22 12.18 L34.50 13.00 L35.73 13.91 L36.89 14.89 L37.99 15.95 L39.01 17.08 L39.96 18.28 L40.82 19.53 L41.59 20.84 L42.28 22.20 L42.88 23.61 L43.38 25.04 L43.78 26.51 L44.08 28.01 L44.29 29.52 L44.39 31.04 L44.39 32.56 L44.29 34.08 L44.08 35.59 L43.78 37.09 L43.38 38.56 L42.88 39.99 L42.28 41.40 L41.59 42.76 L40.82 44.07 L39.96 45.32 L39.01 46.52 L37.99 47.65 L36.89 48.71 L35.73 49.69 L34.50 50.60 L33.22 51.42 L31.88 52.15 L30.50 52.79 L29.08 53.34 L27.62 53.79 L26.14 54.14 L24.64 54.40 L23.12 54.55 L21.60 54.60 L0.00 54.60" transform="translate(-3.0 0)" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#009E73"></path><path d="M0.00 91.00 L0.00 9.00 L21.60 9.00 L21.60 9.00 L23.12 9.05 L24.64 9.20 L26.14 9.46 L27.62 9.81 L29.08 10.26 L30.50 10.81 L31.88 11.45 L33.22 12.18 L34.50 13.00 L35.73 13.91 L36.89 14.89 L37.99 15.95 L39.01 17.08 L39.96 18.28 L40.82 19.53 L41.59 20.84 L42.28 22.20 L42.88 23.61 L43.38 25.04 L43.78 26.51 L44.08 28.01 L44.29 29.52 L44.39 31.04 L44.39 32.56 L44.29 34.08 L44.08 35.59 L43.78 37.09 L43.38 38.56 L42.88 39.99 L42.28 41.40 L41.59 42.76 L40.82 44.07 L39.96 45.32 L39.01 46.52 L37.99 47.65 L36.89 48.71 L35.73 49.69 L34.50 50.60 L33.22 51.42 L31.88 52.15 L30.50 52.79 L29.08 53.34 L27.62 53.79 L26.14 54.14 L24.64 54.40 L23.12 54.55 L21.60 54.60 L0.00 54.60" transform="translate(3.0 0)" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#0072B2"></path><path d="M0.00 91.00 L0.00 9.00 L21.60 9.00 L21.60 9.00 L23.12 9.05 L24.64 9.20 L26.14 9.46 L27.62 9.81 L29.08 10.26 L30.50 10.81 L31.88 11.45 L33.22 12.18 L34.50 13.00 L35.73 13.91 L36.89 14.89 L37.99 15.95 L39.01 17.08 L39.96 18.28 L40.82 19.53 L41.59 20.84 L42.28 22.20 L42.88 23.61 L43.38 25.04 L43.78 26.51 L44.08 28.01 L44.29 29.52 L44.39 31.04 L44.39 32.56 L44.29 34.08 L44.08 35.59 L43.78 37.09 L43.38 38.56 L42.88 39.99 L42.28 41.40 L41.59 42.76 L40.82 44.07 L39.96 45.32 L39.01 46.52 L37.99 47.65 L36.89 48.71 L35.73 49.69 L34.50 50.60 L33.22 51.42 L31.88 52.15 L30.50 52.79 L29.08 53.34 L27.62 53.79 L26.14 54.14 L24.64 54.40 L23.12 54.55 L21.60 54.60 L0.00 54.60" transform="translate(3.0 0)" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#14343B" class="plx-ink" mask="url(#plx-pm)"></path><path d="M59.32 91.00 L96.32 9.00 L133.32 91.00" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#14343B" class="plx-ink"></path><path d="M71.95 63.00 L120.69 63.00" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#14343B" class="plx-ink"></path><path d="M166.52 91.00 L166.52 9.00 L188.12 9.00 L188.12 9.00 L189.64 9.05 L191.16 9.20 L192.66 9.46 L194.14 9.81 L195.60 10.26 L197.02 10.81 L198.40 11.45 L199.74 12.18 L201.02 13.00 L202.25 13.91 L203.41 14.89 L204.51 15.95 L205.53 17.08 L206.47 18.28 L207.33 19.53 L208.11 20.84 L208.80 22.20 L209.39 23.61 L209.89 25.04 L210.30 26.51 L210.60 28.01 L210.80 29.52 L210.90 31.04 L210.90 32.56 L210.80 34.08 L210.60 35.59 L210.30 37.09 L209.89 38.56 L209.39 39.99 L208.80 41.40 L208.11 42.76 L207.33 44.07 L206.47 45.32 L205.53 46.52 L204.51 47.65 L203.41 48.71 L202.25 49.69 L201.02 50.60 L199.74 51.42 L198.40 52.15 L197.02 52.79 L195.60 53.34 L194.14 53.79 L192.66 54.14 L191.16 54.40 L189.64 54.55 L188.12 54.60 L166.52 54.60" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#14343B" class="plx-ink"></path><path d="M191.52 54.60 L220.52 91.00" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#14343B" class="plx-ink"></path><path d="M253.71 91.00 L290.71 9.00 L327.71 91.00" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#14343B" class="plx-ink"></path><path d="M266.34 63.00 L315.07 63.00" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#14343B" class="plx-ink"></path><path d="M361.90 9.00 L361.90 91.00 L405.90 91.00" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#14343B" class="plx-ink"></path><path d="M442.10 9.00 L442.10 91.00 L486.10 91.00" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#14343B" class="plx-ink"></path><path d="M519.29 91.00 L556.29 9.00 L593.29 91.00" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#14343B" class="plx-ink"></path><path d="M531.93 63.00 L580.66 63.00" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="#14343B" class="plx-ink"></path><g mask="url(#plx-xm)"><path d="M631.0509858077755 86.0 L701.0509858077755 13.0" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="url(#plx-xg)"></path><path d="M701.0509858077755 86.0 L631.0509858077755 13.0" fill="none" stroke-width="18.2" stroke-linecap="round" stroke-linejoin="round" stroke="url(#plx-xb)"></path></g><circle cx="631.0509858077755" cy="86.0" r="13" fill="#009E73"></circle><circle cx="701.0509858077755" cy="86.0" r="13" fill="#0072B2"></circle><circle cx="701.0509858077755" cy="13.0" r="11" fill="#009E73" fill-opacity=".28"></circle><circle cx="631.0509858077755" cy="13.0" r="11" fill="#0072B2" fill-opacity=".28"></circle><circle cx="666.0509858077755" cy="49.5" r="14.5" fill="#14343B" class="plx-inkf"></circle></g></svg>
+      <p class="tagline">Brain and Cognitive Aging Simulator</p>
+    </div>
+    <nav class="steps" role="tablist" aria-label="Study stages" id="steps"></nav>
+    <div class="status" id="status" role="status" aria-live="polite">
+      <div class="status-row"><span class="dot"></span><span id="status-text">Preparing the world…</span></div><div class="sub2" id="status-sub"></div>
+      <div class="bar"><i id="status-bar"></i></div>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+    <section class="panel" id="panel-world" role="tabpanel" aria-labelledby="tab-world">
+      <header class="panel-head">
+        <div>
+          <h1>World</h1>
+          <p class="lede">The true population every study samples from: each life simulated year by year from age 40.</p>
+        </div>
+        <div class="actions">
+          <button class="btn" id="btn-new" type="button" title="Draw a new set of people under the same features">New world</button>
+          <button class="btn quiet" id="btn-reset" type="button">Reset features</button>
+        </div>
+      </header>
+
+      <div class="kpis stale-able" id="kpis"></div>
+
+      <details class="sect" id="po">
+        <summary><span class="chev" aria-hidden="true"></span><h2 class="sect-t">People and outcomes</h2><span class="sect-say">Who is born, how lives differ and end, and where each phenotype starts</span><span class="sect-chg" id="po-chg"></span></summary>
+        <div class="sect-body"><div id="groups" class="panel"></div></div>
+      </details>
+
+      <section class="pop" aria-labelledby="pop-title">
+        <div class="pop-top">
+          <h2 id="pop-title">Expressed phenotypes</h2>
+          <div class="pop-ctl">
+            <label for="sel-frac">Show
+              <select class="sel" id="sel-frac">
+                <option value="0.0005">0.05%</option>
+                <option value="0.001">0.1%</option>
+                <option value="0.002" selected>0.2%</option>
+                <option value="0.005">0.5%</option>
+                <option value="0.01">1%</option>
+                <option value="0.02">2%</option>
+              </select>
+            </label>
+            <span class="count" id="pop-count">240 lives</span>
+            <button class="btn" id="btn-resample" type="button">Resample</button>
+            <label for="sel-hl">Highlight
+              <select class="sel" id="sel-hl"></select>
+            </label>
+          </div>
+        </div>
+        <div class="legend" id="pop-legend"></div>
+        <div class="plots" id="plots"></div>
+      </section>
+
+      <div class="feat-head">
+        <h2>Causal chains</h2>
+        <p>Processes that change with age and, through these settable links, set every phenotype above. Pin a life to see its values in blue.</p>
+        <button class="btn quiet sm" id="btn-dg-all" type="button" aria-pressed="false">Open all diagrams</button>
+      </div>
+      <div class="procs" id="procs"></div>
+    </section>
+    <div id="stubs"></div>
+  </main>
+</div>
+
+<script>
+/* PARALLAX world engine.
+   Each life is simulated year by year from age 40 to death. Six age-linked processes (aging, cardiovascular,
+   AD cascade, sleep, engagement, LATE) act through settable causal links on fourteen expressed phenotypes.
+   Every person's random draws are fixed by (seed, index), so changing a setting changes the same people. */
+const ENGINE = (() => {
+"use strict";
+const STUDY_YEAR = 2026, AGE0 = 40, AGEMAX = 110, NA = AGEMAX - AGE0 + 1;
+const A_POS = 20;          // Centiloid threshold for amyloid positivity
+const T_POS = 1.30;        // tau SUVR threshold (temporal meta-ROI)
+const E2_FREQ = 0.08;
+const ETIV_REF = 1490;     // head size (TIV, mL) the hippocampal settings refer to; volumes scale with each head
+
+const DEFAULTS = {
+  seed: 7,
+  // population
+  N: 120000, birthMin: 1926, birthMax: 1976, pctFemale: 50, cohortCog: 0.10,
+  // genetic background
+  gen: true, e4Freq: 0.14, e4HR: 2.8, e2HR: 0.6, prsHR: 1.3,
+  // aging: rates at 70, accelerating with age, scaled by maintenance
+  aging: true, accel: 18, mem70: 0.025, spd70: 0.035, exe70: 0.025, mot70: 0.005,
+  // hippocampus: steady, then from a person's knee (near 60–65) a linear loss (% of its volume at 40 per year); whole brain: linear loss from 20
+  hipAge: 0.95, hipKnee: 64, hipKneeSD: 4, ctx70: 0.30, wbAge: 0.22, partRate: 0.0022, partSD: 0, pAge: 0.8,
+  // cardiovascular: vascular risk (metabolic syndrome, hypertension) and white matter lesions
+  mets: true, mets60: 45, metsSES: 1.4,
+  // white matter lesions: everyone's load creeps up slowly with age; accumulation begins at an onset whose risk rises with age and is
+  // far higher while vascular risk is present (slightly higher once amyloid starts); lesions then grow from a 2.5 mL seed at each
+  // person's own rate and level off near wmhCap. Most people never start; at 80 about half have (three in four with vascular risk)
+  wmhAge: 1.5, wmh85: 25, wmhDbl: 6, wmhHR: 12, wmhGrow: 18, wmhGrowSD: 0.3, wmhSeed: 2.5, wmhCap: 70, wmhCapSD: 0.25,
+  metsAtrophy: 0.15, metsCtx: 0.10, cvWB: 0.10, wmhMem: 0.05, wmhSpd: 0.18, wmhExe: 0.15, wmhMot: 0.06,
+  sleepCV: 0.4, engCVill: 0.2, metsHR: 1.4,
+  // AD cascade: onset, kinetics, impact
+  ad: true, aPos70: 15, amyDbl: 10, sleepAmy: 1.25, lag: 7,
+  amyK: 0.18, amyMax: 100, amyMaxSD: 0.18, lagSD: 0.25, lagAge: 3, tauK: 0.40, tauKSD: 0.15, tauMax: 1.4, tauMaxSD: 0.15, tauE4: 1.10, tauFem: 1.08,
+  pAmyX: 8, amyWMH: 1.3, tauHipp: 3.0, amyHipp: 0.25, tauCtx: 1.8, amyCtx: 0.10, tauWB: 1.0, amyWB: 0.05,
+  tauMem: 2.5, amyMem: 0.30, tauSpd: 1.0, amySpd: 0.10, tauExe: 1.25, amyExe: 0.15, tauMot: 0.8, sleepAD: 0.5,
+  // sleep disruption
+  sleep: true, sleepSD: 1.0, sleepAge: 0.25, sleepCVin: 1.15, sleepMem: 0.08, sleepSpd: 0.06, sleepExe: 0.05, sleepMot: 0.10,
+  // engagement (cognitive, social, physical)
+  engage: true, engSES: 0.30, engAbil: 0.30, engAge: 0.20, engRetire: 0.30, engDem: 1.0,
+  engCog: 12, engBrain: 5, engMot: 0.25, engCV: 0.80,
+  // LATE (TDP-43)
+  late: true, late85: 12, lateAD: 2.0, lateHipp: 2.0, lateCtx: 0.30, lateWB: 0.30, lateMem: 1.2, lateSpd: 0.30, lateExe: 0.48,
+  // reserve
+  reserve: true, abilityCog: 0.50, sesCog: 0.20, rSesAbility: 0.50, buffer: 15, hipMem: 0,
+  // starting levels at 40
+  sexMem: 0.24,
+  // head size (TIV): fixed for life; norms pooled from Buckner et al. 2004, NeuroImage 23:724 (Table 3; ages 15–96, n = 335)
+  etivF: 1413, etivM: 1579, etivSD: 132,
+  // at 20 the brain fills the skull: whole brain and hippocampus are proportional to TIV; each person then changes at their own rate to 40
+  bpf20: 0.84, wbSD: 0.04, hipShare: 0.64, hipLoss: 0.05, hipLossSD: 0.20, bpfHipR: 0.40, hipAbil: 0.15,
+  ctxMean: 2.90, ctxSD: 0.12, ctxHipR: 0.40,
+  amyBase: 2, amyBaseSD: 4, tauBase: 1.12, tauBaseSD: 0.03, ptauBase: 0.25, ptauSD: 0.25, wmh50: 1.0, wmhSD: 0.6,
+  // resistance, resilience, maintenance
+  resil: true, resistSD: 0.40, resilSD: 0.30, maintSD: 0.30, traitR: 0.30,
+  // dementia and clinical scales
+  demThresh: -2.55, demDecline: 1.5, demHR: 2.5, mmseMid: 3.4, cdrMid: 2.1, cdrFloor: 0.7,
+  // survival
+  mort70: 1.8, femHR: 0.70, sesHR: 0.85, mortImprove: 10,
+  // sex moderators: in women, every link out of a chain is this many times as strong as in men (hazard ratios on the log scale)
+  sexAging: 1, sexCV: 1, sexAD: 1, sexSleep: 1, sexEng: 1, sexLate: 1
+};
+
+/* expressed phenotypes recorded every year; hist ranges for percentiles */
+const VARS = [
+  { key: "mmse", lo: 0, hi: 30.5 },
+  { key: "cdr", lo: 0, hi: 18.2 },
+  { key: "mem", lo: -10, hi: 4 },
+  { key: "spd", lo: -10, hi: 4 },
+  { key: "exe", lo: -10, hi: 4 },
+  { key: "wba", lo: 500, hi: 1700 },
+  { key: "tiv", lo: 1000, hi: 2100 },
+  { key: "hip", lo: 0.5, hi: 12.5 },
+  { key: "ctx", lo: 1.6, hi: 3.6 },
+  { key: "amy", lo: -25, hi: 200 },
+  { key: "ptau", lo: Math.log(0.03), hi: Math.log(12), log: true },
+  { key: "tau", lo: 0.85, hi: 3.6 },
+  { key: "wmh", lo: Math.log(0.02), hi: Math.log(500), log: true },
+  { key: "mot", lo: -9, hi: 4 }
+];
+const IX = {}; VARS.forEach((v, i) => { IX[v.key] = i; });
+const NV = VARS.length, NB = 160;
+const GENO = ["ε2/ε2", "ε2/ε3", "ε2/ε4", "ε3/ε3", "ε3/ε4", "ε4/ε4"];
+
+/* ---------- random numbers ---------- */
+function mix32(a) {
+  a = Math.imul(a ^ (a >>> 16), 0x21f0aaad);
+  a = Math.imul(a ^ (a >>> 15), 0x735a2d97);
+  return (a ^ (a >>> 15)) >>> 0;
+}
+const NZ = 44;
+function draw(seed, i, z) {
+  let s = mix32((Math.imul(seed | 0, 0x9e3779b1) + Math.imul(i + 1, 0x85ebca77)) | 0);
+  const u = () => { s = (s + 0x9e3779b9) | 0; return (mix32(s) + 0.5) / 4294967296; };
+  for (let j = 0; j < 8; j++) z[j] = u();                    // uniforms
+  for (let j = 8; j < NZ; j += 2) {                           // normals (Box–Muller)
+    const m = Math.sqrt(-2 * Math.log(u())), t = 6.283185307179586 * u();
+    z[j] = m * Math.cos(t); z[j + 1] = m * Math.sin(t);
+  }
+}
+
+/* ---------- derived constants for a parameter set ---------- */
+function prep(p) {
+  const k = {};
+  k.accelRate = new Float64Array(AGEMAX + 2);
+  for (let a = 0; a <= AGEMAX + 1; a++) k.accelRate[a] = Math.pow(2, (a - 70) / p.accel);
+  // expected decline of a typical person from normal aging alone (CDR rates decline beyond it)
+  k.cumAge = new Float64Array(AGEMAX + 2);
+  for (let a = AGE0 + 1; a <= AGEMAX + 1; a++) k.cumAge[a] = k.cumAge[a - 1] + k.accelRate[a - 1];
+  k.normCog = (p.aging ? 1 : 0) * (p.mem70 + p.spd70 + p.exe70) / 3;
+  k.normMot = (p.aging ? 1 : 0) * p.mot70;
+  k.cdrS0 = 1 / (1 + Math.exp(p.cdrMid / 0.6));
+  // CDR-SB stays 0 until decline beyond typical aging passes cdrFloor, then rises (Weibull-shaped) to 18; it is 9 at cdrMid
+  k.cdrLam = Math.max(0.05, p.cdrMid - p.cdrFloor) / Math.pow(Math.LN2, 1 / 1.6);
+  k.hrMets = p.metsHR; k.hrDem = p.demHR;
+  k.theta = Math.LN2 / 7.5;
+  k.gomp = new Float64Array(AGEMAX + 2);
+  for (let a = 0; a <= AGEMAX + 1; a++) k.gomp[a] = (p.mort70 / 100) * Math.exp(k.theta * (a - 70));
+  // amyloid onset hazard h(a) = h70·exp(α(a−70)), counted from age 40
+  k.alphaA = Math.LN2 / p.amyDbl;
+  k.expA0 = Math.exp(-(70 - AGE0) * k.alphaA);
+  k.h70 = -Math.log(1 - Math.min(99.9, p.aPos70) / 100) * k.alphaA / (1 - k.expA0);
+  // LATE onset hazard, doubling every 8 years
+  k.alphaL = Math.LN2 / 8;
+  k.expL0 = Math.exp(-(85 - AGE0) * k.alphaL);
+  k.h85 = -Math.log(1 - Math.min(99.9, p.late85) / 100) * k.alphaL / (1 - k.expL0);
+  // cardiovascular risk: constant hazard from age 25
+  k.lamMS = -Math.log(1 - Math.min(99.9, p.mets60) / 100) / 35;
+  k.lnMetsSES = Math.log(p.metsSES);
+  // white matter lesion onset hazard, doubling every wmhDbl years; wmh85 of people without vascular risk begin by 85
+  k.alphaW = Math.LN2 / p.wmhDbl;
+  k.expW0 = Math.exp(-(85 - AGE0) * k.alphaW);
+  k.hW85 = -Math.log(1 - Math.min(99.9, Math.max(0, p.wmh85)) / 100) * k.alphaW / (1 - k.expW0);
+  // cognitive reserve
+  k.aC = p.reserve ? p.abilityCog : 0;
+  k.sC = p.reserve ? p.sesCog : 0;
+  const ve = k.aC * k.aC + k.sC * k.sC + 2 * k.aC * k.sC * p.rSesAbility;
+  k.sdU = Math.sqrt(Math.max(0.05, 1 - ve));
+  k.crNorm = Math.sqrt(Math.max(1e-12, ve));
+  k.bufB = p.reserve ? -Math.log(1 - Math.min(95, p.buffer) / 100) : 0;
+  // resistance / resilience / maintenance
+  k.sR = p.resil ? p.resistSD : 0;
+  k.sQ = p.resil ? p.resilSD : 0;
+  k.sM = p.resil ? p.maintSD : 0;
+  k.lam = Math.sqrt(p.traitR); k.lamE = Math.sqrt(1 - p.traitR);
+  // genetics
+  k.lnE4 = p.gen ? Math.log(p.e4HR) : 0;
+  k.lnE2 = p.gen ? Math.log(p.e2HR) : 0;
+  k.lnPRS = p.gen ? Math.log(p.prsHR) : 0;
+  // sleep and engagement links
+  k.slOn = p.sleep ? 1 : 0; k.enOn = p.engage ? 1 : 0;
+  k.lnSleepAmy = p.sleep ? Math.log(p.sleepAmy) : 0;
+  k.lnSleepCV = p.sleep ? Math.log(p.sleepCVin) : 0;
+  k.lnEngCV = p.engage ? Math.log(p.engCV) : 0;
+  k.bEngCog = p.engage ? -Math.log(1 - Math.min(90, p.engCog) / 100) : 0;
+  k.bEngBrain = p.engage ? -Math.log(1 - Math.min(90, p.engBrain) / 100) : 0;
+  const r = p.rSesAbility, vE = p.engSES * p.engSES + p.engAbil * p.engAbil + 2 * p.engSES * p.engAbil * r;
+  k.engRes = Math.sqrt(Math.max(0.05, 1 - vE));
+  k.lnPA = Math.log(p.pAmyX);
+  // survival
+  k.lnFem = Math.log(p.femHR);
+  k.lnSES = Math.log(p.sesHR);
+  k.lnImp = Math.log(1 - p.mortImprove / 100);
+  k.lnMetsHR = Math.log(p.metsHR);
+  k.lnDemHR = Math.log(p.demHR);
+  k.agingOn = p.aging ? 1 : 0;
+  k.cvOn = p.mets ? 1 : 0;
+  k.hipAbilE = Math.sqrt(Math.max(0, 1 - p.hipAbil * p.hipAbil));
+  k.ctxHipE = Math.sqrt(Math.max(0, 1 - p.ctxHipR * p.ctxHipR));
+  k.bpfHipE = Math.sqrt(Math.max(0, 1 - p.bpfHipR * p.bpfHipR));
+  // typical brain share and (average-head) hippocampus at 40, after the typical change from 20
+  k.bpf40 = p.bpf20 * (1 - 20 * (p.aging ? p.wbAge : 0) / 100);
+  // at 20 the hippocampus is a fixed share of whole-brain volume; k.hip20 is its volume for an average head
+  k.hip20 = (p.hipShare / 100) * p.bpf20 * ETIV_REF;
+  k.hip40 = k.hip20 * Math.exp(-20 * (p.aging ? p.hipLoss : 0) / 100);
+  return k;
+}
+
+/* timing of amyloid and tau for a person whose onset age and draws are set */
+function retime(P, p, k) {
+  const f0 = Math.min(0.9, Math.max(0.02, (A_POS - P.clb) / P.clmax));
+  P.aMid = P.aOn - Math.log(f0 / (1 - f0)) / p.amyK;
+  const dA = Math.max(-30, Math.min(40, P.aOn - 70));
+  P.tOn = P.aOn + p.lag * Math.exp(p.lagSD * P.zLag - (p.lagAge / 100) * dA);
+  P.kT = p.tauK * Math.exp(p.tauKSD * P.zTauK - 0.5 * k.sR * P.R) * (p.gen ? Math.pow(p.tauE4, P.n4) : 1) * (P.female ? p.tauFem : 1);
+  P.tmax = p.tauMax * Math.exp(p.tauMaxSD * P.zTauMax);
+  P.tMid = P.tOn + Math.log(Math.max(1.0001, P.tmax / 0.05) - 1) / P.kT;
+}
+
+/* sex moderators for one person: 1 for men, the chain's setting for women */
+function sexFactors(P, p) {
+  const f = P.female === 1;
+  P.fxA = f ? p.sexAging : 1; P.fxC = f ? p.sexCV : 1; P.fxD = f ? p.sexAD : 1;
+  P.fxS = f ? p.sexSleep : 1; P.fxE = f ? p.sexEng : 1; P.fxL = f ? p.sexLate : 1;
+}
+
+/* age at which white matter lesions begin to accumulate: the age-rising hazard is multiplied by fWv from vascular-risk onset
+   and by fWa from amyloid onset; the person's exponential draw wE is spent across those segments */
+function wmhOnset(P, k) {
+  const al = k.alphaW, h = k.hW85, E = P.wE;
+  if (!(h > 0)) return 999;
+  const cuts = [P.msOn, P.aOn].filter((x) => x > AGE0 && x < 200).sort((x, y) => x - y);
+  let a0 = AGE0, H = 0;
+  for (let s = 0; ; s++) {
+    const m = (a0 >= P.msOn ? P.fWv : 1) * (a0 >= P.aOn ? P.fWa : 1), e0 = Math.exp(al * (a0 - 85));
+    if (s < cuts.length) {
+      const b = cuts[s], dH = m * h / al * (Math.exp(al * (b - 85)) - e0);
+      if (H + dH < E) { H += dH; a0 = b; continue; }
+    }
+    return 85 + Math.log((E - H) * al / (m * h) + e0) / al;
+  }
+}
+
+/* ---------- one person's fixed attributes ---------- */
+function newPerson() { return {}; }
+function setup(i, p, k, z, P) {
+  draw(p.seed, i, z);
+  P.i = i;
+  P.female = z[0] < p.pctFemale / 100 ? 1 : 0;
+  sexFactors(P, p);
+  const yb = z[1] * (p.birthMax - p.birthMin + 1);
+  P.b = p.birthMin + Math.floor(yb);
+  P.doy = Math.floor((yb - Math.floor(yb)) * 365);             // day of the year born (0–364), from the same draw
+  P.coh = (P.b - 1950) / 10;
+  P.ses = z[8];
+  const r = p.rSesAbility;
+  P.abil = r * z[8] + Math.sqrt(1 - r * r) * z[9];
+  const allele = (u) => (u < p.e4Freq ? 4 : u < p.e4Freq + E2_FREQ ? 2 : 3);
+  const a1 = allele(z[2]), a2 = allele(z[3]);
+  P.n4 = (a1 === 4 ? 1 : 0) + (a2 === 4 ? 1 : 0);
+  P.n2 = (a1 === 2 ? 1 : 0) + (a2 === 2 ? 1 : 0);
+  P.geno = P.n2 === 2 ? 0 : P.n2 === 1 ? (P.n4 ? 2 : 1) : P.n4 === 0 ? 3 : P.n4 === 1 ? 4 : 5;
+  P.prs = z[10];
+  // latent aging traits share one factor (correlation traitR)
+  P.R = k.lam * z[11] + k.lamE * z[12];
+  P.Q = k.lam * z[11] + k.lamE * z[13];
+  P.M = k.lam * z[11] + k.lamE * z[14];
+  P.mfac = Math.exp(-k.sM * P.M - 0.5 * k.sM * k.sM);         // normal-aging rate multiplier
+  P.bBrain = Math.exp(-k.sQ * P.Q - 0.5 * k.sQ * k.sQ);       // pathology → brain
+  P.crz = k.crNorm > 1e-6 ? (k.aC * P.abil + k.sC * P.ses) / k.crNorm : 0;
+  P.bRes = Math.exp(-k.bufB * P.crz - 0.5 * k.bufB * k.bufB); // reserve's share of the buffer
+  P.bCog = P.bBrain * P.bRes;                                 // pathology → cognition
+  // sleep and engagement traits
+  P.sT = z[28];
+  P.eT = p.engSES * P.ses + p.engAbil * P.abil + k.engRes * z[29];
+  // cognition and motivation at 40 (SD units; scale ≈ z of 50–65-year-olds)
+  P.mCoh = p.cohortCog * P.coh; P.mAbil = k.aC * P.abil; P.mSes = k.sC * P.ses;
+  P.mSex = (P.female ? 0.5 : -0.5) * p.sexMem;
+  P.mRes = k.sdU * z[18]; P.eRes = k.sdU * z[19]; P.sRes = k.sdU * z[31];
+  P.mem0 = P.mCoh + P.mAbil + P.mSes + P.mSex + P.mRes;
+  P.exe0 = P.mCoh + P.mAbil + P.mSes + P.eRes;
+  P.spd0 = P.mCoh + P.mAbil + P.mSes + P.sRes;
+  P.mot0 = z[30];
+  // brain at 40
+  P.etiv = (P.female ? p.etivF : p.etivM) + p.etivSD * z[32];
+  // change from 20 to 40: z above 0 means less loss; hippocampal change tied to ability, whole-brain change tied to hippocampal
+  const zh = p.hipAbil * P.abil + k.hipAbilE * z[15];
+  P.hipRate = k.agingOn * (p.hipLoss - p.hipLossSD * zh);      // %/y from 20 until the knee: largely steady
+  P.hip0 = Math.max(0.5, k.hip20 * Math.exp(-20 * P.hipRate / 100));
+  P.knee = p.hipKnee + p.hipKneeSD * z[35];                    // age at which this person's hippocampal aging takes hold
+  const zc = p.ctxHipR * zh + k.ctxHipE * z[16];
+  P.ctx0 = Math.max(0.5, p.ctxMean + p.ctxSD * zc);
+  const zb = p.bpfHipR * zh + k.bpfHipE * z[33];
+  // whole-brain aging: a straight-line loss from 20, at this person's own slope (% of the volume at 20 per year)
+  P.wbSlope = Math.max(0, k.agingOn * (p.wbAge * P.mfac * P.fxA - p.wbSD * zb));
+  P.bpf0 = Math.min(0.95, Math.max(0.4, p.bpf20 * (1 - 20 * P.wbSlope / 100)));
+  P.wmh50 = p.wmh50 * Math.exp(p.wmhSD * z[25]);
+  P.tb = p.tauBase + p.tauBaseSD * z[26];
+  P.part = p.partRate * Math.exp(p.partSD * z[27] - 0.5 * p.partSD * p.partSD);
+  P.ptau0 = p.ptauBase * Math.exp(p.ptauSD * z[34]);
+  // amyloid onset
+  P.fE4 = Math.exp(k.lnE4 * P.n4); P.fE2 = Math.exp(k.lnE2 * P.n2);
+  P.fPRS = Math.exp(k.lnPRS * P.prs - 0.5 * k.lnPRS * k.lnPRS);
+  P.fRes = Math.exp(-k.sR * P.R - 0.5 * k.sR * k.sR);
+  const lSA = k.lnSleepAmy * P.fxS; P.fSleep = Math.exp(lSA * P.sT - 0.5 * lSA * lSA);
+  if (p.ad) {
+    const E = -Math.log(1 - z[4]);
+    P.aOn = 70 + Math.log(E * k.alphaA / (k.h70 * P.fE4 * P.fE2 * P.fPRS * P.fRes * P.fSleep) + k.expA0) / k.alphaA;
+  } else P.aOn = 999;
+  P.clb = p.amyBase + p.amyBaseSD * z[20];
+  P.clmax = p.amyMax * Math.exp(p.amyMaxSD * z[21]);
+  P.zLag = z[22]; P.zTauK = z[24]; P.zTauMax = z[23];
+  retime(P, p, k);
+  // LATE onset; risk rises after amyloid onset
+  if (p.late) {
+    const E = -Math.log(1 - z[5]);
+    const ea = Math.exp(k.alphaL * (Math.min(P.aOn, 130) - 85));
+    const H1 = k.h85 / k.alphaL * (ea - k.expL0);
+    if (E <= H1) P.lOn = 85 + Math.log(E * k.alphaL / k.h85 + k.expL0) / k.alphaL;
+    else P.lOn = 85 + Math.log((E - H1) * k.alphaL / (k.h85 * (P.fxD === 1 ? p.lateAD : Math.pow(p.lateAD, P.fxD))) + ea) / k.alphaL;
+  } else P.lOn = 999;
+  // cardiovascular risk onset: SES, engagement and sleep scale the hazard
+  P.fCvSES = Math.exp(-k.lnMetsSES * P.ses - 0.5 * k.lnMetsSES * k.lnMetsSES);
+  const lEC = k.lnEngCV * P.fxE, lSC = k.lnSleepCV * P.fxS;
+  P.fCvEng = Math.exp(lEC * P.eT - 0.5 * lEC * lEC);
+  P.fCvSleep = Math.exp(lSC * P.sT - 0.5 * lSC * lSC);
+  if (p.mets) {
+    const E = -Math.log(1 - z[6]);
+    P.msOn = 25 + E / (k.lamMS * P.fCvSES * P.fCvEng * P.fCvSleep);
+  } else P.msOn = 999;
+  // white matter lesions: onset (vascular risk, and slightly amyloid, raise its age-rising risk), then this person's growth rate
+  P.fWv = Math.pow(p.wmhHR, P.fxC); P.fWa = Math.pow(p.amyWMH, P.fxD);
+  P.wGrow = (p.wmhGrow / 100) * Math.exp(p.wmhGrowSD * z[36]);
+  P.wTop = Math.max(2 * p.wmhSeed, p.wmhCap * Math.exp(p.wmhCapSD * z[39]));   // where this person's lesions level off
+  P.wE = 0.5 * (z[37] * z[37] + z[38] * z[38]);               // an exponential draw: half a χ² with 2 df
+  P.wOn = p.mets ? wmhOnset(P, k) : 999;
+  P.eDeath = -Math.log(1 - z[7]);
+  P.lnFix = (P.female ? k.lnFem : 0) + k.lnSES * P.ses + k.lnImp * P.coh;
+}
+
+/* MMSE from the level of global cognition; CDR Sum of Boxes from decline in it (plus loss of motivation, for function) */
+function mmseOf(g, p) { const d = -g; return 30 - 30 / (1 + Math.exp(-(d - p.mmseMid) / 0.75)); }
+function cdrOf(decl, motLoss, p, s0) {
+  const d = (decl > 0 ? decl : 0) + 0.3 * (motLoss > 0 ? motLoss : 0);
+  const s = 1 / (1 + Math.exp(-(d - p.cdrMid) / 0.6));
+  return s <= s0 ? 0 : 18 * (s - s0) / (1 - s0);
+}
+
+/* ---------- live one life year by year ----------
+   sink(a, v, dem, ms, late, S, E) is called for each age the person is alive at (v = values per VARS).
+   T = { age } asks for each process's contribution to every phenotype at that age. */
+const V = new Float64Array(NV);
+function live(P, p, k, sink, T) {
+  // parameters and person values used every year, held in locals
+  let { tauMem, amyMem, lateMem, tauSpd, amySpd, lateSpd, tauExe, amyExe, lateExe, hipMem,
+    wmhMem, wmhSpd, wmhExe, wmhMot, sleepMem, sleepSpd, sleepExe, sleepMot, engMot, tauMot,
+    sleepSD, sleepAge, sleepCV, sleepAD, engAge, engRetire, engDem, engCVill, amyK, demThresh, demDecline,
+    tauHipp, amyHipp, lateHipp, metsAtrophy, tauCtx, amyCtx, lateCtx, metsCtx, tauWB, amyWB, lateWB, cvWB, mmseMid, cdrMid, cdrFloor } = p;
+  const { clb, clmax, aMid, tmax, kT, tMid, tb, lOn, msOn, wmh50, sT, eT, mem0, spd0, exe0, mot0, bCog, bBrain, ptau0, etiv, eDeath } = P;
+  // sex moderators: scale every link out of a chain (women only; 1 for men)
+  const fA = P.fxA, fC = P.fxC, fD = P.fxD, fS = P.fxS, fE = P.fxE, fL = P.fxL;
+  if (fD !== 1) { tauMem *= fD; amyMem *= fD; tauSpd *= fD; amySpd *= fD; tauExe *= fD; amyExe *= fD; tauMot *= fD; sleepAD *= fD;
+    tauHipp *= fD; amyHipp *= fD; tauCtx *= fD; amyCtx *= fD; tauWB *= fD; amyWB *= fD; }
+  if (fL !== 1) { lateMem *= fL; lateSpd *= fL; lateExe *= fL; lateHipp *= fL; lateCtx *= fL; lateWB *= fL; }
+  if (fC !== 1) { wmhMem *= fC; wmhSpd *= fC; wmhExe *= fC; wmhMot *= fC; metsAtrophy *= fC; metsCtx *= fC; cvWB *= fC; sleepCV *= fC; engCVill *= fC; }
+  if (fS !== 1) { sleepMem *= fS; sleepSpd *= fS; sleepExe *= fS; sleepMot *= fS; }
+  if (fE !== 1) engMot *= fE;
+  let hip = P.hip0, ctx = P.ctx0, bpf = P.bpf0, H = 0, g0 = 0;
+  const hs = etiv / ETIV_REF;                          // hippocampus is tracked for an average head, expressed for this head
+  let dem = false, demAge = 999, death = AGEMAX + 1;
+  const ag = k.agingOn, cvOn = k.cvOn, slOn = k.slOn, enOn = k.enOn;
+  const mf = ag * P.mfac * fA;
+  const rMem = p.mem70 * mf, rSpd = p.spd70 * mf, rExe = p.exe70 * mf, rMot = p.mot70 * mf;
+  const hipSlope = p.hipAge * mf, rCtx = p.ctx70 * mf;
+  const knee = P.knee, hPre = P.hipRate > 0 ? P.hipRate : 0, hipAt40 = P.hip0, wbAbs = P.wbSlope * p.bpf20;
+  const gW = (p.wmhAge / 100) * cvOn, wOn = P.wOn, wG = P.wGrow, wSeed = p.wmhSeed, wTop = P.wTop, wRat = P.wTop / p.wmhSeed - 1, part = P.part * ag * fA, pAge = (p.pAge / 100) * ag * fA;
+  const lnPA = k.lnPA, bEC = k.bEngCog * fE, bEB = k.bEngBrain * fE;
+  const accelRate = k.accelRate, cumAge = k.cumAge, gomp = k.gomp, normCog = k.normCog, normMot = k.normMot, cdrLam = k.cdrLam;
+  const hrMets = fC === 1 ? k.hrMets : Math.pow(k.hrMets, fC), hrDem = k.hrDem, fixHR = Math.exp(P.lnFix), LOG2E = Math.LOG2E;
+  const sTerm = slOn * sleepSD * sT;
+  let aMem = 0, aSpd = 0, aExe = 0, aMot = 0;          // accumulated aging without engagement
+  let eMem = 0, eSpd = 0, eExe = 0, eMot = 0;          // protection by engagement (positive)
+  const lh = T ? [0, 0, 0, 0, 0] : null, lc = T ? [0, 0, 0, 0, 0] : null, lw = T ? [0, 0, 0, 0, 0] : null;
+  for (let a = AGE0; a <= AGEMAX; a++) {
+    const cl = clb + clmax / (1 + Math.exp(-amyK * (a - aMid)));
+    const af = cl <= 12 ? 0 : cl >= 100 ? 1 : (cl - 12) / 88;
+    const tad = tmax / (1 + Math.exp(-kT * (a - tMid)));
+    const tpart = a > 50 ? part * (a - 50) : 0;
+    const tau = tb + tpart + tad;
+    const lf = a <= lOn ? 0 : a - lOn >= 8 ? 1 : (a - lOn) / 8;
+    const ms = a >= msOn;
+    const yMS = a > msOn ? a - (msOn > 25 ? msOn : 25) : 0;
+    // background load creeps up with age; once lesions begin they grow from a small seed at the person's own rate, faster as they
+    // spread (lesions beget lesions), then level off toward wmhCap (logistic growth)
+    const wbg = wmh50 * Math.exp(gW * (a - 50)), wles = a > wOn ? wTop / (1 + wRat * Math.exp(-wG * (a - wOn))) - wSeed : 0;
+    const wmh = wbg + wles;
+    const lw2 = Math.log(wmh) * LOG2E, lwp = lw2 > 0 ? lw2 : 0;
+    // sleep disruption and engagement this year
+    const S = slOn ? sTerm + sleepAge * (a - AGE0) / 10 + (ms ? sleepCV : 0) + sleepAD * tad : 0;
+    const E = enOn ? eT - (a > 60 ? engAge * (a - 60) / 10 : 0) - (a >= 65 ? engRetire : 0) - (dem ? engDem : 0) - (ms ? engCVill : 0) : 0;
+    // cognition, motivation
+    const adM = bCog * (tauMem * tad + amyMem * af), ltM = bCog * lateMem * lf;
+    const adS = bCog * (tauSpd * tad + amySpd * af), ltS = bCog * lateSpd * lf;
+    const adE = bCog * (tauExe * tad + amyExe * af), ltE = bCog * lateExe * lf;
+    const brain = hipMem * (hip - k.hip40);
+    const mem = mem0 - aMem + eMem - adM - ltM - wmhMem * lwp - sleepMem * S + brain;
+    const spd = spd0 - aSpd + eSpd - adS - ltS - wmhSpd * lwp - sleepSpd * S;
+    const exe = exe0 - aExe + eExe - adE - ltE - wmhExe * lwp - sleepExe * S;
+    const mot = mot0 - aMot + eMot + engMot * E - bCog * tauMot * tad - wmhMot * lwp - sleepMot * S;
+    const g = (mem + spd + exe) / 3;
+    if (a === AGE0) g0 = g;
+    if (!dem && g <= demThresh && g0 - g >= demDecline) { dem = true; demAge = a; }
+    // plasma pTau217 tracks plaque load, as amyloid PET does: it rises with Centiloid from about 12 CL, not with tau
+    const ptau = ptau0 * Math.exp((a > 60 ? pAge * (a - 60) : 0) + lnPA * af);
+    // MMSE from level; CDR-SB from decline beyond typical aging
+    const mm = Math.round(30 - 30 / (1 + Math.exp((mmseMid + g) / 0.75)));      // MMSE is scored in whole points, 30 at ceiling
+    const dec = g0 - g - normCog * cumAge[a], ml = mot0 - mot - normMot * cumAge[a];
+    const dd = (dec > 0 ? dec : 0) + (ml > 0 ? 0.3 * ml : 0), du = dd > cdrFloor ? (dd - cdrFloor) / cdrLam : 0;
+    const cdr = du > 0 ? Math.round(36 * (1 - Math.exp(-Math.pow(du, 1.6)))) / 2 : 0;   // CDR-SB: six boxes of 0, 0.5, 1, 2, 3, so half-point steps from 0
+    V[0] = mm; V[1] = cdr; V[2] = mem; V[3] = spd; V[4] = exe;
+    V[5] = bpf * etiv; V[6] = etiv; V[7] = hip * hs; V[8] = ctx; V[9] = cl; V[10] = ptau; V[11] = tau; V[12] = wmh; V[13] = mot;
+    if (sink) sink(a, V, dem, ms, lf > 0, S, E, af, tad, lf);
+    if (T && a === T.age) {
+      const split = (start, now, l) => { const tot = l[0] + l[1] + l[2] + l[3] + l[4], d = now - start; return l.map((x) => (Math.abs(tot) > 1e-12 ? d * x / tot : 0)); };
+      const sh = split(P.hip0, hip, lh), scx = split(P.ctx0, ctx, lc), sw = split(P.bpf0, bpf, lw);
+      const wbA = (f) => f * etiv;
+      Object.assign(T, {
+        dem, ms, yMS, tad, af, lf, cl, tau, wmh, S, E, g, ptau,
+        mem: { start: mem0, aging: -aMem, eng: eMem, ad: -adM, late: -ltM, cv: -wmhMem * lwp, sleep: -sleepMem * S, brain, total: mem },
+        spd: { start: spd0, aging: -aSpd, eng: eSpd, ad: -adS, late: -ltS, cv: -wmhSpd * lwp, sleep: -sleepSpd * S, total: spd },
+        exe: { start: exe0, aging: -aExe, eng: eExe, ad: -adE, late: -ltE, cv: -wmhExe * lwp, sleep: -sleepExe * S, total: exe },
+        mot: { start: mot0, aging: -aMot, eng: eMot + engMot * E, ad: -bCog * tauMot * tad, cv: -wmhMot * lwp, sleep: -sleepMot * S, total: mot },
+        hip: { start: P.hip0 * hs, aging: sh[0] * hs, eng: sh[1] * hs, ad: sh[2] * hs, late: sh[3] * hs, cv: sh[4] * hs, total: hip * hs },
+        ctx: { start: P.ctx0, aging: scx[0], eng: scx[1], ad: scx[2], late: scx[3], cv: scx[4], total: ctx },
+        wba: { start: wbA(P.bpf0), aging: wbA(sw[0]), eng: wbA(sw[1]), ad: wbA(sw[2]), late: wbA(sw[3]), cv: wbA(sw[4]), total: wbA(bpf) },
+        tiv: etiv,
+        amy: { base: clb, ad: cl - clb, total: cl },
+        tau: { base: tb, aging: tpart, ad: tad, total: tau },
+        ptau: { base: ptau0, aging: Math.exp(a > 60 ? pAge * (a - 60) : 0), ad: Math.exp(lnPA * af), total: ptau },
+        wmh: { start: wmh50, base: wbg, lesion: wles, total: wmh },
+        mmse: mm, cdr
+      });
+    }
+    // aging increments to next year, with engagement protection
+    const ar = accelRate[a];
+    const fC = E === 0 ? 1 : Math.exp(-bEC * E), fB = E === 0 ? 1 : Math.exp(-bEB * E), pc = 1 - fC;
+    aMem += rMem * ar; aSpd += rSpd * ar; aExe += rExe * ar; aMot += rMot * ar;
+    if (pc !== 0) { eMem += rMem * ar * pc; eSpd += rSpd * ar * pc; eExe += rExe * ar * pc; eMot += rMot * ar * pc; }
+    // brain change to next year (%/y): [aging, engagement, AD, LATE, cardiovascular]
+    // hippocampal aging: the pre-knee drift gives way to a constant loss (linear in volume) around the knee
+    const wK = 1 / (1 + Math.exp(-(a - knee) / 2));
+    const hA = (1 - wK) * hPre + wK * hipSlope * hipAt40 / hip, hE = hA * (fB - 1), hD = bBrain * (tauHipp * tad + amyHipp * af), hL = bBrain * lateHipp * lf, hM = ms ? metsAtrophy : 0;
+    const cA = rCtx * ar, cE = cA * (fB - 1), cD = bBrain * (tauCtx * tad + amyCtx * af), cL = bBrain * lateCtx * lf, cM = ms ? metsCtx : 0;
+    const wA = wbAbs / bpf, wE = wA * (fB - 1), wD = bBrain * (tauWB * tad + amyWB * af), wL = bBrain * lateWB * lf, wM = ms ? cvWB : 0;
+    let rH = hA + hE + hD + hL + hM, rC = cA + cE + cD + cL + cM, rW = wA + wE + wD + wL + wM;
+    if (rH > 50) rH = 50; if (rC > 50) rC = 50; if (rW > 50) rW = 50;
+    if (T && a < T.age) {
+      const acc = (l, r, parts) => { const tot = parts[0] + parts[1] + parts[2] + parts[3] + parts[4]; if (r > 0 && tot > 0) { const f = Math.log(1 - r / 100) / tot; for (let q = 0; q < 5; q++) l[q] += f * parts[q]; } };
+      acc(lh, rH, [hA, hE, hD, hL, hM]); acc(lc, rC, [cA, cE, cD, cL, cM]); acc(lw, rW, [wA, wE, wD, wL, wM]);
+    }
+    // mortality over [a, a+1)
+    const mu = gomp[a] * fixHR * (ms ? hrMets : 1) * (dem ? hrDem : 1) + 0.0005;
+    if (H + mu >= eDeath) { death = a + (eDeath - H) / mu; break; }
+    H += mu;
+    if (rH > 0) hip *= 1 - rH / 100;
+    if (rC > 0) ctx *= 1 - rC / 100;
+    if (rW > 0) bpf *= 1 - rW / 100;
+  }
+  P.demAge = demAge; P.death = death;
+  return death;
+}
+
+/* ---------- population pass (chunked) ---------- */
+function newAgg(p) {
+  const N = p.N;
+  return {
+    p, N, done: 0,
+    hist: new Int32Array(NV * NA * NB),
+    sum: new Float64Array(NV * NA),
+    alive: new Int32Array(NA), aliveF: new Int32Array(NA), aliveM: new Int32Array(NA),
+    entF: 0, entM: 0,
+    aPosD: new Int32Array(3 * NA), aliveD: new Int32Array(3 * NA),
+    tPos: new Int32Array(NA),
+    msS: new Int32Array(3 * NA), aliveS: new Int32Array(3 * NA),
+    late: new Int32Array(NA), dem: new Int32Array(NA),
+    sS: new Float64Array(NA), sS2: new Float64Array(NA), sE: new Float64Array(NA), sE2: new Float64Array(NA),
+    deathAge: new Int32Array(NA + 1),
+    geno: new Int32Array(6),
+    alive26: new Int32Array(NA), alive26F: new Int32Array(NA), wles: new Int32Array(NA),
+    refSum: 0, refSq: 0, refN: 0,          // dementia-free 50–65 in 2026
+    ctiv: new Float64Array((AGEMAX - 19) * 9), // per age from 20: n, ΣT, ΣT², ΣW, ΣW², ΣWT, ΣH, ΣH², ΣHT
+    cs: { mem: [], dem: [], apos: [], mmse: [], female: [] }   // 80–89 in 2026
+  };
+}
+function sesGroup(s) { return s < -0.4307 ? 0 : s > 0.4307 ? 2 : 1; }
+
+function runChunk(agg, k, from, to) {
+  const p = agg.p, z = new Float64Array(NZ), P = newPerson();
+  const hist = agg.hist, sum = agg.sum;
+  const lo = VARS.map((v) => v.lo), binW = VARS.map((v) => NB / (v.hi - v.lo)), isLog = VARS.map((v) => !!v.log);
+  for (let i = from; i < to; i++) {
+    setup(i, p, k, z, P);
+    agg.geno[P.geno]++;
+    if (P.female) agg.entF++; else agg.entM++;
+    const dose = P.n4, sg = sesGroup(P.ses), a26 = STUDY_YEAR - P.b;
+    const ct = agg.ctiv, T0 = P.etiv, hsc = T0 / ETIV_REF;
+    const addC = (a, W, Hh) => { const o = (a - 20) * 9; ct[o]++; ct[o + 1] += T0; ct[o + 2] += T0 * T0; ct[o + 3] += W; ct[o + 4] += W * W; ct[o + 5] += W * T0; ct[o + 6] += Hh; ct[o + 7] += Hh * Hh; ct[o + 8] += Hh * T0; };
+    for (let a = 20; a < AGE0; a++) addC(a, p.bpf20 * T0 * (1 - (a - 20) * P.wbSlope / 100), k.hip20 * hsc * Math.exp(-(a - 20) * P.hipRate / 100));
+    live(P, p, k, (a, v, dem, ms, late, S, E) => {
+      const ai = a - AGE0;
+      agg.alive[ai]++;
+      addC(a, v[5], v[7]);
+      if (P.female) agg.aliveF[ai]++; else agg.aliveM[ai]++;
+      for (let j = 0; j < NV; j++) {
+        const x = isLog[j] ? Math.log(v[j]) : v[j];
+        let bi = Math.floor((x - lo[j]) * binW[j]);
+        if (bi < 0) bi = 0; else if (bi >= NB) bi = NB - 1;
+        hist[(j * NA + ai) * NB + bi]++;
+        sum[j * NA + ai] += v[j];
+      }
+      agg.aliveD[dose * NA + ai]++;
+      if (v[9] >= A_POS) agg.aPosD[dose * NA + ai]++;
+      if (v[11] >= T_POS) agg.tPos[ai]++;
+      agg.aliveS[sg * NA + ai]++;
+      if (ms) agg.msS[sg * NA + ai]++;
+      if (late) agg.late[ai]++;
+      if (a >= P.wOn) agg.wles[ai]++;
+      if (dem) agg.dem[ai]++;
+      agg.sS[ai] += S; agg.sS2[ai] += S * S; agg.sE[ai] += E; agg.sE2[ai] += E * E;
+      if (a === a26) {
+        agg.alive26[ai]++;
+        if (P.female) agg.alive26F[ai]++;
+        if (a >= 50 && a <= 65 && !dem) { agg.refSum += v[2]; agg.refSq += v[2] * v[2]; agg.refN++; }
+        if (a >= 80 && a <= 89) {
+          agg.cs.mem.push(v[2]); agg.cs.dem.push(dem ? 1 : 0); agg.cs.mmse.push(v[0]);
+          agg.cs.apos.push(v[9] >= A_POS ? 1 : 0); agg.cs.female.push(P.female);
+        }
+      }
+    });
+    agg.deathAge[Math.min(NA, Math.floor(P.death) - AGE0)]++;
+  }
+  agg.done = to;
+}
+
+/* summaries once the pass is complete */
+function finish(agg) {
+  const S = { N: agg.N };
+  let alive26 = 0, n8089 = 0;
+  for (let ai = 0; ai < NA; ai++) { alive26 += agg.alive26[ai]; if (ai + AGE0 >= 80 && ai + AGE0 <= 89) n8089 += agg.alive26[ai]; }
+  S.alive26 = alive26; S.n8089 = n8089;
+  S.refMean = agg.refN ? agg.refSum / agg.refN : 0;
+  S.refSD = agg.refN ? Math.sqrt(Math.max(0, agg.refSq / agg.refN - S.refMean * S.refMean)) : 1;
+  const cs = agg.cs; let nd = 0, nDem = 0, nSup = 0, nA = 0, mm = 0;
+  for (let j = 0; j < cs.mem.length; j++) {
+    if (cs.dem[j]) nDem++; else { nd++; if (cs.mem[j] >= S.refMean) nSup++; }
+    if (cs.apos[j]) nA++;
+    mm += cs.mmse[j];
+  }
+  const nCs = Math.max(1, cs.mem.length);
+  S.dem8089 = nDem / nCs; S.sup8089 = nSup / Math.max(1, nd); S.nSup = nSup; S.nDemFree = nd;
+  S.apos8089 = nA / nCs; S.mmse8089 = mm / nCs;
+  // median age at death
+  let c = 0; const half = agg.N / 2;
+  for (let ai = 0; ai <= NA; ai++) { c += agg.deathAge[ai]; if (c >= half) { S.medDeath = ai + AGE0; break; } }
+  // means and percentiles by age
+  const QS = [0.02, 0.1, 0.5, 0.9, 0.98];
+  S.mean = []; S.q = [];
+  for (let j = 0; j < NV; j++) {
+    const m = new Float64Array(NA), qa = QS.map(() => new Float64Array(NA).fill(NaN));
+    const v = VARS[j], w = (v.hi - v.lo) / NB;
+    for (let ai = 0; ai < NA; ai++) {
+      const n = agg.alive[ai];
+      m[ai] = n ? agg.sum[j * NA + ai] / n : NaN;
+      if (!n) continue;
+      let acc = 0, qi = 0; const base = (j * NA + ai) * NB;
+      for (let bi = 0; bi < NB && qi < QS.length; bi++) {
+        const h = agg.hist[base + bi];
+        while (qi < QS.length && acc + h >= QS[qi] * n) {
+          const f = h ? (QS[qi] * n - acc) / h : 0;
+          let x = v.lo + (bi + f) * w; if (v.log) x = Math.exp(x);
+          qa[qi++][ai] = x;
+        }
+        acc += h;
+      }
+    }
+    S.mean.push(m); S.q.push({ q02: qa[0], q10: qa[1], q50: qa[2], q90: qa[3], q98: qa[4] });
+  }
+  // correlation of whole-brain and hippocampal volume with TIV, by age
+  const cor = (n, sx, sx2, sy, sy2, sxy) => { const d = (n * sx2 - sx * sx) * (n * sy2 - sy * sy); return n > 50 && d > 0 ? (n * sxy - sx * sy) / Math.sqrt(d) : NaN; };
+  S.ctiv = { age: [], wb: [], hip: [] };
+  for (let a = 20; a <= AGEMAX; a++) {
+    const o = (a - 20) * 9, c = agg.ctiv, n = c[o];
+    S.ctiv.age.push(a); S.ctiv.wb.push(cor(n, c[o + 1], c[o + 2], c[o + 3], c[o + 4], c[o + 5])); S.ctiv.hip.push(cor(n, c[o + 1], c[o + 2], c[o + 6], c[o + 7], c[o + 8]));
+  }
+  // process levels by age
+  S.sleep = { m: new Float64Array(NA), sd: new Float64Array(NA) }; S.eng = { m: new Float64Array(NA), sd: new Float64Array(NA) };
+  for (let ai = 0; ai < NA; ai++) {
+    const n = agg.alive[ai]; if (!n) { S.sleep.m[ai] = S.eng.m[ai] = NaN; continue; }
+    const ms = agg.sS[ai] / n, me = agg.sE[ai] / n;
+    S.sleep.m[ai] = ms; S.sleep.sd[ai] = Math.sqrt(Math.max(0, agg.sS2[ai] / n - ms * ms));
+    S.eng.m[ai] = me; S.eng.sd[ai] = Math.sqrt(Math.max(0, agg.sE2[ai] / n - me * me));
+  }
+  // median age at death by sex, from survival
+  const med = (arr, ent) => { for (let ai = 1; ai < NA; ai++) if (arr[ai] < ent / 2) return ai + AGE0 - 1 + (arr[ai - 1] - ent / 2) / Math.max(1, arr[ai - 1] - arr[ai]); return AGEMAX; };
+  S.medF = med(agg.aliveF, agg.entF); S.medM = med(agg.aliveM, agg.entM);
+  return S;
+}
+
+/* ---------- re-simulate chosen people with full trajectories ---------- */
+function trace(i, p, k, refMean) {
+  const z = new Float64Array(NZ), P = newPerson();
+  setup(i, p, k, z, P);
+  const rows = [];
+  let firstA = 999, firstT = 999, m85 = NaN;
+  live(P, p, k, (a, v, dem) => {
+    rows.push(Float32Array.from(v));
+    if (firstA === 999 && v[9] >= A_POS) firstA = a;
+    if (firstT === 999 && v[11] >= T_POS) firstT = a;
+    if (a === 85) m85 = dem ? -99 : v[2];
+  });
+  const n = rows.length, tr = new Float32Array(NV * n);
+  for (let t = 0; t < n; t++) for (let j = 0; j < NV; j++) tr[j * n + t] = rows[t][j];
+  return {
+    i, n, tr, b: P.b, doy: P.doy, wOn: P.wOn, female: P.female, geno: P.geno, n4: P.n4, ses: P.ses, abil: P.abil,
+    msOn: P.msOn, aPos: firstA, tPos: firstT, lOn: P.lOn, demAge: P.demAge, death: P.death,
+    exceptional: !Number.isNaN(m85) && m85 >= refMean,
+    traits: { R: P.R, Q: P.Q, M: P.M, crz: P.crz, sT: P.sT, eT: P.eT }
+  };
+}
+
+/* one life's yearly record from 40 to death: every phenotype plus the process states behind it */
+function lifecourse(i, p, k) {
+  const z = new Float64Array(NZ), P = newPerson();
+  setup(i, p, k, z, P);
+  const rows = [];
+  live(P, p, k, (a, v, dem, ms, late, S, E, af, tad, lf) => { rows.push({ a, v: Array.from(v), dem, ms, S, E, af, tad, lf }); });
+  return { P: Object.assign({}, P), rows };
+}
+
+/* every process's contribution to every phenotype for one person at one age */
+function explain(i, p, k, age) {
+  const z = new Float64Array(NZ), P = newPerson();
+  setup(i, p, k, z, P);
+  const T = { age };
+  live(P, p, k, null, T);
+  T.person = Object.assign({}, P);
+  return T;
+}
+
+/* prototype trajectory for a specified person (for sketches); no death */
+function prototype(p, over, toAge) {
+  const k = prep(p), z = new Float64Array(NZ), P = newPerson();
+  setup(0, p, k, z, P);
+  Object.assign(P, {
+    female: 1, b: 1950, coh: 0, ses: 0, abil: 0, n4: 0, n2: 0, prs: 0, R: 0, Q: 0, M: 0, sT: 0, eT: 0,
+    clb: p.amyBase, clmax: p.amyMax, tb: p.tauBase, part: p.partRate, wmh50: p.wmh50, ptau0: p.ptauBase, etiv: ETIV_REF,
+    ctx0: p.ctxMean, mot0: 0, msOn: 999, lOn: 999, aOn: 999,
+    zLag: 0, zTauK: 0, zTauMax: 0
+  }, over || {});
+  sexFactors(P, p);
+  P.mfac = Math.exp(-k.sM * P.M - 0.5 * k.sM * k.sM);
+  const ov = over || {};
+  P.hipRate = k.agingOn * p.hipLoss; P.knee = ov.knee !== undefined ? ov.knee : p.hipKnee;
+  P.wbSlope = k.agingOn * p.wbAge * P.mfac * P.fxA;
+  P.hip0 = ov.hip0 !== undefined ? ov.hip0 : k.hip20 * Math.exp(-20 * P.hipRate / 100);
+  P.bpf0 = ov.bpf0 !== undefined ? ov.bpf0 : p.bpf20 * (1 - 20 * P.wbSlope / 100);
+  // lesions: a median draw, so onset falls where half of such people have begun
+  P.fWv = Math.pow(p.wmhHR, P.fxC); P.fWa = Math.pow(p.amyWMH, P.fxD);
+  P.wGrow = ov.wGrow !== undefined ? ov.wGrow : p.wmhGrow / 100; P.wE = ov.wE !== undefined ? ov.wE : Math.LN2;
+  P.wTop = Math.max(2 * p.wmhSeed, p.wmhCap);
+  P.wOn = ov.wOn !== undefined ? ov.wOn : p.mets ? wmhOnset(P, k) : 999;
+  P.bBrain = Math.exp(-k.sQ * P.Q - 0.5 * k.sQ * k.sQ);
+  P.crz = over && over.crz !== undefined ? over.crz : 0;
+  P.bRes = Math.exp(-k.bufB * P.crz - 0.5 * k.bufB * k.bufB);
+  P.bCog = P.bBrain * P.bRes;
+  const lvl = p.cohortCog * P.coh + (over && over.lvl !== undefined ? over.lvl : 0);
+  P.mem0 = lvl; P.exe0 = lvl; P.spd0 = lvl;
+  retime(P, p, k);
+  P.eDeath = 1e9; P.lnFix = 0;
+  const out = { age: [], v: [] };
+  live(P, p, k, (a, v) => { if (a <= toAge) { out.age.push(a); out.v.push(Float32Array.from(v)); } });
+  return out;
+}
+
+return { STUDY_YEAR, AGE0, AGEMAX, NA, NV, NB, VARS, IX, GENO, A_POS, T_POS, ETIV_REF, DEFAULTS,
+  prep, newAgg, runChunk, finish, trace, explain, lifecourse, prototype, setup, live, draw, NZ };
+})();
+if (typeof module !== "undefined") module.exports = ENGINE;
+
+</script>
+<script>
+(() => {
+"use strict";
+const E = ENGINE;
+const $ = (s, el = document) => el.querySelector(s);
+const nf = new Intl.NumberFormat("en-US");
+const fmtInt = (n) => nf.format(Math.round(n));
+const pct = (x, d = 1) => (100 * x).toFixed(d) + "%";
+const signed = (x, d = 1) => (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(d);
+const FONT = '"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif';
+const MONO = '"IBM Plex Mono", ui-monospace, Menlo, monospace';
+
+/* ---------------- icons (drawn from the stage figure) ---------------- */
+const ICONS = {
+  world: `<svg viewBox="0 0 196 108" aria-hidden="true"><g fill="none" stroke-linecap="round">
+    <path class="ic-ctx" stroke-width="1.6" d="M10 26 Q 104 29 186 54"/>
+    <path class="ic-ctx" stroke-width="2.6" d="M10 40 Q 104 43 186 56"/>
+    <path class="ic-ctx" stroke-width="1.8" d="M10 47 Q 104 51 186 61"/>
+    <path class="ic-ctx" stroke-width="1.8" d="M10 62 Q 104 64 186 71"/>
+    <path class="ic-ctx" stroke-width="1.8" d="M10 72 Q 104 75 186 83"/>
+    <path class="ic-ctx" stroke-width="3" d="M10 78 Q 104 81 186 97"/>
+    <path class="ic-acc" stroke-width="3.8" d="M10 21 Q 98 23 186 30"/></g></svg>`,
+  enroll: `<svg viewBox="0 0 196 108" aria-hidden="true">
+    <path class="ic-funnel" stroke-width="1.8" d="M24 9 H160 L110 61 V99 H75 V61 Z"/>
+    <g class="ic-grayf">${[[45.5,18.5],[54.5,13.8],[58.5,14.8],[61.5,16.2],[68,28.5],[71,30.3],[74,31.8],[82.5,27.5],[85.5,30.8],[91.5,21.5],[104.5,28.5],[107.3,22.3],[122.8,23],[135.5,28.5]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.8"/>`).join("")}</g>
+    <g class="ic-darkf">${[[84.3,77.3],[96.5,72.5],[84.5,86.8],[100.5,86.8]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3.2"/>`).join("")}</g></svg>`,
+  select: `<svg viewBox="0 0 196 108" aria-hidden="true">
+    <path class="ic-tail" d="M122.5 69.09 L123.25 70.93 L124.50 73.87 L125.75 76.64 L127.00 79.23 L128.25 81.63 L129.50 83.85 L130.75 85.89 L132.00 87.74 L133.25 89.42 L134.50 90.93 L135.75 92.28 L137.00 93.48 L138.25 94.54 L139.50 95.47 L140.75 96.29 L142.00 97.00 L143.25 97.61 L144.50 98.14 L145.75 98.59 L147.00 98.97 L148.25 99.30 L149.50 99.57 L150.75 99.80 L152.00 99.99 L153.25 100.14 L154.50 100.27 L155.75 100.38 L157.00 100.47 L158.25 100.54 L159.50 100.59 L160.75 100.64 L162.00 100.67 L163.25 100.70 L164.50 100.72 L165.75 100.74 L167.00 100.76 L168.25 100.77 L169.50 100.77 L170.75 100.78 L172.00 100.79 L173.25 100.79 L174.50 100.79 L175.75 100.79 L177.00 100.80 L178.25 100.80 L179.50 100.80 L180.75 100.80 L182.00 100.80 L182.5 100.8 L122.5 100.8 Z"/>
+    <path class="ic-dark" fill="none" stroke-width="3" stroke-linejoin="round" d="M12.00 100.80 L13.25 100.80 L14.50 100.80 L15.75 100.80 L17.00 100.80 L18.25 100.79 L19.50 100.79 L20.75 100.79 L22.00 100.79 L23.25 100.78 L24.50 100.77 L25.75 100.77 L27.00 100.76 L28.25 100.74 L29.50 100.72 L30.75 100.70 L32.00 100.67 L33.25 100.64 L34.50 100.59 L35.75 100.54 L37.00 100.47 L38.25 100.38 L39.50 100.27 L40.75 100.14 L42.00 99.99 L43.25 99.80 L44.50 99.57 L45.75 99.30 L47.00 98.97 L48.25 98.59 L49.50 98.14 L50.75 97.61 L52.00 97.00 L53.25 96.29 L54.50 95.47 L55.75 94.54 L57.00 93.48 L58.25 92.28 L59.50 90.93 L60.75 89.42 L62.00 87.74 L63.25 85.89 L64.50 83.85 L65.75 81.63 L67.00 79.23 L68.25 76.64 L69.50 73.87 L70.75 70.93 L72.00 67.83 L73.25 64.58 L74.50 61.20 L75.75 57.71 L77.00 54.14 L78.25 50.52 L79.50 46.88 L80.75 43.25 L82.00 39.67 L83.25 36.19 L84.50 32.83 L85.75 29.65 L87.00 26.67 L88.25 23.94 L89.50 21.49 L90.75 19.36 L92.00 17.57 L93.25 16.16 L94.50 15.13 L95.75 14.51 L97.00 14.30 L98.25 14.51 L99.50 15.13 L100.75 16.16 L102.00 17.57 L103.25 19.36 L104.50 21.49 L105.75 23.94 L107.00 26.67 L108.25 29.65 L109.50 32.83 L110.75 36.19 L112.00 39.67 L113.25 43.25 L114.50 46.88 L115.75 50.52 L117.00 54.14 L118.25 57.71 L119.50 61.20 L120.75 64.58 L122.00 67.83 L123.25 70.93 L124.50 73.87 L125.75 76.64 L127.00 79.23 L128.25 81.63 L129.50 83.85 L130.75 85.89 L132.00 87.74 L133.25 89.42 L134.50 90.93 L135.75 92.28 L137.00 93.48 L138.25 94.54 L139.50 95.47 L140.75 96.29 L142.00 97.00 L143.25 97.61 L144.50 98.14 L145.75 98.59 L147.00 98.97 L148.25 99.30 L149.50 99.57 L150.75 99.80 L152.00 99.99 L153.25 100.14 L154.50 100.27 L155.75 100.38 L157.00 100.47 L158.25 100.54 L159.50 100.59 L160.75 100.64 L162.00 100.67 L163.25 100.70 L164.50 100.72 L165.75 100.74 L167.00 100.76 L168.25 100.77 L169.50 100.77 L170.75 100.78 L172.00 100.79 L173.25 100.79 L174.50 100.79 L175.75 100.79 L177.00 100.80 L178.25 100.80 L179.50 100.80 L180.75 100.80 L182.00 100.80"/>
+    <line class="ic-base" x1="12" y1="100.8" x2="182.5" y2="100.8" stroke-width="1.6"/>
+    <line class="ic-ink" x1="122.5" y1="8" x2="122.5" y2="100.8" stroke-width="2.6"/></svg>`,
+  measure: `<svg viewBox="0 0 196 108" aria-hidden="true">
+    <g class="ic-ink" stroke-width="4.5"><line x1="22" y1="41.3" x2="55" y2="41.3"/><line x1="75" y1="59" x2="107" y2="59"/><line x1="128" y1="30.5" x2="160" y2="30.5"/></g>
+    <g class="ic-blue">${[[39.5,20],[37.5,33.5],[31,39.3],[44.5,62.3],[38,74.5],[94.5,55.8],[87.5,62],[89,66],[99,67.3],[93.3,82.3],[152,20.8],[142.5,34.5],[151,40],[136.8,47.3],[149,51.5]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.6"/>`).join("")}</g></svg>`,
+  follow: `<svg viewBox="0 0 196 108" aria-hidden="true"><g stroke-linecap="round">
+    <line class="ic-acc" stroke-width="2.8" x1="26" y1="23.8" x2="163" y2="33.6"/>
+    <path class="ic-accf" d="M160.5 26.6 L177 34.4 L159.4 40.6 Z"/>
+    <line class="ic-acc" stroke-width="2.8" x1="26" y1="52.3" x2="100" y2="65.3"/>
+    <g class="ic-dark" stroke-width="2.8"><line x1="99" y1="60.5" x2="111" y2="72.5"/><line x1="99" y1="72.5" x2="111" y2="60.5"/></g>
+    <line class="ic-acc" stroke-width="2.8" x1="26" y1="80.8" x2="126" y2="93.6"/>
+    <circle class="ic-ring" cx="132" cy="95.2" r="6" stroke-width="2.6"/>
+    <g class="ic-accf"><circle cx="25.8" cy="23.8" r="3.1"/><circle cx="25.8" cy="52.3" r="3.1"/><circle cx="25.8" cy="80.8" r="3.1"/></g></g></svg>`,
+  analysis: `<svg viewBox="0 0 196 108" aria-hidden="true">
+    <g class="ic-grayf">${[[17.5,99.5],[23,87.5],[27.8,75],[42,57.3],[43.5,82.3],[47.5,71.3],[51,75.3],[56,70.5],[77.8,55.8],[85.3,75],[102.8,46.5],[110.5,65.8],[127.3,30.8],[129.3,18.5],[140,5.6],[153,5.8],[153.5,16.5],[166.5,11.3],[170.8,28.3],[171,36],[168,53.5]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.8"/>`).join("")}</g>
+    <line class="ic-ink" stroke-width="3" stroke-linecap="round" x1="14.3" y1="90.8" x2="176.3" y2="18"/></svg>`
+};
+
+/* ---------------- stages ---------------- */
+const STAGES = [
+  { id: "world", title: "World" },
+  { id: "enroll", title: "Enrollment", text: "Recruit people aged 80–89 in 2026 from this world and exclude those living with dementia." },
+  { id: "select", title: "Selection", text: "Classify SuperAgers and typical peers from measured memory against norms for 50–65-year-olds." },
+  { id: "measure", title: "Measurement", text: "Measure memory, MRI, PET and fMRI, each with its own error." },
+  { id: "follow", title: "Follow-up", text: "Follow enrollees over the years, losing some to death and some to dropout." },
+  { id: "analysis", title: "Analysis", text: "Run the contrasts, residuals and slopes a study would report, and compare them with the truth." }
+];
+
+/* ---------------- expressed phenotypes ---------------- */
+const VMETA = {
+  mmse: { label: "MMSE", unit: "points", d: 0, fixed: [0, 30.5], ticks: [0, 10, 20, 30] },
+  cdr:  { label: "CDR Sum of Boxes", unit: "points", d: 1, fixed: [-0.4, 18.4], ticks: [0, 6, 12, 18] },
+  mem:  { label: "Memory", unit: "SD", d: 2 },
+  spd:  { label: "Speed of processing", unit: "SD", d: 2 },
+  exe:  { label: "Executive function", unit: "SD", d: 2 },
+  wba:  { label: "Whole brain volume", unit: "mL", d: 0 },
+  tiv:  { label: "Total intracranial volume", unit: "mL", d: 0 },
+  hip:  { label: "Hippocampal volume", unit: "mL", d: 2 },
+  ctx:  { label: "Cortical thickness", unit: "mm", d: 2 },
+  amy:  { label: "Amyloid PET", unit: "Centiloid", d: 0, thr: E.A_POS },
+  ptau: { label: "Plasma pTau217", unit: "pg/mL, log", d: 2, log: true },
+  tau:  { label: "Tau PET", unit: "SUVR", d: 2, thr: E.T_POS },
+  wmh:  { label: "White matter hyperintensities", unit: "mL", d: 1 },
+  mot:  { label: "Motivation", unit: "SD", d: 2 }
+};
+for (const [key, m] of Object.entries(VMETA)) m.idx = E.IX[key];
+const HIGHLIGHT = {
+  exc:   { label: "SuperAgers", legend: "SuperAger at 85: true memory ≥ 50–65 mean, no dementia", test: (t) => t.exceptional, color: "super" },
+  e4:    { label: "APOE ε4 carrier", legend: "APOE ε4 carrier", test: (t) => t.n4 > 0 },
+  apos:  { label: "Amyloid+ before 75", legend: "Amyloid positive before 75", test: (t) => t.aPos < 75 },
+  cv:    { label: "Vascular risk by 60", legend: "Vascular risk by 60", test: (t) => t.msOn <= 60 && t.msOn < t.death },
+  sleep: { label: "Poor sleepers (top third)", legend: "Poor sleepers, top third", test: (t) => t.traits.sT > 0.4307 },
+  eng:   { label: "Most engaged (top third)", legend: "Most engaged, top third", test: (t) => t.traits.eT > 0.4307 },
+  ses:   { label: "Top-third SES", legend: "Top third of SES", test: (t) => t.ses > 0.4307 },
+  fem:   { label: "Women", legend: "Women", test: (t) => t.female === 1 }
+};
+
+/* ---------------- formatting ---------------- */
+const f2 = (v) => v.toFixed(2), f1 = (v) => v.toFixed(1);
+const sg = (v, d = 2) => { const s = Math.abs(v).toFixed(d); return +s === 0 ? s : (v < 0 ? "−" : "+") + s; };
+const zf = (v) => (v < 0 ? "−" : "+") + Math.abs(v).toFixed(1);
+const xf = (v) => "×" + v.toFixed(2);
+const nm = (v, d = 2) => (v < 0 ? "−" : "") + Math.abs(v).toFixed(d);
+const sdv = (v) => sg(v) + " SD", mL2 = (v) => sg(v) + " mL", mL0 = (v) => sg(v, 0) + " mL", mm3 = (v) => sg(v, 3) + " mm";
+
+/* ---------------- people and outcomes ---------------- */
+const GROUPS = [
+  { title: "Who is born", boxes: [
+    { id: "pop", title: "Population", sub: "Who is born, when, and how cohorts differ", chart: "pyramid", params: [
+      { k: "N", label: "Lives simulated", type: "select", options: [30000, 60000, 120000, 240000], fmt: fmtInt },
+      { k: "birthMin", label: "Earliest birth year", min: 1906, max: 1950, step: 1, fmt: String },
+      { k: "birthMax", label: "Latest birth year", min: 1956, max: 1986, step: 1, fmt: String },
+      { k: "pctFemale", label: "Women at age 40", min: 40, max: 60, step: 1, fmt: (v) => v + "%" },
+      { k: "cohortCog", label: "Cognitive gain per decade of birth", min: 0, max: 0.3, step: 0.01, fmt: (v) => "+" + f2(v) + " SD" } ] },
+    { id: "gen", title: "Genetic background", sub: "APOE and polygenic risk for amyloid", toggle: "gen", chart: "geno", params: [
+      { k: "e4Freq", label: "ε4 allele frequency", min: 0.05, max: 0.3, step: 0.01, fmt: f2 },
+      { k: "e4HR", label: "ε4 amyloid risk, per allele", min: 1, max: 5, step: 0.1, fmt: (v) => "×" + f1(v) },
+      { k: "e2HR", label: "ε2 amyloid risk, per allele", min: 0.2, max: 1, step: 0.05, fmt: (v) => "×" + f2(v) },
+      { k: "prsHR", label: "Polygenic risk, per SD", min: 1, max: 2, step: 0.05, fmt: (v) => "×" + f2(v) } ] },
+    { id: "res", title: "Brain and cognitive reserve", sub: "Early ability, education, SES and brain size", toggle: "reserve", chart: "reserve", params: [
+      { k: "abilityCog", label: "Childhood ability → cognition", min: 0, max: 0.8, step: 0.05, fmt: (v) => f2(v) + " SD" },
+      { k: "sesCog", label: "Education and SES → cognition", min: 0, max: 0.5, step: 0.05, fmt: (v) => f2(v) + " SD" },
+      { k: "rSesAbility", label: "SES–ability correlation", min: 0, max: 0.8, step: 0.05, fmt: (v) => "r " + f2(v) },
+      { k: "buffer", label: "Pathology impact buffered, per SD", min: 0, max: 50, step: 1, fmt: (v) => v + "%" },
+      { k: "hipMem", label: "Hippocampal volume → memory, per mL", min: 0, max: 1, step: 0.01, fmt: (v) => f2(v) + " SD" } ] }
+  ] },
+  { title: "How lives differ and end", boxes: [
+    { id: "resil", title: "Resistance and resilience", sub: "Who avoids pathology, who copes, who ages slowly", toggle: "resil", chart: "superagers", params: [
+      { k: "resistSD", label: "Resistance: spread in amyloid risk", min: 0, max: 1, step: 0.05, fmt: (v) => f2(v) + " SD" },
+      { k: "resilSD", label: "Resilience: spread in pathology impact", min: 0, max: 1, step: 0.05, fmt: (v) => f2(v) + " SD" },
+      { k: "maintSD", label: "Maintenance: spread in aging rate", min: 0, max: 0.8, step: 0.05, fmt: (v) => f2(v) + " SD" },
+      { k: "traitR", label: "Shared across the three", min: 0, max: 0.9, step: 0.05, fmt: (v) => "r " + f2(v) } ] },
+    { id: "dem", title: "Dementia and clinical scales", sub: "When decline becomes a diagnosis; MMSE and CDR", chart: "dementia", params: [
+      { k: "demThresh", label: "Dementia: global cognition below", min: -3.5, max: -1, step: 0.05, fmt: (v) => "−" + Math.abs(v).toFixed(2) + " SD" },
+      { k: "demDecline", label: "after a decline of at least", min: 0.5, max: 3, step: 0.05, fmt: (v) => f2(v) + " SD" },
+      { k: "demHR", label: "Mortality with dementia", min: 1, max: 5, step: 0.1, fmt: (v) => "×" + f1(v) },
+      { k: "mmseMid", label: "MMSE is 15 when global cognition reaches", min: 2, max: 6, step: 0.1, fmt: (v) => "−" + f1(v) + " SD" },
+      { k: "cdrFloor", label: "CDR-SB stays 0 until decline beyond aging of", min: 0, max: 2, step: 0.05, fmt: (v) => f2(v) + " SD" },
+      { k: "cdrMid", label: "CDR-SB is 9 after decline beyond aging of", min: 1, max: 4, step: 0.1, fmt: (v) => f1(v) + " SD" } ] },
+    { id: "surv", title: "Survival", sub: "Gompertz mortality and its gradients", chart: "survival", params: [
+      { k: "mort70", label: "Mortality at 70, men", min: 0.5, max: 4, step: 0.1, fmt: (v) => f1(v) + "%/y" },
+      { k: "femHR", label: "Women", min: 0.5, max: 1, step: 0.01, fmt: (v) => "×" + f2(v) },
+      { k: "sesHR", label: "Per SD higher SES", min: 0.6, max: 1, step: 0.01, fmt: (v) => "×" + f2(v) },
+      { k: "mortImprove", label: "Fall per decade of birth", min: 0, max: 25, step: 1, fmt: (v) => v + "%" } ] }
+  ] },
+  // one full-width card; each section's col places it in one of three columns (the chart heads the first)
+  { title: "Where each phenotype starts", boxes: [
+    { id: "start", title: "Starting levels", sub: "Head and brain at 20, and where each phenotype begins at 40", kind: "spec", wide: true, chart: "tivcorr", sections: [
+      { col: 0, title: "Head size", rows: [["etivF", "TIV, women", "mL", (X, P) => P.female ? P.etiv.toFixed(0) + " mL" : ""], ["etivM", "TIV, men", "mL", (X, P) => P.female ? "" : P.etiv.toFixed(0) + " mL"], ["etivSD", "TIV spread", "mL"]] },
+      { col: 0, title: "Whole brain", rows: [["bpf20", "Brain share of TIV at 20", "ratio", (X, P) => (state.run.p.bpf20 * P.etiv).toFixed(0) + " mL"], ["wbSD", "Brain loss spread", "%/y", (X, P) => sg(-P.wbSlope) + "%/y"]] },
+      { col: 1, title: "Hippocampus", rows: [["hipShare", "Hippocampus share of brain at 20", "%", (X, P) => (state.run.k.hip20 * P.etiv / E.ETIV_REF).toFixed(2) + " mL"], ["hipLoss", "Hippocampal drift before knee", "%/y", (X, P) => sg(-P.hipRate) + "%/y"], ["hipLossSD", "Hippocampal loss spread", "%/y"],
+        ["bpfHipR", "Brain–hippocampus loss tie", "r"], ["hipAbil", "Ability–hippocampal loss tie", "r"]] },
+      { col: 1, title: "Cortex", rows: [["ctxMean", "Cortical thickness", "mm", (X, P) => P.ctx0.toFixed(2) + " mm"], ["ctxSD", "Cortical spread", "mm"], ["ctxHipR", "Cortex tie to hippocampus", "r"]] },
+      { col: 2, title: "Cognition", rows: [["sexMem", "Women's memory advantage", "SD", (X, P) => sg(P.mSex)]] },
+      { col: 2, title: "Amyloid and tau", rows: [["amyBase", "Amyloid PET", "CL", (X, P) => nm(P.clb, 0) + " CL"], ["amyBaseSD", "Amyloid spread", "CL"], ["tauBase", "Tau PET", "SUVR", (X, P) => P.tb.toFixed(2)], ["tauBaseSD", "Tau spread", "SUVR"],
+        ["ptauBase", "Plasma pTau217", "pg/mL", (X, P) => P.ptau0.toFixed(2)], ["ptauSD", "pTau217 spread", "log SD"]] },
+      { col: 2, title: "White matter", rows: [["wmh50", "WMH at 50", "mL", (X, P) => P.wmh50.toFixed(2) + " mL"], ["wmhSD", "WMH spread", "log SD"]] }
+    ] }
+  ] }
+];
+const BOXES = GROUPS.flatMap((g) => g.boxes);
+const BOXP = {};
+for (const b of BOXES) for (const pr of (b.params || [])) BOXP[pr.k] = Object.assign({ box: b }, pr);
+
+/* ---------------- causal chains: age-linked processes ---------------- */
+const PROCS = [
+  { id: "aging", title: "Aging", toggle: "aging", chart: "aging", sub: "Age itself, scaled by each person's maintenance",
+    flow: { from: ["Age", "Maintenance"], via: ["Aging rate"], to: ["Memory", "Speed", "Executive", "Motivation", "Hippocampus", "Cortex", "Whole brain", "Tau PET", "pTau217"] },
+    status: (X, P) => `maintenance ${zf(P.M)}, so aging runs at ${xf(P.mfac)} the typical rate`,
+    groups: [
+      { title: "Driven by", rows: [["accel", "Rates double every", "y"], ["maintSD", "Maintenance spread", "SD", (X, P) => xf(P.mfac)]] },
+      { title: "Acts on (rate at 70)", rows: [["sexAging", "Women vs. men", "×", (X, P) => xf(P.fxA)],
+        ["mem70", "Memory", "SD/y", (X) => sdv(X.mem.aging)], ["spd70", "Speed", "SD/y", (X) => sdv(X.spd.aging)], ["exe70", "Executive", "SD/y", (X) => sdv(X.exe.aging)],
+        ["mot70", "Motivation", "SD/y", (X) => sdv(X.mot.aging)], ["ctx70", "Cortex", "%/y", (X) => mm3(X.ctx.aging)],
+        ["hipKnee", "Hippocampus steady until", "age", (X, P) => P.knee.toFixed(0)], ["hipKneeSD", "Knee spread", "SD y"], ["hipAge", "Hippocampus, then linear", "%/y", (X) => mL2(X.hip.aging)],
+        ["wbAge", "Whole brain, linear from 20", "%/y", (X) => mL0(X.wba.aging)], ["partRate", "Tau PET, after 50", "SUVR/y", (X) => sg(X.tau.aging) + " SUVR"], ["pAge", "pTau217, after 60", "%/y", (X) => xf(X.ptau.aging)]] },
+      { title: "Spread", more: true, rows: [["partSD", "Tau rate spread", "log SD"]] }
+    ] },
+  { id: "cv", title: "Cardiovascular", toggle: "mets", chart: "mets", sub: "Vascular risk and white matter lesions",
+    flow: { from: ["SES", "Engagement", "Sleep"], via: ["Vascular risk", "Lesions"], to: ["WMH", "Speed", "Executive", "Memory", "Motivation", "Hippocampus", "Cortex", "Whole brain", "Sleep", "Engagement", "Survival"] },
+    status: (X, P) => (P.msOn < P.death && P.msOn <= X.age ? `vascular risk since ${Math.max(25, Math.floor(P.msOn))}` : "no vascular risk yet") + (P.wOn <= X.age ? `; lesions growing since ${Math.floor(P.wOn)}` : "; no lesion growth yet") + `, WMH ${X.wmh.total.toFixed(1)} mL`,
+    groups: [
+      { title: "Driven by", rows: [["mets60", "Vascular risk by 60", "%"], ["metsSES", "Per SD lower SES", "×", (X, P) => xf(P.fCvSES)], ["engCV", "Per SD engagement", "×", (X, P) => xf(P.fCvEng)], ["sleepCVin", "Per SD poor sleep", "×", (X, P) => xf(P.fCvSleep)]] },
+      { title: "Lesion course", more: true, rows: [["wmh85", "Lesions begin by 85, no vascular risk", "%", (X, P) => (P.wOn < P.death ? "from " + Math.floor(P.wOn) : "never")],
+        ["wmhDbl", "Risk doubles every", "y"], ["wmhGrow", "Growth once begun", "%/y", (X, P) => (100 * P.wGrow).toFixed(0) + "%/y"], ["wmhGrowSD", "Growth spread", "log SD"],
+        ["wmhCap", "Lesions level off near", "mL", (X) => "+" + X.wmh.lesion.toFixed(1) + " mL"], ["wmhCapSD", "Level-off spread", "log SD"], ["wmhAge", "Background growth with age", "%/y", (X) => X.wmh.base.toFixed(1) + " mL"]] },
+      { title: "Acts on", rows: [["sexCV", "Women vs. men", "×", (X, P) => xf(P.fxC)],
+        ["wmhHR", "Lesion onset risk while present", "×", (X, P) => xf(P.fWv)],
+        ["wmhSpd", "Speed, per lesion doubling", "SD", (X) => sdv(X.spd.cv)], ["wmhExe", "Executive, per doubling", "SD", (X) => sdv(X.exe.cv)],
+        ["wmhMem", "Memory, per doubling", "SD", (X) => sdv(X.mem.cv)], ["wmhMot", "Motivation, per doubling", "SD", (X) => sdv(X.mot.cv)],
+        ["metsAtrophy", "Hippocampus while present", "%/y", (X) => mL2(X.hip.cv)], ["metsCtx", "Cortex while present", "%/y", (X) => mm3(X.ctx.cv)],
+        ["cvWB", "Whole brain while present", "%/y", (X) => mL0(X.wba.cv)], ["sleepCV", "Sleep disruption while present", "+SD"],
+        ["engCVill", "Engagement while present", "−SD"], ["metsHR", "Mortality while present", "×"]] }
+    ] },
+  { id: "ad", title: "AD cascade", toggle: "ad", chart: "amyloid", sub: "Amyloid → tau → neurodegeneration",
+    flow: { from: ["APOE", "Polygenic", "Resistance", "Sleep"], via: ["Amyloid onset", "Amyloid", "Tau spread"], to: ["Amyloid PET", "pTau217", "Tau PET", "WMH", "Hippocampus", "Cortex", "Whole brain", "Memory", "Speed", "Executive", "Motivation", "Sleep"] },
+    status: (X, P) => (P.aOn < P.death ? `amyloid onset ${Math.round(P.aOn)}, tau spread from ${Math.round(P.tOn)}` : "no amyloid onset in this life") + `; amyloid load ${X.af.toFixed(2)}, tau load ${X.tad.toFixed(2)}`,
+    groups: [
+      { title: "Driven by", rows: [["aPos70", "Amyloid+ by 70, ε3/ε3", "%"], ["e4HR", "ε4, per allele", "×", (X, P) => xf(P.fE4)], ["e2HR", "ε2, per allele", "×", (X, P) => xf(P.fE2)],
+        ["prsHR", "Polygenic, per SD", "×", (X, P) => xf(P.fPRS)], ["resistSD", "Resistance spread", "SD", (X, P) => xf(P.fRes)], ["sleepAmy", "Per SD poor sleep", "×", (X, P) => xf(P.fSleep)], ["lag", "Amyloid → tau lag, onset at 70", "y"]] },
+      { title: "Kinetics", more: true, rows: [["amyDbl", "Risk doubles every", "y"], ["amyK", "Amyloid rise rate", "/y"], ["amyMax", "Amyloid plateau", "CL"], ["amyMaxSD", "Plateau spread", "log SD"],
+        ["lagSD", "Lag spread", "log SD"], ["lagAge", "Lag shorter per later year", "%"], ["tauK", "Tau rise rate", "/y"], ["tauKSD", "Tau rate spread", "log SD"],
+        ["tauMax", "Tau plateau", "SUVR"], ["tauMaxSD", "Tau plateau spread", "log SD"], ["tauE4", "Tau rate, per ε4", "×"], ["tauFem", "Tau rate, women", "×"]] },
+      { title: "Acts on (per unit of load)", rows: [["sexAD", "Women vs. men", "×", (X, P) => xf(P.fxD)],
+        { info: "Amyloid PET", pv: (X) => sg(X.amy.ad, 0) + " CL" }, { info: "Tau PET", pv: (X) => sg(X.tau.ad) + " SUVR" },
+        ["pAmyX", "pTau217, full amyloid", "×", (X) => xf(X.ptau.ad)], ["amyWMH", "WMH lesion risk, once amyloid starts", "×", (X, P) => xf(P.fWa)],
+        ["tauHipp", "Hippocampus, per tau unit", "%/y", (X) => mL2(X.hip.ad)], ["amyHipp", "Hippocampus, full amyloid", "%/y"],
+        ["tauCtx", "Cortex, per tau unit", "%/y", (X) => mm3(X.ctx.ad)], ["amyCtx", "Cortex, full amyloid", "%/y"],
+        ["tauWB", "Whole brain, per tau unit", "%/y", (X) => mL0(X.wba.ad)], ["amyWB", "Whole brain, full amyloid", "%/y"],
+        ["tauMem", "Memory, per tau unit", "SD", (X) => sdv(X.mem.ad)], ["amyMem", "Memory, full amyloid", "SD"],
+        ["tauSpd", "Speed, per tau unit", "SD", (X) => sdv(X.spd.ad)], ["amySpd", "Speed, full amyloid", "SD"],
+        ["tauExe", "Executive, per tau unit", "SD", (X) => sdv(X.exe.ad)], ["amyExe", "Executive, full amyloid", "SD"],
+        ["tauMot", "Motivation, per tau unit", "SD", (X) => sdv(X.mot.ad)], ["sleepAD", "Sleep disruption, per tau unit", "+SD"]] }
+    ] },
+  { id: "sleep", title: "Sleep", toggle: "sleep", chart: "sleep", sub: "Disruption rises with age, vascular risk and tau",
+    flow: { from: ["Age", "Person", "Vascular risk", "Tau"], via: ["Sleep disruption"], to: ["Amyloid onset", "Vascular risk", "Memory", "Speed", "Executive", "Motivation"] },
+    status: (X, P) => `sleep disruption ${sg(X.S)} SD (person ${zf(P.sT)})`,
+    groups: [
+      { title: "Driven by", rows: [["sleepSD", "Person spread", "SD"], ["sleepAge", "Per decade of age", "+SD"], ["sleepCV", "With vascular risk", "+SD"], ["sleepAD", "Per tau unit", "+SD"]] },
+      { title: "Acts on (per SD)", rows: [["sexSleep", "Women vs. men", "×", (X, P) => xf(P.fxS)], ["sleepAmy", "Amyloid onset risk", "×", (X, P) => xf(P.fSleep)], ["sleepCVin", "Vascular risk", "×", (X, P) => xf(P.fCvSleep)],
+        ["sleepMem", "Memory", "SD", (X) => sdv(X.mem.sleep)], ["sleepSpd", "Speed", "SD", (X) => sdv(X.spd.sleep)], ["sleepExe", "Executive", "SD", (X) => sdv(X.exe.sleep)], ["sleepMot", "Motivation", "SD", (X) => sdv(X.mot.sleep)]] }
+    ] },
+  { id: "engage", title: "Engagement", toggle: "engage", chart: "engage", sub: "Cognitive, social and physical activity",
+    flow: { from: ["SES", "Ability", "Age", "Retirement", "Illness"], via: ["Engagement"], to: ["Cognitive aging", "Brain aging", "Motivation", "Vascular risk"] },
+    status: (X, P) => `engagement ${sg(X.E)} SD (person ${zf(P.eT)})`,
+    groups: [
+      { title: "Driven by", rows: [["engSES", "SES loading", ""], ["engAbil", "Ability loading", ""], ["engAge", "Per decade after 60", "−SD"], ["engRetire", "At retirement, 65", "−SD"], ["engDem", "After dementia", "−SD"], ["engCVill", "With vascular risk", "−SD"]] },
+      { title: "Acts on (per SD)", rows: [["sexEng", "Women vs. men", "×", (X, P) => xf(P.fxE)],
+        ["engCog", "Cognitive aging slowed", "%"], { info: "→ Memory", pv: (X) => sdv(X.mem.eng) }, { info: "→ Speed", pv: (X) => sdv(X.spd.eng) }, { info: "→ Executive", pv: (X) => sdv(X.exe.eng) },
+        ["engBrain", "Brain aging slowed", "%"], { info: "→ Hippocampus", pv: (X) => mL2(X.hip.eng) }, { info: "→ Whole brain", pv: (X) => mL0(X.wba.eng) },
+        ["engMot", "Motivation", "SD", (X) => sdv(X.mot.eng)], ["engCV", "Vascular risk", "×", (X, P) => xf(P.fCvEng)]] }
+    ] },
+  { id: "late", title: "LATE", toggle: "late", chart: "late", sub: "Limbic TDP-43 co-pathology of the oldest old",
+    flow: { from: ["Age", "Amyloid"], via: ["LATE stage"], to: ["Hippocampus", "Cortex", "Whole brain", "Memory", "Speed", "Executive"] },
+    status: (X, P) => (P.lOn < P.death && P.lOn <= X.age ? `LATE from ${Math.floor(P.lOn)}, stage ${X.lf.toFixed(2)}` : "no LATE yet"),
+    groups: [
+      { title: "Driven by", rows: [["late85", "Present by 85", "%"], ["lateAD", "Once amyloid positive", "×"]] },
+      { title: "Acts on (at full stage)", rows: [["sexLate", "Women vs. men", "×", (X, P) => xf(P.fxL)], ["lateHipp", "Hippocampus", "%/y", (X) => mL2(X.hip.late)], ["lateCtx", "Cortex", "%/y", (X) => mm3(X.ctx.late)], ["lateWB", "Whole brain", "%/y", (X) => mL0(X.wba.late)],
+        ["lateMem", "Memory", "SD", (X) => sdv(X.mem.late)], ["lateSpd", "Speed", "SD", (X) => sdv(X.spd.late)], ["lateExe", "Executive", "SD", (X) => sdv(X.exe.late)]] }
+    ] }
+];
+const DRV_SAY = { aging: "rate doubling · maintenance", cv: "risk by 60 · SES · engagement · sleep", ad: "APOE · polygenic · resistance · sleep · lag",
+  sleep: "person · age · vascular risk · tau", engage: "SES · ability · age · retirement · dementia · vascular", late: "risk by 85 · amyloid" };
+const ACTS_SAY = { aging: "cognition · hippocampal knee · whole brain · tau PET · pTau217", cv: "lesion onset · cognition · brain · sleep · engagement · mortality",
+  ad: "per unit of load · biomarkers · WMH · brain · cognition · sleep", sleep: "per SD · amyloid · vascular risk · cognition",
+  engage: "per SD · aging rate · motivation · vascular risk", late: "at full stage · brain · cognition" };
+const MORE_SAY = { aging: "tau rate spread", cv: "onset by age · growth · level-off · background", ad: "amyloid and tau rise · plateaus · lag" };
+// every group in a chain card is a collapsible banner
+for (const pr of PROCS) for (const g of pr.groups) {
+  if (g.title === "Driven by") Object.assign(g, { banner: true, t: g.title, say: DRV_SAY[pr.id] });
+  else if (g.title.startsWith("Acts on")) Object.assign(g, { banner: true, t: "Acts on", say: ACTS_SAY[pr.id] });
+  else Object.assign(g, { banner: true, t: g.title, say: MORE_SAY[pr.id] || "" });
+}
+const MINIS = BOXES.filter((b) => b.chart).concat(PROCS);
+
+/* every setting a number field can show: range and step */
+const PDEF = {};
+for (const pr of Object.values(BOXP)) if (pr.type !== "select") PDEF[pr.k] = { min: pr.min, max: pr.max, step: pr.step };
+Object.assign(PDEF, {
+  accel: { min: 8, max: 40, step: 1 }, mem70: { min: 0, max: 0.06, step: 0.001 }, spd70: { min: 0, max: 0.08, step: 0.001 }, exe70: { min: 0, max: 0.06, step: 0.001 },
+  mot70: { min: 0, max: 0.03, step: 0.001 }, hipAge: { min: 0, max: 2.5, step: 0.05 }, hipKnee: { min: 45, max: 85, step: 1 }, hipKneeSD: { min: 0, max: 12, step: 0.5 },
+  ctx70: { min: 0, max: 1, step: 0.01 }, wbAge: { min: 0, max: 0.8, step: 0.01 },
+  partRate: { min: 0, max: 0.01, step: 0.0001 }, partSD: { min: 0, max: 1.5, step: 0.05 }, pAge: { min: 0, max: 3, step: 0.1 },
+  mets60: { min: 0, max: 80, step: 1 }, metsSES: { min: 1, max: 2.5, step: 0.05 }, wmhCap: { min: 10, max: 150, step: 5 }, wmhAge: { min: 0, max: 6, step: 0.25 }, wmh85: { min: 1, max: 80, step: 1 }, wmhDbl: { min: 3, max: 20, step: 0.5 },
+  wmhHR: { min: 1, max: 30, step: 0.5 }, wmhGrow: { min: 2, max: 50, step: 1 }, wmhGrowSD: { min: 0, max: 1, step: 0.05 }, wmhCapSD: { min: 0, max: 0.8, step: 0.05 }, amyWMH: { min: 1, max: 3, step: 0.05 },
+  metsAtrophy: { min: 0, max: 0.6, step: 0.01 }, metsCtx: { min: 0, max: 0.5, step: 0.01 }, cvWB: { min: 0, max: 0.5, step: 0.01 },
+  wmhMem: { min: 0, max: 0.3, step: 0.01 }, wmhSpd: { min: 0, max: 0.4, step: 0.01 }, wmhExe: { min: 0, max: 0.4, step: 0.01 }, wmhMot: { min: 0, max: 0.3, step: 0.01 },
+  sleepCV: { min: 0, max: 1.5, step: 0.05 }, engCVill: { min: 0, max: 1, step: 0.05 }, metsHR: { min: 1, max: 2.5, step: 0.05 },
+  aPos70: { min: 0, max: 40, step: 1 }, amyDbl: { min: 4, max: 20, step: 0.5 }, sleepAmy: { min: 1, max: 2, step: 0.01 }, lag: { min: 2, max: 16, step: 0.5 },
+  amyK: { min: 0.05, max: 0.5, step: 0.01 }, amyMax: { min: 40, max: 200, step: 5 }, amyMaxSD: { min: 0, max: 0.6, step: 0.01 },
+  lagSD: { min: 0, max: 1, step: 0.05 }, lagAge: { min: 0, max: 10, step: 0.5 }, tauK: { min: 0.1, max: 1, step: 0.01 }, tauKSD: { min: 0, max: 0.6, step: 0.01 },
+  tauMax: { min: 0.2, max: 3, step: 0.05 }, tauMaxSD: { min: 0, max: 0.6, step: 0.01 }, tauE4: { min: 1, max: 2, step: 0.01 }, tauFem: { min: 0.8, max: 1.5, step: 0.01 },
+  pAmyX: { min: 1, max: 12, step: 0.1 }, tauHipp: { min: 0, max: 6, step: 0.1 }, amyHipp: { min: 0, max: 2, step: 0.05 },
+  tauCtx: { min: 0, max: 5, step: 0.05 }, amyCtx: { min: 0, max: 1, step: 0.01 }, tauWB: { min: 0, max: 3, step: 0.05 }, amyWB: { min: 0, max: 0.5, step: 0.01 },
+  tauMem: { min: 0, max: 5, step: 0.1 }, amyMem: { min: 0, max: 2, step: 0.05 }, tauSpd: { min: 0, max: 4, step: 0.05 }, amySpd: { min: 0, max: 1, step: 0.01 },
+  tauExe: { min: 0, max: 5, step: 0.05 }, amyExe: { min: 0, max: 2, step: 0.05 }, tauMot: { min: 0, max: 3, step: 0.05 }, sleepAD: { min: 0, max: 1.5, step: 0.05 },
+  sleepSD: { min: 0, max: 2, step: 0.05 }, sleepAge: { min: 0, max: 0.6, step: 0.01 }, sleepCVin: { min: 1, max: 2, step: 0.01 },
+  sleepMem: { min: 0, max: 0.3, step: 0.01 }, sleepSpd: { min: 0, max: 0.3, step: 0.01 }, sleepExe: { min: 0, max: 0.3, step: 0.01 }, sleepMot: { min: 0, max: 0.3, step: 0.01 },
+  engSES: { min: 0, max: 0.7, step: 0.05 }, engAbil: { min: 0, max: 0.7, step: 0.05 }, engAge: { min: 0, max: 0.6, step: 0.01 }, engRetire: { min: 0, max: 1, step: 0.05 },
+  engDem: { min: 0, max: 2, step: 0.05 }, engCog: { min: 0, max: 40, step: 1 }, engBrain: { min: 0, max: 30, step: 1 }, engMot: { min: 0, max: 0.6, step: 0.01 }, engCV: { min: 0.5, max: 1, step: 0.01 },
+  sexAging: { min: 0.5, max: 2, step: 0.05 }, sexCV: { min: 0.5, max: 2, step: 0.05 }, sexAD: { min: 0.5, max: 2, step: 0.05 },
+  sexSleep: { min: 0.5, max: 2, step: 0.05 }, sexEng: { min: 0.5, max: 2, step: 0.05 }, sexLate: { min: 0.5, max: 2, step: 0.05 },
+  late85: { min: 0, max: 40, step: 1 }, lateAD: { min: 1, max: 5, step: 0.1 }, lateHipp: { min: 0, max: 5, step: 0.1 }, lateCtx: { min: 0, max: 2, step: 0.05 }, lateWB: { min: 0, max: 1, step: 0.01 },
+  lateMem: { min: 0, max: 3, step: 0.1 }, lateSpd: { min: 0, max: 1.5, step: 0.05 }, lateExe: { min: 0, max: 3, step: 0.05 },
+  sexMem: { min: -0.5, max: 0.8, step: 0.01 }, etivF: { min: 1200, max: 1600, step: 10 }, etivM: { min: 1350, max: 1800, step: 10 }, etivSD: { min: 0, max: 200, step: 5 },
+  bpf20: { min: 0.75, max: 0.92, step: 0.005 }, wbSD: { min: 0, max: 0.2, step: 0.005 }, bpfHipR: { min: 0, max: 0.9, step: 0.01 },
+  hipShare: { min: 0.4, max: 0.9, step: 0.01 }, hipLoss: { min: -0.3, max: 1, step: 0.01 }, hipLossSD: { min: 0, max: 0.8, step: 0.01 }, hipAbil: { min: 0, max: 0.8, step: 0.01 },
+  ctxMean: { min: 2.2, max: 3.4, step: 0.01 }, ctxSD: { min: 0, max: 0.4, step: 0.005 }, ctxHipR: { min: 0, max: 0.9, step: 0.01 },
+  amyBase: { min: -10, max: 15, step: 0.5 }, amyBaseSD: { min: 0, max: 15, step: 0.5 }, tauBase: { min: 0.9, max: 1.4, step: 0.01 }, tauBaseSD: { min: 0, max: 0.15, step: 0.005 },
+  ptauBase: { min: 0.05, max: 1, step: 0.01 }, ptauSD: { min: 0, max: 0.6, step: 0.01 }, wmh50: { min: 0.1, max: 5, step: 0.05 }, wmhSD: { min: 0, max: 1.5, step: 0.05 }
+});
+const decOf = (k) => { const st = String(PDEF[k].step), i = st.indexOf("."); return i < 0 ? 0 : st.length - i - 1; };
+const fmtIn = (k, v) => (+v).toFixed(decOf(k));
+
+/* ---------------- state ---------------- */
+const state = {
+  p: Object.assign({}, E.DEFAULTS),
+  panel: "world",
+  frac: 0.002, sampleSeed: 11, hl: "exc",
+  vars: ["mmse", "cdr", "mem", "hip", "amy", "tau"],
+  showDots: true,
+  run: null,                 // { p, k, agg, S }
+  sample: [], hover: null, pin: null, pinAge: null, expl: null,
+  busy: false, token: 0, t0: 0, lastMs: 0
+};
+
+/* ---------------- theme colors ---------------- */
+const C = {};
+function readColors() {
+  const cs = getComputedStyle(document.documentElement);
+  for (const k of ["ink", "ink-2", "muted", "grid", "line", "line-2", "accent", "accent-soft", "accent-wash", "context", "band", "spread",
+    "surface", "card", "ramp-0", "ramp-1", "ramp-2", "ord-0", "ord-1", "ord-2", "pair-b", "blue", "super", "dementia"]) C[k] = cs.getPropertyValue("--" + k).trim();
+}
+
+/* ---------------- canvas helpers ---------------- */
+function prepCanvas(cv) {
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const r = cv.getBoundingClientRect();
+  const W = Math.max(20, Math.round(r.width)), H = Math.max(20, Math.round(r.height));
+  if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+  const ctx = cv.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, W, H);
+  return { ctx, W, H, dpr };
+}
+function niceTicks(lo, hi, n) {
+  const span = hi - lo; if (!(span > 0)) return [lo];
+  const raw = span / n, mag = Math.pow(10, Math.floor(Math.log10(raw))), e = raw / mag;
+  const step = (e >= 7 ? 10 : e >= 3 ? 5 : e >= 1.5 ? 2 : 1) * mag;
+  const out = [];
+  for (let v = Math.ceil(lo / step - 1e-9) * step; v <= hi + 1e-9; v += step) out.push(Math.abs(v) < step * 1e-6 ? 0 : v);
+  return out;
+}
+function tickLabel(v, step) {
+  const d = step >= 1 ? 0 : step >= 0.1 ? 1 : 2;
+  const s = Math.abs(v).toFixed(d);
+  return (v < 0 && +s !== 0 ? "−" : "") + s;
+}
+
+/* ---------------- population plots ---------------- */
+const slots = [];
+function buildPlots() {
+  const host = $("#plots"); host.innerHTML = "";
+  state.vars.forEach((vk, si) => {
+    const fig = document.createElement("div");
+    fig.className = "plot";
+    const id = "var-" + si;
+    fig.innerHTML = `<div class="plot-main stale-able"><div class="plot-head"><select class="var-sel" id="${id}" aria-label="Measure shown in plot ${si + 1}">${Object.entries(VMETA).map(([k, m]) => `<option value="${k}"${k === vk ? " selected" : ""}>${m.label}</option>`).join("")}</select><span class="unit"></span></div><canvas role="img"></canvas><div class="tip" hidden></div></div>`;
+    host.appendChild(fig);
+    const slot = { si, fig, cv: $("canvas", fig), tip: $(".tip", fig), unit: $(".unit", fig), sel: $("select", fig), base: document.createElement("canvas"), geom: null, lastAge: 70 };
+    slot.sel.addEventListener("change", () => { state.vars[si] = slot.sel.value; drawPlot(slot); });
+    slot.cv.addEventListener("pointermove", (ev) => onPlotMove(slot, ev));
+    slot.cv.addEventListener("pointerleave", () => { slot.tip.hidden = true; if (state.hover) { state.hover = null; overlayAll(); } });
+    slot.cv.addEventListener("click", () => {
+      if (state.hover) { if (state.hover !== state.pin) state.pin = state.hover; state.pinAge = Math.round(slot.lastAge); }
+      else state.pin = null;
+      explainPin(); overlayAll(); renderPerson(); updateProcs();
+    });
+    slots.push(slot);
+  });
+  const ps = document.createElement("div");
+  ps.className = "person-slot";
+  ps.innerHTML = `<div class="person" id="person"><div class="pid-row"><span class="pid-k">Person ID</span><b class="pid empty" id="pid">XXXX_YYMMDD</b><span class="pid-actions" id="pid-actions"></span></div><div class="person-body" id="person-body"></div></div>`;
+  host.appendChild(ps);
+}
+
+function yDomain(j, vm) {
+  if (vm.fixed) return vm.fixed;
+  const S = state.run.S, agg = state.run.agg;
+  let lo = Infinity, hi = -Infinity;
+  for (let ai = 0; ai < E.NA; ai++) {
+    if (agg.alive[ai] < 150 || ai + E.AGE0 > 104) continue;
+    const a = S.q[j].q02[ai], b = S.q[j].q98[ai];
+    if (a < lo) lo = a; if (b > hi) hi = b;
+  }
+  if (vm.log) { lo = Math.log10(Math.max(0.05, lo)); hi = Math.log10(Math.max(lo + 0.5, hi)); return [lo - 0.08, hi + 0.08]; }
+  if (vm.thr !== undefined) { lo = Math.min(lo, vm.thr); hi = Math.max(hi, vm.thr); }
+  const pad = (hi - lo) * 0.07;
+  return [lo - pad, hi + pad];
+}
+
+function drawPlot(slot) {
+  if (!state.run) return;
+  const vk = state.vars[slot.si], vm = VMETA[vk], j = vm.idx;
+  slot.unit.textContent = vm.unit;
+  slot.cv.setAttribute("aria-label", `${vm.label} by age for ${fmtInt(state.sample.length)} simulated lives, with the population mean and 10th–90th percentile band`);
+  const { ctx: c0, W, H, dpr } = prepCanvas(slot.cv);
+  // draw the static layer into an offscreen canvas
+  const base = slot.base; base.width = slot.cv.width; base.height = slot.cv.height;
+  const ctx = base.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  const m = { l: 38, r: 8, t: 8, b: 22 };
+  const x0 = 40, x1 = 105;
+  const [d0, d1] = yDomain(j, vm);
+  const fy = vm.log ? (v) => Math.log10(Math.max(v, 1e-3)) : (v) => v;
+  const pw = W - m.l - m.r, ph = H - m.t - m.b;
+  const X = (a) => m.l + (a - x0) / (x1 - x0) * pw;
+  const Y = (v) => m.t + (1 - (fy(v) - d0) / (d1 - d0)) * ph;
+  slot.geom = { X, Y, j, m, W, H, invX: (px) => x0 + (px - m.l) / pw * (x1 - x0) };
+  // study window: ages 80–89
+  ctx.fillStyle = C.band; ctx.fillRect(X(80), m.t, X(90) - X(80), ph);
+  // grid and ticks
+  ctx.font = `10.5px ${FONT}`; ctx.textBaseline = "middle"; ctx.lineWidth = 1;
+  let yt, step;
+  if (vm.ticks) { yt = vm.ticks; step = 1; }
+  else if (vm.log) {
+    const seq = d1 - d0 > 1.6 ? [1, 3] : [1, 2, 5]; yt = [];
+    for (let e = Math.floor(d0) - 1; e <= Math.ceil(d1); e++) for (const m of seq) { const v = m * Math.pow(10, e); if (Math.log10(v) >= d0 && Math.log10(v) <= d1) yt.push(+v.toPrecision(3)); }
+    step = 1;
+  }
+  else { yt = niceTicks(d0, d1, 4); step = yt.length > 1 ? yt[1] - yt[0] : 1; }
+  for (const v of yt) {
+    const y = Math.round(vm.log ? Y(v) : Y(v)) + 0.5;
+    ctx.strokeStyle = C.grid; ctx.beginPath(); ctx.moveTo(m.l, y); ctx.lineTo(W - m.r, y); ctx.stroke();
+    ctx.fillStyle = C.muted; ctx.textAlign = "right";
+    ctx.fillText(vm.log ? (v < 1 ? String(v) : String(v)) : tickLabel(v, step), m.l - 6, y);
+  }
+  ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+  for (let a = 40; a <= 100; a += 10) {
+    const x = Math.round(X(a)) + 0.5;
+    ctx.strokeStyle = C.grid; ctx.beginPath(); ctx.moveTo(x, m.t + ph); ctx.lineTo(x, m.t + ph + 4); ctx.stroke();
+    ctx.fillStyle = C.muted; ctx.fillText(String(a), x, H - 6);
+  }
+  ctx.strokeStyle = C.line; ctx.beginPath(); ctx.moveTo(m.l, Math.round(m.t + ph) + 0.5); ctx.lineTo(W - m.r, Math.round(m.t + ph) + 0.5); ctx.stroke();
+  ctx.save(); ctx.beginPath(); ctx.rect(m.l, m.t, pw, ph); ctx.clip();
+  // threshold
+  if (vm.thr !== undefined) {
+    ctx.strokeStyle = C.muted; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.moveTo(m.l, Y(vm.thr)); ctx.lineTo(W - m.r, Y(vm.thr)); ctx.stroke(); ctx.setLineDash([]);
+  }
+  // population band (10th–90th percentile among the living)
+  const S = state.run.S, agg = state.run.agg, q = S.q[j];
+  const okAge = (ai) => agg.alive[ai] >= 150 && ai + E.AGE0 <= 104;
+  ctx.fillStyle = C.spread; ctx.beginPath();
+  let started = false; const back = [];
+  for (let ai = 0; ai < E.NA; ai++) { if (!okAge(ai)) continue; const x = X(ai + E.AGE0); if (!started) { ctx.moveTo(x, Y(q.q90[ai])); started = true; } else ctx.lineTo(x, Y(q.q90[ai])); back.push([x, Y(q.q10[ai])]); }
+  for (let i = back.length - 1; i >= 0; i--) ctx.lineTo(back[i][0], back[i][1]);
+  ctx.closePath(); ctx.fill();
+  // sampled lives
+  const hl = HIGHLIGHT[state.hl], test = hl.test, hlColor = hl.color === "super" ? C.super : C.accent;
+  const dIdx = (t) => (t.demAge < 999 ? Math.min(t.n - 1, t.demAge - E.AGE0) : t.n - 1);
+  const path = (t, i0, i1) => { if (i1 <= i0) return; ctx.beginPath(); for (let i = i0; i <= i1; i++) { const x = X(E.AGE0 + i), y = Y(t.tr[j * t.n + i]); if (i > i0) ctx.lineTo(x, y); else ctx.moveTo(x, y); } ctx.stroke(); };
+  const dense = state.sample.length > 800;
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = C.context; ctx.lineWidth = 1; ctx.globalAlpha = dense ? 0.32 : 0.55;
+  for (const t of state.sample) if (!test(t)) path(t, 0, dIdx(t));
+  ctx.strokeStyle = hlColor; ctx.lineWidth = 1.4; ctx.globalAlpha = dense ? 0.6 : 0.9;
+  for (const t of state.sample) if (test(t)) path(t, 0, dIdx(t));
+  // from the age dementia is diagnosed to death
+  ctx.strokeStyle = C.dementia; ctx.lineWidth = 1.4; ctx.globalAlpha = dense ? 0.6 : 0.9;
+  for (const t of state.sample) if (t.demAge < 999) path(t, dIdx(t), t.n - 1);
+  ctx.globalAlpha = 1;
+  // population mean among the living
+  const mean = S.mean[j];
+  const meanPath = () => { ctx.beginPath(); let s = false; for (let ai = 0; ai < E.NA; ai++) { if (!okAge(ai)) continue; const x = X(ai + E.AGE0), y = Y(mean[ai]); if (s) ctx.lineTo(x, y); else { ctx.moveTo(x, y); s = true; } } ctx.stroke(); };
+  ctx.strokeStyle = C.surface; ctx.lineWidth = 4.5; meanPath();
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 2.2; meanPath();
+  // where each sampled life stands in 2026
+  if (state.showDots) {
+    for (const t of state.sample) {
+      const ai = E.STUDY_YEAR - t.b - E.AGE0; if (ai < 0 || ai >= t.n) continue;
+      const x = X(E.AGE0 + ai), y = Y(t.tr[j * t.n + ai]);
+      ctx.fillStyle = C.surface; ctx.beginPath(); ctx.arc(x, y, 2.5, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = E.AGE0 + ai >= t.demAge ? C.dementia : test(t) ? hlColor : C["ink-2"]; ctx.beginPath(); ctx.arc(x, y, 1.6, 0, 6.2832); ctx.fill();
+    }
+  }
+  ctx.restore();
+  overlay(slot);
+}
+
+function overlay(slot) {
+  if (!slot.geom) return;
+  const { ctx, W, H } = prepCanvas(slot.cv);
+  ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(slot.base, 0, 0); ctx.restore();
+  const g = slot.geom, j = g.j;
+  const drawPerson = (t, lw) => {
+    if (!t) return;
+    ctx.save(); ctx.beginPath(); ctx.rect(g.m.l, g.m.t, g.W - g.m.l - g.m.r, g.H - g.m.t - g.m.b); ctx.clip();
+    const n = t.n, line = () => { ctx.beginPath(); for (let i = 0; i < n; i++) { const x = g.X(E.AGE0 + i), y = g.Y(t.tr[j * n + i]); if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y); } ctx.stroke(); };
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = C.surface; ctx.lineWidth = lw + 3; line();
+    ctx.strokeStyle = C.blue; ctx.lineWidth = lw; line();
+    // end of life
+    const xe = g.X(E.AGE0 + n - 1), ye = g.Y(t.tr[j * n + n - 1]);
+    ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(xe - 3.5, ye - 3.5); ctx.lineTo(xe + 3.5, ye + 3.5); ctx.moveTo(xe - 3.5, ye + 3.5); ctx.lineTo(xe + 3.5, ye - 3.5); ctx.stroke();
+    ctx.restore();
+  };
+  drawPerson(state.pin, 2.2);
+  if (state.hover && state.hover !== state.pin) drawPerson(state.hover, 1.6);
+  if (state.pin && state.pinAge !== null) {
+    const t = state.pin, ai = state.pinAge - E.AGE0;
+    if (ai >= 0 && ai < t.n) {
+      ctx.save(); ctx.beginPath(); ctx.rect(g.m.l, g.m.t, g.W - g.m.l - g.m.r, g.H - g.m.t - g.m.b); ctx.clip();
+      const x = g.X(state.pinAge), y = g.Y(t.tr[j * t.n + ai]);
+      ctx.fillStyle = C.surface; ctx.beginPath(); ctx.arc(x, y, 5.2, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = C.blue; ctx.beginPath(); ctx.arc(x, y, 3.6, 0, 6.2832); ctx.fill();
+      ctx.restore();
+    }
+  }
+}
+function drawAllPlots() { for (const s of slots) drawPlot(s); }
+let ovRaf = 0;
+function overlayAll() { if (ovRaf) return; ovRaf = requestAnimationFrame(() => { ovRaf = 0; for (const s of slots) overlay(s); }); }
+
+function valueAt(t, j, age) {
+  const ai = age - E.AGE0; if (ai < 0 || ai > t.n - 1) return NaN;
+  const i0 = Math.floor(ai), i1 = Math.min(t.n - 1, i0 + 1), f = ai - i0;
+  return t.tr[j * t.n + i0] * (1 - f) + t.tr[j * t.n + i1] * f;
+}
+function onPlotMove(slot, ev) {
+  const g = slot.geom; if (!g || !state.sample.length) return;
+  const r = slot.cv.getBoundingClientRect();
+  const px = ev.clientX - r.left, py = ev.clientY - r.top;
+  const age = g.invX(px);
+  slot.lastAge = age;
+  let best = null, bd = 10;
+  for (const t of state.sample) {
+    const v = valueAt(t, g.j, age); if (Number.isNaN(v)) continue;
+    const d = Math.abs(g.Y(v) - py);
+    if (d < bd) { bd = d; best = t; }
+  }
+  if (best !== state.hover) { state.hover = best; overlayAll(); }
+  if (best) {
+    const vm = VMETA[state.vars[slot.si]], a = Math.max(E.AGE0, Math.min(E.AGE0 + best.n - 1, Math.round(age)));
+    const v = best.tr[g.j * best.n + (a - E.AGE0)];
+    slot.tip.innerHTML = `<b>${personId(best)}</b> <span class="t-sub">· ${best.female ? "woman" : "man"} · ${E.GENO[best.geno]}${best.exceptional ? " · SuperAger" : ""}</span><br>Age ${a}: ${fmtVal(vm, v)} ${vm.unit.replace(", log", "")}${a >= best.demAge ? ` <span class="t-sub">· dementia since ${best.demAge}</span>` : ""}`;
+    slot.tip.hidden = false;
+    const tw = slot.tip.offsetWidth, th = slot.tip.offsetHeight;
+    let left = px + 12, top = py - th - 10;
+    if (left + tw > r.width) left = px - tw - 12;
+    if (top < 0) top = py + 14;
+    slot.tip.style.left = Math.max(0, left) + "px"; slot.tip.style.top = (top + slot.cv.offsetTop) + "px";
+  } else slot.tip.hidden = true;
+}
+function fmtVal(vm, v) { return (v < 0 ? "−" : "") + Math.abs(v).toFixed(vm.d); }
+
+/* ---------------- person IDs ---------------- */
+// four symbols from an alphabet without 0 and without letters easily read as a digit or as each other (B G I L O Q S U Z)
+const ID_ABC = "123456789ACDEFHJKMNPRTVWXY";
+const MDAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const p2 = (v) => String(v).padStart(2, "0");
+function personCode(i, seed) {
+  // 26^4 codes; two affine steps around a digit reversal form a bijection, so every life in a world has its own code
+  const m = 456976;
+  let x = (i * 98993 + (seed * 7919) % m) % m, r = 0;
+  for (let q = 0; q < 4; q++) { r = r * 26 + (x % 26); x = Math.floor(x / 26); }
+  x = (r * 150517 + 31337) % m;
+  let out = "";
+  for (let q = 0; q < 4; q++) { out = ID_ABC[x % 26] + out; x = Math.floor(x / 26); }
+  return out;
+}
+function dobOf(t) { let d = t.doy || 0, mo = 0; while (d >= MDAYS[mo]) { d -= MDAYS[mo]; mo++; } return { y: t.b, m: mo + 1, d: d + 1 }; }
+function personId(t) { const b = dobOf(t), seed = state.run ? state.run.p.seed : state.p.seed; return `${personCode(t.i, seed)}_${p2(b.y % 100)}${p2(b.m)}${p2(b.d)}`; }
+
+/* downloads: through the viewer's save prompt inside claude.ai, straight from the browser in a saved copy */
+const DL = { framed: false, ready: false, ns: null };
+const canDownload = () => DL.ready && (!DL.framed || !!DL.ns);
+async function saveFile(filename, text) {
+  if (DL.framed) {
+    const ns = DL.ns || (await window.claude.use("downloads").catch(() => null));
+    if (!ns) return "unavailable";
+    try { await ns.save({ filename, data: text }); return "saved"; }
+    catch (err) { const c = err && err.code; return c === "declined" ? "declined" : c === "rate_limited" ? "busy" : "unavailable"; }
+  }
+  const url = URL.createObjectURL(new Blob([text], { type: "text/csv;charset=utf-8" }));
+  const a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  return "saved";
+}
+/* one row per year from birth to now (or to death): phenotypes and process states from 40, head and brain size from 20 */
+function lifecourseCsv(t) {
+  const run = state.run, p = run.p, L = E.lifecourse(t.i, p, run.k), P = L.P, b = dobOf(t), id = personId(t);
+  const now = new Date(), md = (now.getMonth() + 1) * 100 + now.getDate();
+  const ageNow = now.getFullYear() - b.y - (b.m * 100 + b.d > md ? 1 : 0), last = Math.min(ageNow, Math.floor(P.death));
+  const cols = ["person_id", "year", "date", "age", "sex", "apoe",
+    "mmse", "cdr_sb", "memory_sd", "speed_sd", "executive_sd", "motivation_sd", "whole_brain_ml", "tiv_ml", "hippocampus_ml", "cortical_thickness_mm",
+    "amyloid_pet_cl", "ptau217_pg_ml", "tau_pet_suvr", "wmh_ml",
+    "amyloid_positive", "tau_positive", "amyloid_load", "tau_load", "vascular_risk", "wmh_lesions", "late_stage", "sleep_disruption_sd", "engagement_sd", "dementia",
+    "ses_sd", "ability_sd", "resistance_sd", "resilience_sd", "maintenance_sd", "birth_date", "simulated_death_age"];
+  const num = (v, d) => (Number.isFinite(v) ? v.toFixed(d) : ""), hs = P.etiv / E.ETIV_REF, bdate = `${b.y}-${p2(b.m)}-${p2(b.d)}`;
+  const fixed = [num(P.ses, 3), num(P.abil, 3), num(P.R, 3), num(P.Q, 3), num(P.M, 3), bdate, num(P.death, 2)];
+  const out = [cols.join(",")];
+  for (let a = 0; a <= last; a++) {
+    const head = [id, b.y + a, `${b.y + a}-${p2(b.m)}-${p2(b.d)}`, a, P.female ? "F" : "M", E.GENO[P.geno].replace(/ε/g, "e")];
+    let vals = new Array(24).fill("");
+    if (a >= E.AGE0) {
+      const r = L.rows[a - E.AGE0]; if (!r) break;
+      const g = (key) => r.v[E.IX[key]];
+      vals = [num(g("mmse"), 0), num(g("cdr"), 1), num(g("mem"), 3), num(g("spd"), 3), num(g("exe"), 3), num(g("mot"), 3),
+        num(g("wba"), 1), num(g("tiv"), 1), num(g("hip"), 3), num(g("ctx"), 3), num(g("amy"), 1), num(g("ptau"), 3), num(g("tau"), 3), num(g("wmh"), 2),
+        g("amy") >= E.A_POS ? 1 : 0, g("tau") >= E.T_POS ? 1 : 0, num(r.af, 3), num(r.tad, 3), r.ms ? 1 : 0, r.a >= P.wOn ? 1 : 0, num(r.lf, 3), num(r.S, 3), num(r.E, 3), r.dem ? 1 : 0];
+    } else if (a >= 20) {
+      // before 40 only head and brain size are modeled: proportional to TIV at 20, then each person's own loss
+      vals[6] = num(p.bpf20 * P.etiv * (1 - (a - 20) * P.wbSlope / 100), 1);
+      vals[7] = num(P.etiv, 1);
+      vals[8] = num(run.k.hip20 * hs * Math.exp(-(a - 20) * P.hipRate / 100), 3);
+    }
+    out.push(head.concat(vals, fixed).join(","));
+  }
+  return { name: `${id}_lifecourse.csv`, text: out.join("\n") + "\n" };
+}
+
+/* ---------------- person card ---------------- */
+const PHENO = [["mmse", "MMSE", ""], ["cdr", "CDR-SB", ""], ["mem", "Memory", "SD"], ["spd", "Speed", "SD"], ["exe", "Executive", "SD"], ["mot", "Motivation", "SD"],
+  ["wba", "Whole brain", "mL"], ["tiv", "TIV", "mL"], ["hip", "Hippocampus", "mL"], ["ctx", "Cortex", "mm"],
+  ["amy", "Amyloid PET", "CL"], ["ptau", "pTau217", "pg/mL"], ["tau", "Tau PET", "SUVR"], ["wmh", "WMH", "mL"]];
+function phenoHtml(t) {
+  const a = Math.max(E.AGE0, Math.min(E.AGE0 + t.n - 1, state.pinAge)), ai = a - E.AGE0;
+  return `<p class="pheno-h">Key values at ${a}</p><dl class="pheno">${PHENO.map(([k, lab, u]) => `<div><dt>${lab}</dt><dd>${fmtVal(VMETA[k], t.tr[E.IX[k] * t.n + ai])}${u ? " " + u : ""}</dd></div>`).join("")}</dl>`;
+}
+function ageEvt(a, death) { return a < death && a < 900 ? (a < E.AGE0 ? "before 40" : String(Math.floor(a))) : "—"; }
+function renderPerson() {
+  const t = state.pin, pidEl = $("#pid"), body = $("#person-body"), acts = $("#pid-actions");
+  renderLegend();
+  if (!pidEl) return;
+  if (!t || !state.run) {
+    pidEl.textContent = "XXXX_YYMMDD"; pidEl.classList.add("empty"); acts.innerHTML = "";
+    body.innerHTML = `<p class="hint">Hover a line to see who it is; click one to select that person. Their life and key values appear here, and each causal chain below shows how it sets them.</p>`;
+    return;
+  }
+  const die = t.death, dyear = Math.floor(t.b + die), bd = dobOf(t), nowY = new Date().getFullYear();
+  const z = (v) => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(1);
+  const facts = [
+    ["SES", z(t.ses) + " SD"], ["Childhood ability", z(t.abil) + " SD"],
+    ["Vascular risk", ageEvt(t.msOn, die)], ["WMH lesions", ageEvt(t.wOn, die)], ["Amyloid+", ageEvt(t.aPos, die)], ["Tau+", ageEvt(t.tPos, die)],
+    ["LATE", ageEvt(t.lOn, die)], ["Dementia", ageEvt(t.demAge, die)],
+    ["Sleep disruption", z(t.traits.sT)], ["Engagement", z(t.traits.eT)],
+    ["Resistance", z(t.traits.R)], ["Resilience", z(t.traits.Q)], ["Maintenance", z(t.traits.M)]
+  ];
+  const last = E.AGE0 + t.n - 1;
+  pidEl.textContent = personId(t); pidEl.classList.remove("empty");
+  acts.innerHTML = (canDownload() ? `<button class="btn sm" type="button" id="btn-csv" title="One row per year from birth to now">Download life course (CSV)</button>` : "")
+    + `<button class="btn quiet sm" type="button" id="btn-unpin">Clear</button><span class="dl-note" id="dl-note" role="status"></span>`;
+  body.innerHTML = `<div class="person-head"><b>Life ${fmtInt(t.i + 1)}</b><span class="who">${t.female ? "Woman" : "Man"} · born ${bd.d} ${MONTHS[bd.m - 1]} ${bd.y} · APOE ${E.GENO[t.geno]} · ${dyear <= nowY ? "died" : "dies"} at ${Math.floor(die)} (${dyear})${t.exceptional ? ' · <span class="sa">SuperAger at 85</span>' : ""}</span>
+    <label class="pin-age" for="pin-age">Breakdown at age <input type="number" id="pin-age" min="40" max="${last}" step="1" value="${state.pinAge}"></label></div>
+    <ul class="facts">${facts.map(([k, v]) => `<li class="fact${(k === "Dementia" && v !== "—") ? " dem" : ""}">${k} <b>${v}</b></li>`).join("")}</ul>
+    <div id="pheno">${phenoHtml(t)}</div>`;
+  $("#btn-unpin").addEventListener("click", () => { state.pin = null; explainPin(); overlayAll(); renderPerson(); updateProcs(); });
+  $("#pin-age").addEventListener("change", (e) => { const v = Math.round(+e.target.value); if (Number.isFinite(v)) state.pinAge = v; explainPin(); e.target.value = state.pinAge; $("#pheno").innerHTML = phenoHtml(t); overlayAll(); updateProcs(); });
+  const csvBtn = $("#btn-csv");
+  if (csvBtn) csvBtn.addEventListener("click", async () => {
+    const note = $("#dl-note"); note.textContent = "";
+    const f = lifecourseCsv(t), res = await saveFile(f.name, f.text);
+    note.textContent = res === "saved" ? "" : res === "declined" ? "Not saved" : res === "busy" ? "A save prompt is already open" : "Downloads aren't available here";
+  });
+}
+
+/* ---------------- legend & KPIs ---------------- */
+function renderLegend() {
+  const h = HIGHLIGHT[state.hl];
+  const n = state.sample.filter(h.test).length, nd = state.sample.filter((t) => t.demAge < 999).length;
+  $("#pop-legend").innerHTML =
+    `<span><i class="lg-line" style="border-color:var(--${h.color === "super" ? "super" : "accent"})"></i>${h.legend} (${fmtInt(n)})</span>` +
+    `<span><i class="lg-line" style="border-color:var(--dementia)"></i>Dementia, from diagnosis (${fmtInt(nd)})</span>` +
+    `<span><i class="lg-line" style="border-color:var(--context)"></i>Other lives (${fmtInt(state.sample.length - n)})</span>` +
+    `<span><i class="lg-mean"></i>Mean of the living</span>` +
+    `<span><i class="lg-band"></i>10th–90th percentile</span>` +
+    `<span><i class="lg-dot"></i>Age in 2026</span>` +
+    `<span><i class="lg-study"></i>Ages 80–89</span>` +
+    (state.pin ? `<span><i class="lg-line" style="border-color:var(--blue)"></i>Selected life</span>` : "");
+}
+function renderKpis() {
+  if (!state.run) return;
+  const S = state.run.S, p = state.run.p;
+  const tiles = [
+    ["Lives simulated", fmtInt(S.N), `born ${p.birthMin}–${p.birthMax}`, ""],
+    ["Alive in 2026", fmtInt(S.alive26), `ages ${Math.max(40, E.STUDY_YEAR - p.birthMax)}–${E.STUDY_YEAR - p.birthMin}`, ""],
+    ["Aged 80–89 in 2026", fmtInt(S.n8089), "the study's pool", "pool"],
+    ["Dementia at 80–89", pct(S.dem8089), `${fmtInt(S.dem8089 * S.n8089)} people`, ""],
+    ["True SuperAgers", pct(S.sup8089), `of dementia-free 80–89`, ""],
+    ["Median age at death", S.medDeath.toFixed(0), `women ${S.medF.toFixed(0)} · men ${S.medM.toFixed(0)}`, ""]
+  ];
+  $("#kpis").innerHTML = tiles.map(([k, v, s, cls]) => `<div class="kpi ${cls}"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join("");
+}
+
+/* ---------------- feature boxes ---------------- */
+const boxEls = {};
+function buildBoxes() {
+  const host = $("#groups"); host.innerHTML = "";
+  for (const g of GROUPS) {
+    const sec = document.createElement("section"); sec.className = "group";
+    sec.innerHTML = `<h3 class="group-title">${g.title}</h3><div class="boxes"></div>`;
+    const grid = $(".boxes", sec);
+    for (const b of g.boxes) {
+      if (b.kind === "spec") { grid.appendChild(buildSpecCard(b)); continue; }
+      const el = document.createElement("article"); el.className = "box"; el.id = "box-" + b.id;
+      const tog = b.toggle ? `<label class="switch" title="Include in the world"><input type="checkbox" id="tg-${b.id}" ${state.p[b.toggle] ? "checked" : ""} aria-label="Include ${b.title} in the world"><span></span></label>` : "";
+      el.innerHTML = `<div class="box-head"><div><h3>${b.title}</h3><p class="sub">${b.sub}</p></div>${tog}</div>
+        <div class="box-body"><div class="mini stale-able"><div class="legend"></div><canvas role="img" aria-label="${b.title}"></canvas><div class="tip" hidden></div></div><div class="params"></div></div>`;
+      const params = $(".params", el);
+      for (const pr of b.params) {
+        const row = document.createElement("div"); row.className = "prm"; row.dataset.k = pr.k;
+        const id = "p-" + pr.k;
+        if (pr.type === "select") {
+          row.innerHTML = `<label for="${id}">${pr.label}</label><output for="${id}"></output><select class="sel" id="${id}">${pr.options.map((o) => `<option value="${o}"${o === state.p[pr.k] ? " selected" : ""}>${pr.fmt(o)}</option>`).join("")}</select>`;
+          $("select", row).addEventListener("change", (e) => { state.p[pr.k] = +e.target.value; syncParam(pr); updateSectChg(); scheduleSim(150); });
+        } else {
+          row.innerHTML = `<label for="${id}">${pr.label}</label><output for="${id}"></output><input type="range" id="${id}" min="${pr.min}" max="${pr.max}" step="${pr.step}" value="${state.p[pr.k]}">`;
+          const inp = $("input", row);
+          inp.addEventListener("input", () => setParam(pr.k, +inp.value));
+          inp.addEventListener("dblclick", () => { inp.value = E.DEFAULTS[pr.k]; setParam(pr.k, E.DEFAULTS[pr.k], 150); });
+        }
+        params.appendChild(row);
+        syncParam(pr, row);
+      }
+      if (b.toggle) $("#tg-" + b.id, el).addEventListener("change", (e) => { state.p[b.toggle] = e.target.checked; el.classList.toggle("off", !e.target.checked); for (const bb of MINIS) drawAnalytic(bb); updateProcs(); scheduleSim(100); });
+      el.classList.toggle("off", b.toggle ? !state.p[b.toggle] : false);
+      const mini = $(".mini", el);
+      boxEls[b.id] = { el, cv: $("canvas", mini), tip: $(".tip", mini), legend: $(".legend", mini), geom: null };
+      boxEls[b.id].cv.addEventListener("pointermove", (ev) => onMiniMove(b, ev));
+      boxEls[b.id].cv.addEventListener("pointerleave", () => { boxEls[b.id].tip.hidden = true; drawMiniFor(b); });
+      grid.appendChild(el);
+    }
+    host.appendChild(sec);
+  }
+}
+function syncParam(pr, row) {
+  row = row || document.querySelector(`.prm[data-k="${pr.k}"]`);
+  if (!row) return;
+  $("output", row).textContent = pr.type === "select" ? "" : pr.fmt(state.p[pr.k]);
+  const inp = row.querySelector('input[type="range"]');
+  if (inp) inp.style.setProperty("--fill", (100 * (state.p[pr.k] - pr.min) / (pr.max - pr.min)) + "%");
+  row.classList.toggle("changed", state.p[pr.k] !== E.DEFAULTS[pr.k]);
+}
+
+/* ---------------- one setter for every control ---------------- */
+function setParam(k, v, delay) {
+  const d = PDEF[k];
+  if (d) v = Math.min(d.max, Math.max(d.min, v));
+  state.p[k] = v;
+  const pr = BOXP[k];
+  if (pr) { const el = $("#p-" + k); if (el && el !== document.activeElement && el.type === "range") el.value = v; syncParam(pr); }
+  document.querySelectorAll(`input[data-pk="${k}"]`).forEach((inp) => { if (inp !== document.activeElement) inp.value = fmtIn(k, v); inp.classList.toggle("changed", v !== E.DEFAULTS[k]); });
+  for (const b of MINIS) drawAnalytic(b);
+  updateProcs(true);
+  scheduleSim(delay);
+}
+
+/* ---------------- causal-chain panels ---------------- */
+function numRow(scope, r, key) {
+  if (!Array.isArray(r)) return `<div class="kv info" data-pv="${key}"><span>${r.info}</span><span></span><span></span><output class="pv"></output></div>`;
+  const [k, lab, unit] = r, id = `q-${scope}-${k}`, d = PDEF[k];
+  return `<label class="kv" for="${id}" data-pv="${key}"><span>${lab}</span><input type="number" id="${id}" data-pk="${k}" inputmode="decimal" min="${d.min}" max="${d.max}" step="${d.step}" value="${fmtIn(k, state.p[k])}" class="${state.p[k] !== E.DEFAULTS[k] ? "changed" : ""}"><em>${unit}</em><output class="pv"></output></label>`;
+}
+function bindNumbers(root) {
+  root.querySelectorAll("input[data-pk]").forEach((inp) => inp.addEventListener("change", () => {
+    const v = parseFloat(String(inp.value).replace("−", "-"));
+    if (Number.isFinite(v)) setParam(inp.dataset.pk, v, 150); else inp.value = fmtIn(inp.dataset.pk, state.p[inp.dataset.pk]);
+  }));
+}
+/* a spec card's chart and sections; a wide card lays its sections out in columns (row keys keep each section's index) */
+function specBody(b) {
+  const chart = b.chart ? `<div class="mini stale-able"><div class="legend"></div><canvas role="img" aria-label="${b.title}"></canvas><div class="tip" hidden></div></div>` : "";
+  const sec = (s, gi) => `<div class="pg"><h4>${s.title}</h4><div class="rows">${s.rows.map((r, ri) => numRow(b.id, r, gi + "-" + ri)).join("")}</div></div>`;
+  if (!b.wide) return chart + b.sections.map(sec).join("");
+  const ncol = 1 + Math.max(...b.sections.map((s) => s.col || 0));
+  const cols = Array.from({ length: ncol }, (_, c) => (c === 0 ? chart : "") + b.sections.map((s, gi) => ((s.col || 0) === c ? sec(s, gi) : "")).join(""));
+  return `<div class="spec-cols">${cols.map((h) => `<div class="spec-col">${h}</div>`).join("")}</div>`;
+}
+function buildSpecCard(b) {
+  const el = document.createElement("article"); el.className = "box spec" + (b.wide ? " wide" : ""); el.id = "box-" + b.id;
+  el.innerHTML = `<div class="box-head"><div><h3>${b.title}</h3><p class="sub">${b.sub}</p></div></div><p class="p-who" hidden></p>
+    <div class="box-body">${specBody(b)}</div>`;
+  bindNumbers(el);
+  if (b.chart) {
+    const mini = $(".mini", el);
+    boxEls[b.id] = { el, cv: $("canvas", mini), tip: $(".tip", mini), legend: $(".legend", mini), geom: null };
+    boxEls[b.id].cv.addEventListener("pointermove", (ev) => onMiniMove(b, ev));
+    boxEls[b.id].cv.addEventListener("pointerleave", () => { boxEls[b.id].tip.hidden = true; drawMiniFor(b); });
+  }
+  return el;
+}
+const procEls = {};
+function buildProcs() {
+  const host = $("#procs"); host.innerHTML = "";
+  for (const pr of PROCS) {
+    const el = document.createElement("article"); el.className = "box proc"; el.id = "proc-" + pr.id;
+    const chip = (t, cls) => `<span class="chip ${cls}">${t}</span>`;
+    el.innerHTML = `<div class="box-head"><div><h3>${pr.title}</h3><p class="sub">${pr.sub}</p></div><label class="switch" title="Include in the world"><input type="checkbox" id="tg-${pr.id}" ${state.p[pr.toggle] ? "checked" : ""} aria-label="Include ${pr.title} in the world"><span></span></label></div>
+      ${dgBanner(pr)}
+      <div class="cflow" role="img" aria-label="${pr.flow.from.join(", ")} lead to ${pr.flow.via.join(", then ")}, which act on ${pr.flow.to.join(", ")}">
+        <div class="cfl">${pr.flow.from.map((t) => chip(t, "in")).join("")}</div><span class="fl-arrow" aria-hidden="true">→</span>
+        <div class="cfl">${pr.flow.via.map((t) => chip(t, "via")).join('<span class="fl-sep" aria-hidden="true">→</span>')}</div><span class="fl-arrow" aria-hidden="true">→</span>
+        <div class="cfl">${pr.flow.to.map((t) => chip(t, "out")).join("")}</div></div>
+      <div class="box-body">
+        <div class="mini stale-able"><div class="legend"></div><canvas role="img" aria-label="${pr.title} across age"></canvas><div class="tip" hidden></div></div>
+        <p class="p-who" hidden></p>
+        ${pr.groups.map((g, gi) => { const rows = `<div class="rows">${g.rows.map((r, ri) => numRow(pr.id, r, gi + "-" + ri)).join("")}</div>`;
+          if (g.banner) return `<details class="bnr"><summary><span class="chev" aria-hidden="true"></span><span class="bn-t">${g.t}</span><span class="bn-say">${g.say}</span><span class="bn-chg"></span></summary><div class="bnr-body">${rows}</div></details>`;
+          return g.more ? `<details class="pg"><summary>${g.title}</summary>${rows}</details>` : `<div class="pg"><h4>${g.title}</h4>${rows}</div>`; }).join("")}
+      </div>`;
+    bindNumbers(el);
+    $("#tg-" + pr.id, el).addEventListener("change", (e) => { state.p[pr.toggle] = e.target.checked; el.classList.toggle("off", !e.target.checked); for (const b of MINIS) drawAnalytic(b); updateProcs(true); scheduleSim(100); });
+    el.classList.toggle("off", !state.p[pr.toggle]);
+    const mini = $(".mini", el);
+    boxEls[pr.id] = { el, cv: $("canvas", mini), tip: $(".tip", mini), legend: $(".legend", mini), geom: null };
+    boxEls[pr.id].cv.addEventListener("pointermove", (ev) => onMiniMove(pr, ev));
+    boxEls[pr.id].cv.addEventListener("pointerleave", () => { boxEls[pr.id].tip.hidden = true; drawMiniFor(pr); });
+    procEls[pr.id] = el;
+    host.appendChild(el);
+    dgWire(pr.id, el);
+  }
+}
+function explainPin() {
+  const run = state.run, t = state.pin;
+  if (!run || !t) { state.expl = null; return; }
+  const last = E.AGE0 + t.n - 1;
+  state.pinAge = Math.max(E.AGE0, Math.min(last, Math.round(state.pinAge === null ? last : state.pinAge)));
+  state.expl = E.explain(t.i, run.p, run.k, state.pinAge);
+}
+/* People and outcomes banner: how many of its settings differ from the defaults, so a closed banner still shows edits */
+function updateSectChg() {
+  const host = $("#groups"), out = $("#po-chg"); if (!host || !out) return;
+  const ks = new Set();
+  host.querySelectorAll(".prm.changed").forEach((r) => ks.add(r.dataset.k));
+  host.querySelectorAll("input[data-pk].changed").forEach((inp) => ks.add(inp.dataset.pk));
+  for (const b of BOXES) if (b.toggle && state.p[b.toggle] !== E.DEFAULTS[b.toggle]) ks.add(b.toggle);
+  out.textContent = ks.size ? `${ks.size} changed` : "";
+}
+/* values in blue: the pinned life's process state and each link's contribution at the breakdown age */
+function updateProcs(inputsOnly) {
+  const X = state.expl, P = X ? X.person : null;
+  document.querySelectorAll("input[data-pk]").forEach((inp) => { const kk = inp.dataset.pk; if (inp !== document.activeElement) inp.value = fmtIn(kk, state.p[kk]); inp.classList.toggle("changed", state.p[kk] !== E.DEFAULTS[kk]); });
+  for (const pr of PROCS) {
+    const el = procEls[pr.id]; if (!el) continue;
+    el.classList.toggle("off", !state.p[pr.toggle]);
+    const tg = $("#tg-" + pr.id, el); if (tg) tg.checked = !!state.p[pr.toggle];
+    el.querySelectorAll(".bnr").forEach((b) => { const n = b.querySelectorAll("input.changed").length; $(".bn-chg", b).textContent = n ? `${n} changed` : ""; });
+  }
+  updateSectChg();
+  dgRenderOpen();
+  if (inputsOnly) return;
+  document.body.classList.toggle("pinned", !!X);
+  const fill = (el, groups) => {
+    groups.forEach((g, gi) => g.rows.forEach((r, ri) => {
+      const row = el.querySelector(`[data-pv="${gi}-${ri}"]`); if (!row) return;
+      const fn = Array.isArray(r) ? r[3] : r.pv, out = row.querySelector(".pv");
+      out.textContent = X && fn ? fn(X, P) : "";
+      if (!Array.isArray(r)) row.hidden = !X;
+    }));
+  };
+  for (const pr of PROCS) {
+    const el = procEls[pr.id]; if (!el) continue;
+    try {
+      const who = $(".p-who", el);
+      who.hidden = !X;
+      if (X) who.textContent = `${personId(P)} at ${X.age}: ${pr.status(X, P)}`;
+      fill(el, pr.groups);
+    } catch (err) { console.error(pr.id, err); }
+  }
+  const sc = $("#box-start");
+  if (sc) {
+    const b = BOXES.find((bb) => bb.id === "start");
+    fill(sc, b.sections);
+    const who = $(".p-who", sc); who.hidden = !X;
+    if (X) who.textContent = `${personId(P)}: ${P.female ? "woman" : "man"}, values in blue`;
+  }
+}
+
+/* ---------------- causal diagrams: how each chain reaches the phenotypes ----------------
+   A reference person is simulated with the chain on and with it off (everything else equal); the difference over age is
+   what the chain does. Where a chain has two intermediate states, each state's share comes from zeroing its direct links. */
+const DROW = {
+  amy:  { label: "Amyloid PET", up: 1, nf: (d) => sg(d, 0), unit: " CL" },
+  ptau: { label: "pTau217", up: 1, log: true, nf: (d) => "×" + Math.exp(d).toFixed(2), unit: "" },
+  tau:  { label: "Tau PET", up: 1, nf: (d) => sg(d), unit: " SUVR" },
+  wmh:  { label: "WMH", up: 1, log: true, nf: (d) => "×" + Math.exp(d).toFixed(1), unit: "" },
+  hip:  { label: "Hippocampus", up: -1, nf: (d) => sg(d), unit: " mL" },
+  ctx:  { label: "Cortex", up: -1, nf: (d) => sg(d, 3), unit: " mm" },
+  wba:  { label: "Whole brain", up: -1, nf: (d) => sg(d, 0), unit: " mL" },
+  mem:  { label: "Memory", up: -1, nf: (d) => sg(d), unit: " SD" },
+  spd:  { label: "Speed", up: -1, nf: (d) => sg(d), unit: " SD" },
+  exe:  { label: "Executive", up: -1, nf: (d) => sg(d), unit: " SD" },
+  mot:  { label: "Motivation", up: -1, nf: (d) => sg(d), unit: " SD" },
+  mmse: { label: "MMSE", up: -1, nf: (d) => sg(d, 0), unit: " points" },
+  cdr:  { label: "CDR-SB", up: 1, nf: (d) => sg(d, 1), unit: " points" }
+};
+const DROW_ORDER = ["amy", "ptau", "tau", "wmh", "hip", "ctx", "wba", "mem", "spd", "exe", "mot", "mmse", "cdr"];
+const DGRP = { amy: 0, ptau: 0, tau: 0, wmh: 0, hip: 1, ctx: 1, wba: 1, mem: 2, spd: 2, exe: 2, mot: 2, mmse: 3, cdr: 3 };
+const lag65 = (p) => p.lag * Math.exp(-(p.lagAge / 100) * (65 - 70));
+const DGM = {
+  aging: {
+    say: "average person vs. no aging", sex: "sexAging",
+    with: {}, without: {}, off: { aging: false },
+    nodes: [{ label: "Aging rate" }],
+    drivers: [
+      { label: "Age", tip: (p) => `rates double every ${p.accel} years` },
+      { label: "Maintenance", tip: (p) => `${f2(p.maintSD)} SD spread between people` },
+      { label: "Engagement", chain: "engage", tip: (p) => `each SD slows cognitive aging ${p.engCog}% and brain aging ${p.engBrain}%` }],
+    rows: { tau: [0], ptau: [0], hip: [0], ctx: [0], wba: [0], mem: [0], spd: [0], exe: [0], mot: [0], mmse: [0], cdr: [0] },
+    out: []
+  },
+  cv: {
+    say: "vascular risk from 55 vs. none", sex: "sexCV",
+    with: { msOn: 55 }, without: { msOn: 999 }, off: { mets: false },
+    nodes: [
+      { label: "Vascular risk", zero: { metsAtrophy: 0, metsCtx: 0, cvWB: 0, sleepCV: 0, engCVill: 0 } },
+      { label: "Lesions", zero: { wmhMem: 0, wmhSpd: 0, wmhExe: 0, wmhMot: 0 } }],
+    link: (p) => `×${f1(p.wmhHR)} risk`,
+    drivers: [
+      { label: "SES", tip: (p) => `risk ×${f2(p.metsSES)} per SD lower SES` },
+      { label: "Engagement", chain: "engage", tip: (p) => `risk ×${f2(p.engCV)} per SD more engagement` },
+      { label: "Sleep", chain: "sleep", tip: (p) => `risk ×${f2(p.sleepCVin)} per SD poorer sleep` },
+      { label: "Age", to: 1, tip: (p) => `${p.wmh85}% begin lesions by 85 without vascular risk; the risk doubles every ${p.wmhDbl} years` }],
+    rows: { wmh: [1], hip: [0], ctx: [0], wba: [0], mem: [0, 1], spd: [0, 1], exe: [0, 1], mot: [0, 1], mmse: [0, 1], cdr: [0, 1] },
+    out: [
+      { label: "Sleep", chain: "sleep", from: 0, num: (p) => p.sleepCV, nf: (v) => "+" + f2(v), unit: " SD", kind: "add", tip: "while vascular risk is present" },
+      { label: "Engagement", chain: "engage", from: 0, num: (p) => p.engCVill, nf: (v) => "−" + f2(v), unit: " SD", kind: "add", tip: "while vascular risk is present" },
+      { label: "Mortality", from: 0, num: (p) => p.metsHR, nf: (v) => "×" + f2(v), unit: "", kind: "hr", tip: "while vascular risk is present" }]
+  },
+  ad: {
+    say: "amyloid from 65 vs. never", sex: "sexAD",
+    with: { aOn: 65 }, without: { aOn: 999 }, off: {},
+    nodes: [
+      { label: "Amyloid", zero: { amyHipp: 0, amyCtx: 0, amyWB: 0, amyMem: 0, amySpd: 0, amyExe: 0, pAmyX: 1, amyWMH: 1 } },
+      { label: "Tau", zero: { tauHipp: 0, tauCtx: 0, tauWB: 0, tauMem: 0, tauSpd: 0, tauExe: 0, tauMot: 0, sleepAD: 0 } }],
+    link: (p) => `${Math.round(lag65(p))} y`,
+    drivers: [
+      { label: "APOE", tip: (p) => `ε4 ×${f1(p.e4HR)}, ε2 ×${f2(p.e2HR)} per allele` },
+      { label: "Polygenic", tip: (p) => `×${f2(p.prsHR)} per SD` },
+      { label: "Resistance", tip: (p) => `${f2(p.resistSD)} SD spread between people` },
+      { label: "Sleep", chain: "sleep", tip: (p) => `×${f2(p.sleepAmy)} per SD poorer sleep` }],
+    rows: { amy: [0], ptau: [0], tau: [1], wmh: [0], hip: [0, 1], ctx: [0, 1], wba: [0, 1], mem: [0, 1], spd: [0, 1], exe: [0, 1], mot: [1], mmse: [0, 1], cdr: [0, 1] },
+    out: [
+      { label: "Sleep", chain: "sleep", from: 1, num: (p) => p.sleepAD, nf: (v) => "+" + f2(v), unit: " SD", kind: "add", tip: "per unit of tau load" },
+      { label: "LATE", chain: "late", from: 0, num: (p) => p.lateAD, nf: (v) => "×" + f2(v), unit: " risk", kind: "hr", tip: "once amyloid positive" }]
+  },
+  sleep: {
+    say: "average sleeper vs. no disruption", sex: "sexSleep",
+    with: {}, without: {}, off: { sleep: false },
+    nodes: [{ label: "Sleep disruption" }],
+    drivers: [
+      { label: "Person", tip: (p) => `${f2(p.sleepSD)} SD spread between people` },
+      { label: "Age", tip: (p) => `+${f2(p.sleepAge)} SD per decade` },
+      { label: "Vascular risk", chain: "cv", tip: (p) => `+${f2(p.sleepCV)} SD while present` },
+      { label: "Tau", chain: "ad", tip: (p) => `+${f2(p.sleepAD)} SD per unit of tau load` }],
+    rows: { mem: [0], spd: [0], exe: [0], mot: [0], mmse: [0], cdr: [0] },
+    out: [
+      { label: "Amyloid onset", chain: "ad", from: 0, num: (p) => p.sleepAmy, nf: (v) => "×" + f2(v), unit: "/SD", kind: "hr", tip: "risk per SD poorer sleep" },
+      { label: "Vascular risk", chain: "cv", from: 0, num: (p) => p.sleepCVin, nf: (v) => "×" + f2(v), unit: "/SD", kind: "hr", tip: "risk per SD poorer sleep" }]
+  },
+  engage: {
+    say: "average person vs. engagement off", sex: "sexEng",
+    with: {}, without: {}, off: { engage: false },
+    nodes: [{ label: "Engagement", zero: { engMot: 0 } }, { label: "Aging rate", chain: "aging", zero: { engCog: 0, engBrain: 0 } }],
+    link: () => "slows",
+    drivers: [
+      { label: "SES", tip: (p) => `loading ${f2(p.engSES)}` },
+      { label: "Ability", tip: (p) => `loading ${f2(p.engAbil)}` },
+      { label: "Age", tip: (p) => `−${f2(p.engAge)} SD per decade after 60` },
+      { label: "Retirement", tip: (p) => `−${f2(p.engRetire)} SD from 65` },
+      { label: "Dementia", tip: (p) => `−${f2(p.engDem)} SD after diagnosis` },
+      { label: "Vascular risk", chain: "cv", tip: (p) => `−${f2(p.engCVill)} SD while present` }],
+    rows: { hip: [1], ctx: [1], wba: [1], mem: [1], spd: [1], exe: [1], mot: [0, 1], mmse: [1], cdr: [0, 1] },
+    out: [{ label: "Vascular risk", chain: "cv", from: 0, num: (p) => p.engCV, nf: (v) => "×" + f2(v), unit: "/SD", kind: "hr", tip: "risk per SD more engagement" }]
+  },
+  late: {
+    say: "LATE from 80 vs. never", sex: "sexLate",
+    with: { lOn: 80 }, without: { lOn: 999 }, off: {},
+    nodes: [{ label: "LATE stage" }],
+    drivers: [
+      { label: "Age", tip: (p) => `${p.late85}% have LATE by 85` },
+      { label: "Amyloid", chain: "ad", tip: (p) => `risk ×${f1(p.lateAD)} once amyloid positive` }],
+    rows: { hip: [0], ctx: [0], wba: [0], mem: [0], spd: [0], exe: [0], mmse: [0], cdr: [0] },
+    out: []
+  }
+};
+const dgEls = {};
+const dgCtx = document.createElement("canvas").getContext("2d");
+const dgTextW = (s, font) => { dgCtx.font = font; return dgCtx.measureText(s).width; };
+const DG_NICE = [0.1, 0.2, 0.3, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 8, 10, 15, 20, 30, 50];
+const DG_FALLBACK = { mmse: 4, cdr: 3.5, mem: 1.5, spd: 1.2, exe: 1.2, wba: 120, tiv: 120, hip: 0.95, ctx: 0.2, amy: 33, ptau: 0.75, tau: 0.45, wmh: 0.8, mot: 1.15 };
+const procById = (id) => PROCS.find((x) => x.id === id);
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+function dgBanner(pr) {
+  return `<details class="dgm" id="dg-${pr.id}"><summary><span class="chev" aria-hidden="true"></span><span class="dg-t">Causal diagram</span><span class="dg-say">${DGM[pr.id].say}</span></summary>
+      <figure class="dg-body stale-able"><div class="dg-box"></div><figcaption class="dg-cap"></figcaption><div class="tip" hidden></div></figure></details>`;
+}
+function dgWire(id, card) {
+  const det = $("#dg-" + id, card);
+  const el = dgEls[id] = { det, card, body: $(".dg-body", det), box: $(".dg-box", det), cap: $(".dg-cap", det), tip: $(".tip", det), data: null, geo: null };
+  det.addEventListener("toggle", () => { card.classList.toggle("dg-open", det.open); if (det.open) dgRender(id); else el.tip.hidden = true; dgSyncAll(); });
+  el.box.addEventListener("pointermove", (ev) => dgHover(id, ev));
+  el.box.addEventListener("pointerleave", () => { el.tip.hidden = true; const hl = $(".dg-hl", el.box); if (hl) hl.setAttribute("visibility", "hidden"); });
+  el.box.addEventListener("click", (ev) => { const g = ev.target.closest("[data-chain]"); if (g) dgJump(g.dataset.chain); });
+}
+function dgRenderOpen() { for (const id in dgEls) if (dgEls[id].det.open) { try { dgRender(id); } catch (err) { console.error("diagram", id, err); } } }
+function dgSyncAll() {
+  const b = $("#btn-dg-all"); if (!b) return;
+  const all = Object.values(dgEls).every((e) => e.det.open);
+  b.textContent = all ? "Close all diagrams" : "Open all diagrams";
+  b.setAttribute("aria-pressed", all ? "true" : "false");
+}
+function dgJump(id) {
+  const card = procEls[id]; if (!card) return;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  card.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+  card.classList.remove("flash"); void card.offsetWidth; card.classList.add("flash");
+  setTimeout(() => card.classList.remove("flash"), 1600);
+}
+
+/* spread of each phenotype among people aged 85 in this world: the common scale for every row */
+function dgPopSD() {
+  const run = state.run, ai = 85 - E.AGE0, out = {};
+  for (const v of E.VARS) {
+    const j = E.IX[v.key];
+    let a = run ? run.S.q[j].q10[ai] : NaN, b = run ? run.S.q[j].q90[ai] : NaN;
+    if (v.log) { a = Math.log(a); b = Math.log(b); }
+    const s = (b - a) / 2.5631;
+    out[v.key] = Number.isFinite(s) && s > 1e-6 ? s : DG_FALLBACK[v.key];
+  }
+  return out;
+}
+const dfmt = (m, d) => m.nf(d) + m.unit;
+const dpair = (m, a, b) => { const x = m.nf(a), y = m.nf(b); return (x === y ? x : `${x}/${y}`) + m.unit; };
+const sdTxt = (h) => (h < 0 ? "−" : "") + Math.abs(h).toFixed(2);
+/* a link into another chain, in women and in men (hazard ratios scale on the log scale) */
+const dgOutVals = (D, o, p) => { const vm = o.num(p), k = p[D.sex]; return [o.kind === "hr" ? Math.pow(vm, k) : vm * k, vm]; };
+const dgOutTxt = (D, o, p) => { const [vw, vm] = dgOutVals(D, o, p), a = o.nf(vw), b = o.nf(vm); return (a === b ? b : `${a}/${b}`) + o.unit; };
+
+function dgCompute(id) {
+  const D = DGM[id], pr = procById(id), p = state.p, on = !!p[pr.toggle];
+  const proto = (pp, ov, female) => E.prototype(pp, Object.assign({}, ov, { female }), 100);
+  const pOff = Object.assign({}, p, D.off), ovOff = Object.assign({}, D.with, D.without);
+  // the same reference person as a woman and as a man, each with the chain on and off
+  const SX = [1, 0].map((female) => {
+    const A = proto(p, D.with, female), B = on ? proto(pOff, ovOff, female) : A;
+    const Z = on && D.nodes.length > 1 ? D.nodes.map((nd) => proto(Object.assign({}, p, nd.zero), D.with, female)) : null;
+    return { A, B, Z };
+  });
+  const sd = dgPopSD(), ages = SX[0].A.age, t85 = ages.indexOf(85);
+  // the pinned life, with and without this chain (same draws otherwise)
+  let pin = null;
+  const run = state.run, t = state.pin;
+  if (on && run && t && run.p[pr.toggle]) {
+    const pOffR = Object.assign({}, run.p, { [pr.toggle]: false });
+    const u = E.trace(t.i, pOffR, E.prep(pOffR), run.S.refMean);
+    pin = { t, u, n: Math.min(t.n, u.n) };
+  }
+  const rows = DROW_ORDER.filter((key) => D.rows[key]).map((key) => {
+    const m = DROW[key], j = E.IX[key], nodes = D.rows[key], tf = m.log ? Math.log : (x) => x;
+    const per = SX.map(({ A, B, Z }) => {
+      const diff = (X) => ages.map((_, i) => tf(X.v[i][j]) - tf(B.v[i][j]));   // with − without, natural units
+      const d = diff(A), h = d.map((x) => m.up * x / sd[key]);                   // harm, in SD of people aged 85
+      let share = null;
+      if (Z && nodes.length > 1) {
+        const c = nodes.map((q) => { const dz = diff(Z[q]); return d.map((x, i) => Math.max(0, m.up * (x - dz[i]))); });
+        share = ages.map((_, i) => { let s = 0; for (const cq of c) s += cq[i]; return nodes.map((_, qi) => (s > 1e-12 ? c[qi][i] / s : 1 / nodes.length)); });
+      }
+      return { d, h, share };
+    });
+    let pd = null, ph = null;
+    if (pin) {
+      pd = []; ph = [];
+      for (let i = 0; i < pin.n; i++) { const x = tf(pin.t.tr[j * pin.t.n + i]) - tf(pin.u.tr[j * pin.u.n + i]); pd.push(x); ph.push(m.up * x / sd[key]); }
+    }
+    // each state's part of the change at 85, averaged over women and men
+    const e85 = nodes.map((_, qi) => per.reduce((acc, sx) => acc + Math.max(0, sx.h[t85]) * (sx.share ? sx.share[t85][qi] : 1), 0) / 2);
+    let peak = 0;
+    for (const sx of per) for (const x of sx.h) if (x > peak) peak = x;
+    return { key, m, nodes, per, pd, ph, e85, peak, h85: (per[0].h[t85] + per[1].h[t85]) / 2 };
+  });
+  const mx = Math.max(0, ...rows.map((r) => r.peak));
+  const M = DG_NICE.find((v) => v >= mx * 1.02) || Math.ceil(mx);
+  return { id, D, pr, on, ages, rows, M, mx, pin, t85 };
+}
+function dgClaim(X) {
+  if (!X.on) return "Switched off: this chain changes nothing in this world.";
+  const top = X.rows.filter((r) => r.h85 > 0.02 * X.M).sort((a, b) => b.h85 - a.h85).slice(0, 3);
+  return top.length ? `Largest changes at 85, women/men: ${top.map((r) => `${r.m.label} ${dpair(r.m, r.per[0].d[X.t85], r.per[1].d[X.t85])}`).join(", ")}.` : "Little change by 85.";
+}
+
+function dgRender(id) {
+  const el = dgEls[id]; if (!el || !el.det.open) return;
+  const X = el.data = dgCompute(id), D = X.D, p = state.p;
+  const W = Math.max(250, Math.floor(el.box.clientWidth || 320));
+  const FL = `11px ${FONT}`, FN = `600 11px ${FONT}`, FD = `10.5px ${FONT}`;
+  const left = D.drivers.filter((d) => !d.to), right = D.drivers.filter((d) => d.to);
+  const labW = Math.max(...X.rows.map((r) => dgTextW(r.m.label, FL)), ...D.out.map((o) => dgTextW(o.label, FL)), ...left.map((d) => dgTextW(d.label, FD)));
+  const Lw = Math.round(Math.min(104, Math.max(46, labW + 2)));
+  const nh = 22, dh = 15, top = 5, rowH = 22, gGap = 6;
+  // intermediate states step down and to the right, like a cascade
+  const nw = D.nodes.map((nd) => Math.ceil(dgTextW(nd.label, FN)) + 20);
+  const two = D.nodes.length > 1, yC = top + left.length * dh / 2;
+  const nx = [Lw + 26 + nw[0] / 2], ny = [Math.max(top + nh / 2, two ? yC - 18 : yC)];
+  let vertical = true;
+  if (two) {
+    const spV = Math.max(28, nw[1] / 2 + 8);
+    vertical = spV <= nw[0] / 2 - 4;
+    nx.push(nx[0] + (vertical ? spV : Math.max(nw[0] / 2 + 14, spV)));
+    ny.push(ny[0] + 36);
+  }
+  const qL = D.nodes.length - 1, yMod = ny[qL] + nh / 2 + 8;     // sex moderates every link: drawn across the trunks
+  const bandH = Math.ceil(Math.max(top + left.length * dh + 10, yMod + 10));
+  const S0 = Math.round(Math.max(...nx) + 18), S1 = W - 3;
+  const xa = (a) => S0 + (a - 40) / 60 * (S1 - S0);
+  const rowY = []; let y = bandH;
+  X.rows.forEach((r, i) => { if (i && DGRP[r.key] !== DGRP[X.rows[i - 1].key]) y += gGap; rowY.push(y + rowH / 2); y += rowH; });
+  const rowsEnd = y, axisY = rowsEnd + 11;
+  const outHead = axisY + 20, outY = D.out.map((_, i) => outHead + 4 + i * rowH + rowH / 2);
+  const H = Math.ceil(D.out.length ? outY[outY.length - 1] + rowH / 2 + 1 : axisY + 3);
+  el.geo = { H, rowY, outY, rowH };
+
+  const f = (v) => +v.toFixed(1), P = [];
+  const arR = (x, yy) => `<path class="dg-ah" d="M${f(x)} ${f(yy)}l-5.5 -3.2v6.4z"/>`;
+  const arL = (x, yy) => `<path class="dg-ah" d="M${f(x)} ${f(yy)}l5.5 -3.2v6.4z"/>`;
+  const arD = (x, yy) => `<path class="dg-ah" d="M${f(x)} ${f(yy)}l-3.2 -5.5h6.4z"/>`;
+  P.push(`<rect class="dg-hl" x="0" y="0" width="${W}" height="${rowH}" rx="5" visibility="hidden"/>`);
+  X.rows.forEach((r, i) => P.push(`<line class="dg-guide" x1="${f(dgTextW(r.m.label, FL) + 6)}" y1="${rowY[i]}" x2="${S0 - 6}" y2="${rowY[i]}"/>`));
+  // drivers → first state (left column); drivers of a later state sit to its right
+  left.forEach((d, i) => {
+    const yd = top + i * dh + dh / 2, x1 = Lw + 4, x2 = nx[0] - nw[0] / 2 - 1.5, y2 = ny[0];
+    P.push(`<path class="dg-edge${d.chain ? " ext" : ""}" d="M${x1} ${f(yd)}C${x1 + 14} ${f(yd)} ${f(x2 - 14)} ${f(y2)} ${f(x2)} ${f(y2)}"/>`);
+  });
+  if (left.length) P.push(arR(nx[0] - nw[0] / 2 - 1.5, ny[0]));
+  right.forEach((d) => {
+    const q = d.to, xr = nx[q] + nw[q] / 2;
+    P.push(`<path class="dg-edge${d.chain ? " ext" : ""}" d="M${f(xr + 16)} ${f(ny[q])}H${f(xr + 2)}"/>`, arL(xr + 1.5, ny[q]));
+  });
+  // each state's trunk runs down past the rows it acts on
+  const lastY = D.nodes.map((_, q) => {
+    let ly = null;
+    X.rows.forEach((r, i) => { if (r.nodes.includes(q)) ly = rowY[i]; });
+    D.out.forEach((o, i) => { if ((o.from || 0) === q) ly = outY[i]; });
+    return ly;
+  });
+  D.nodes.forEach((_, q) => {
+    if (lastY[q] === null) return;
+    const yA = ny[q] + nh / 2;
+    if (bandH > yA + 3) P.push(`<line class="dg-halo" x1="${f(nx[q])}" y1="${f(yA + 3)}" x2="${f(nx[q])}" y2="${bandH}"/>`);
+    P.push(`<line class="dg-trunk dg-s${q}" x1="${f(nx[q])}" y1="${f(yA)}" x2="${f(nx[q])}" y2="${f(lastY[q])}"/>`);
+  });
+  if (two) {
+    const yB = ny[1] - nh / 2 - 1.5;
+    if (vertical) P.push(`<path class="dg-edge" d="M${f(nx[1])} ${f(ny[0] + nh / 2)}V${f(yB)}"/>`);
+    else P.push(`<path class="dg-edge" d="M${f(nx[0] + nw[0] / 2)} ${f(ny[0])}H${f(nx[1])}V${f(yB)}"/>`);
+    P.push(arD(nx[1], yB));
+    if (D.link) P.push(`<text class="dg-link" x="${f(nx[1] + 6)}" y="${f((ny[0] + ny[1]) / 2 + 3.3)}">${esc(D.link(p))}</text>`);
+  }
+  D.nodes.forEach((nd, q) => {
+    const ext = nd.chain ? ` dg-ext" data-chain="${nd.chain}` : "";
+    P.push(`<g class="dg-node${ext}"><title>${esc(nd.label)}${nd.chain ? ": open that chain" : ""}</title><rect class="dg-s${q}" x="${f(nx[q] - nw[q] / 2)}" y="${f(ny[q] - nh / 2)}" width="${nw[q]}" height="${nh}" rx="${nh / 2}"/><text x="${f(nx[q])}" y="${f(ny[q] + 3.8)}" text-anchor="middle">${esc(nd.label)}</text></g>`);
+  });
+  left.forEach((d, i) => {
+    const yd = top + i * dh + dh / 2, ext = d.chain ? ` dg-ext" data-chain="${d.chain}` : "";
+    P.push(`<g class="dg-dg${ext}"><title>${esc(d.label)}: ${esc(d.tip(p))}${d.chain ? " (open that chain)" : ""}</title><text class="dg-drv" x="${Lw}" y="${f(yd + 3.6)}" text-anchor="end">${esc(d.label)}</text></g>`);
+  });
+  right.forEach((d) => {
+    const q = d.to, xr = nx[q] + nw[q] / 2;
+    P.push(`<g class="dg-dg"><title>${esc(d.label)}: ${esc(d.tip(p))}</title><text class="dg-drv" x="${f(xr + 19)}" y="${f(ny[q] + 3.6)}">${esc(d.label)}</text></g>`);
+  });
+  // sex moderator: one dashed line across every trunk, just below the states
+  const xS = Math.max(...nx) + 13;
+  P.push(`<g class="dg-sex"><title>Sex: in women, every link below is ×${f2(p[D.sex])} as strong as in men (hazard ratios on the log scale)${D.sex === "sexAD" ? `; tau also builds ×${f2(p.tauFem)} as fast` : ""}</title>`
+    + `<path class="dg-edge mod" d="M${f(xS - 3)} ${f(yMod)}H${f(nx[0])}"/>${D.nodes.map((_, q) => `<circle class="dg-modpt" cx="${f(nx[q])}" cy="${f(yMod)}" r="2.4"/>`).join("")}`
+    + `<text class="dg-drv" x="${f(xS)}" y="${f(yMod + 3.6)}">Sex ×${f2(p[D.sex])}</text></g>`);
+  // key: women above each row's line, men below
+  const ky = top + 9;
+  P.push(`<g aria-hidden="true"><path class="dg-keyw" d="M${f(S1 - 22)} ${ky}L${S1} ${ky - 7}V${ky}Z"/><path class="dg-keyw" d="M${f(S1 - 22)} ${ky}L${S1} ${ky + 7}V${ky}Z"/>`
+    + `<line class="dg-base" x1="${f(S1 - 24)}" y1="${ky}" x2="${S1}" y2="${ky}"/><text class="dg-keyt" x="${f(S1 - 27)}" y="${ky - 1.5}" text-anchor="end">Women</text><text class="dg-keyt" x="${f(S1 - 27)}" y="${ky + 8.5}" text-anchor="end">Men</text></g>`);
+  // phenotype rows: dots sized by each state's share at 85; women's harm above the line, men's below
+  const xs = X.ages.map((a) => f(xa(a))), hS = rowH / 2 - 1;
+  // each row is scaled to its own peak (as in cascade curves); rows far smaller than the largest stay small
+  let Mr = 1;
+  const syW = (yr, v) => f(yr - Math.max(0, Math.min(1, v / Mr)) * hS), syM = (yr, v) => f(yr + Math.max(0, Math.min(1, v / Mr)) * hS);
+  P.push(`<line class="dg-85" x1="${f(xa(85))}" y1="${bandH - 2}" x2="${f(xa(85))}" y2="${rowsEnd}"/>`);
+  X.rows.forEach((r, i) => {
+    const yr = rowY[i];
+    Mr = Math.max(r.peak, 0.25 * X.mx, 1e-9);
+    if (X.on) r.per.forEach((sx, si) => {
+      const sy = si ? syM : syW;
+      let lower = sx.h.map(() => 0);
+      r.nodes.forEach((q, qi) => {
+        const upper = lower.map((lo, t) => lo + Math.max(0, sx.h[t]) * (sx.share ? sx.share[t][qi] : 1));
+        let dp = "";
+        for (let t = 0; t < xs.length; t++) dp += (t ? "L" : "M") + xs[t] + " " + sy(yr, upper[t]);
+        for (let t = xs.length - 1; t >= 0; t--) dp += "L" + xs[t] + " " + sy(yr, lower[t]);
+        P.push(`<path class="dg-area dg-f${q}" d="${dp}Z"/>`);
+        lower = upper;
+      });
+    });
+    P.push(`<line class="dg-base" x1="${S0}" y1="${yr}" x2="${S1}" y2="${yr}"/>`);
+    if (r.ph && r.ph.length > 1) { const sy = X.pin.t.female ? syW : syM; P.push(`<path class="dg-pin" d="${r.ph.map((v, t) => (t ? "L" : "M") + f(xa(40 + t)) + " " + sy(yr, v)).join("")}"/>`); }
+    r.nodes.forEach((q, qi) => {
+      const fr = X.on ? Math.min(1, r.e85[qi] / X.M) : 0;
+      P.push(fr < 0.015 ? `<circle class="dg-dot hollow dg-s${q}" cx="${f(nx[q])}" cy="${yr}" r="2.4"/>` : `<circle class="dg-dot dg-f${q}" cx="${f(nx[q])}" cy="${yr}" r="${f(2.2 + 4.6 * Math.sqrt(fr))}"/>`);
+    });
+    P.push(`<text class="dg-lab" x="0" y="${f(yr + 3.8)}">${esc(r.m.label)}</text>`);
+  });
+  P.push(`<text class="dg-ax" x="0" y="${axisY}">scaled per row</text>`);
+  [[40, "start"], [60, "middle"], [85, "middle"], [100, "end"]].forEach(([a, an]) => P.push(`<text class="dg-ax${a === 85 ? " k" : ""}" x="${f(a === 100 ? S1 : xa(a))}" y="${axisY}" text-anchor="${an}">${a}</text>`));
+  if (D.out.length) {
+    P.push(`<text class="dg-oh" x="0" y="${outHead}">OTHER CHAINS</text>`);
+    D.out.forEach((o, i) => {
+      const yr = outY[i], q = o.from || 0, ext = o.chain ? ` dg-ext" data-chain="${o.chain}` : "";
+      P.push(`<g class="dg-out${ext}"><line class="dg-guide ext" x1="${f(dgTextW(o.label, FL) + 6)}" y1="${yr}" x2="${S0 - 6}" y2="${yr}"/>`
+        + `<circle class="dg-dot dg-f${q}" cx="${f(nx[q])}" cy="${yr}" r="2.6"/>`
+        + `<text class="dg-lab" x="0" y="${f(yr + 3.8)}">${esc(o.label)}</text><text class="dg-val" x="${S0}" y="${f(yr + 3.6)}">${esc(dgOutTxt(D, o, p))}</text></g>`);
+    });
+  }
+  const claim = dgClaim(X);
+  el.box.innerHTML = `<svg class="dg-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(X.pr.title + " causal diagram. " + claim)}">${P.join("")}</svg>`;
+  el.cap.innerHTML = `<b>${esc(claim)}</b><span class="k">Shaded: harm by age, women above the line and men below, each row scaled to its own peak. Dot size: how large each link is at 85, in SD of people aged 85.${X.pin ? ` <span class="pin">Blue: ${personId(X.pin.t)} (${X.pin.t.female ? "a woman" : "a man"}), with vs. without the chain.</span>` : ""}</span>`;
+}
+
+function dgTip(X, r) {
+  if (!X.on) return `<b>${r.m.label}</b><br><span class="t-sub">Chain switched off</span>`;
+  const t = X.t85, [w, mn] = r.per;
+  let s = `<b>${r.m.label}</b> at 85<br>Women ${dfmt(r.m, w.d[t])} · Men ${dfmt(r.m, mn.d[t])}<br><span class="t-sub">= ${sdTxt(w.h[t])} · ${sdTxt(mn.h[t])} SD among people aged 85</span>`;
+  if (r.nodes.length > 1) { const tot = r.e85.reduce((a, b) => a + b, 0); if (tot > 0) s += `<br><span class="t-sub">${r.nodes.map((q, qi) => `via ${X.D.nodes[q].label.toLowerCase()} ${Math.round(100 * r.e85[qi] / tot)}%`).join(" · ")}</span>`; }
+  if (r.pd && r.pd.length) { const i = Math.min(45, r.pd.length - 1); s += `<br><span class="t-pin">${personId(X.pin.t)} at ${40 + i}: ${dfmt(r.m, r.pd[i])}</span>`; }
+  return s;
+}
+function dgOutTip(X, o) {
+  const [vw, vm] = dgOutVals(X.D, o, state.p), from = X.D.nodes[o.from || 0].label;
+  return `<b>${from} → ${o.label}</b><br>Women ${o.nf(vw)}${o.unit} · Men ${o.nf(vm)}${o.unit}<br><span class="t-sub">${o.tip}</span>${o.chain ? `<br><span class="t-sub">Click to open ${procById(o.chain).title}</span>` : ""}`;
+}
+function dgHover(id, ev) {
+  const el = dgEls[id], X = el.data, g = el.geo, svg = $("svg", el.box);
+  if (!X || !g || !svg) return;
+  const r = svg.getBoundingClientRect(), py = (ev.clientY - r.top) * (g.H / Math.max(1, r.height));
+  let html = null, hy = 0;
+  const ri = g.rowY.findIndex((yy) => Math.abs(py - yy) <= g.rowH / 2);
+  if (ri >= 0) { html = dgTip(X, X.rows[ri]); hy = g.rowY[ri]; }
+  else { const oi = g.outY.findIndex((yy) => Math.abs(py - yy) <= g.rowH / 2); if (oi >= 0) { html = dgOutTip(X, X.D.out[oi]); hy = g.outY[oi]; } }
+  const hl = $(".dg-hl", svg);
+  if (html === null) { el.tip.hidden = true; hl.setAttribute("visibility", "hidden"); return; }
+  hl.setAttribute("y", hy - g.rowH / 2); hl.setAttribute("visibility", "visible");
+  el.tip.innerHTML = html; el.tip.hidden = false;
+  const fr = el.body.getBoundingClientRect(), tw = el.tip.offsetWidth, th = el.tip.offsetHeight;
+  let lx = ev.clientX - fr.left + 14, ty = ev.clientY - fr.top - th - 10;
+  if (lx + tw > fr.width) lx = ev.clientX - fr.left - tw - 14;
+  if (ty < 0) ty = ev.clientY - fr.top + 16;
+  el.tip.style.left = Math.max(0, lx) + "px"; el.tip.style.top = ty + "px";
+}
+
+/* ---------------- mini charts ---------------- */
+function lgLine(color, label) { return `<span><i class="lg-line" style="border-color:${color}"></i>${label}</span>`; }
+function lgSq(color, label) { return `<span><i class="lg-sq" style="background:${color}"></i>${label}</span>`; }
+
+/* a spec: { panels: [{ x:[], series:[{name,color,y:[]}], yDomain, yTicks, yFmt, xTicks, title, bars, vline }] } */
+function drawSpec(cv, spec, hoverX) {
+  const { ctx, W, H } = prepCanvas(cv);
+  const np = spec.panels.length, gap = 22;
+  const geoms = [];
+  spec.panels.forEach((pn, pi) => {
+    const pw0 = (W - gap * (np - 1)) / np, ox = pi * (pw0 + gap);
+    const m = { l: pn.yw || 28, r: 11, t: pn.title ? 15 : 5, b: 16 };
+    const pw = pw0 - m.l - m.r, ph = H - m.t - m.b;
+    ctx.font = `10px ${FONT}`; ctx.lineWidth = 1;
+    if (pn.title) { ctx.fillStyle = C["ink-2"]; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic"; ctx.fillText(pn.title, ox + m.l, 9); }
+    const [y0, y1] = pn.yDomain;
+    const Y = (v) => m.t + (1 - (v - y0) / (y1 - y0)) * ph;
+    for (const v of pn.yTicks) {
+      const y = Math.round(Y(v)) + 0.5;
+      ctx.strokeStyle = C.grid; ctx.beginPath(); ctx.moveTo(ox + m.l, y); ctx.lineTo(ox + m.l + pw, y); ctx.stroke();
+      ctx.fillStyle = C.muted; ctx.textAlign = "right"; ctx.textBaseline = "middle"; ctx.fillText(pn.yFmt(v), ox + m.l - 4, y);
+    }
+    if (pn.bars) {
+      const nb = pn.bars.values.length, bw = pw / nb;
+      const X = (i) => ox + m.l + i * bw;
+      pn.bars.values.forEach((v, i) => {
+        const x = X(i) + 1, w = Math.max(1, bw - 2), y = Y(Math.max(y0, Math.min(y1, v)));
+        ctx.fillStyle = pn.bars.colors[i];
+        const h = Y(y0) - y;
+        if (h > 0) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, [Math.min(3, w / 2), Math.min(3, w / 2), 0, 0]); else ctx.rect(x, y, w, h); ctx.fill(); }
+      });
+      ctx.fillStyle = C.muted; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+      pn.bars.labels.forEach((lb, i) => { if (lb) ctx.fillText(lb, X(i) + bw / 2, H - 4); });
+      if (pn.vline) {
+        const xv = ox + m.l + (pn.vline.x - pn.bars.x0) / (pn.bars.x1 - pn.bars.x0) * pw;
+        ctx.strokeStyle = C.ink; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(xv, m.t); ctx.lineTo(xv, m.t + ph); ctx.stroke();
+      }
+      geoms.push({ kind: "bars", ox, m, pw, ph, nb, bw, pn });
+      if (hoverX && hoverX.pi === pi) {
+        const i = hoverX.i; ctx.fillStyle = C.band; ctx.fillRect(X(i), m.t, bw, ph);
+      }
+    } else {
+      const [x0, x1] = pn.xDomain;
+      const X = (a) => ox + m.l + (a - x0) / (x1 - x0) * pw;
+      ctx.fillStyle = C.muted; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+      for (const a of pn.xTicks) ctx.fillText(String(a), X(a), H - 4);
+      ctx.save(); ctx.beginPath(); ctx.rect(ox + m.l, m.t - 2, pw, ph + 4); ctx.clip();
+      if (pn.band) { ctx.fillStyle = C.band; ctx.fillRect(X(pn.band[0]), m.t, X(pn.band[1]) - X(pn.band[0]), ph); }
+      if (pn.area) {
+        ctx.fillStyle = C.spread; ctx.beginPath(); let st = false; const back = [];
+        for (let i = 0; i < pn.x.length; i++) { const a = pn.area.lo[i], b = pn.area.hi[i]; if (!Number.isFinite(a) || !Number.isFinite(b)) continue; const x = X(pn.x[i]); if (st) ctx.lineTo(x, Y(b)); else { ctx.moveTo(x, Y(b)); st = true; } back.push([x, Y(a)]); }
+        for (let i = back.length - 1; i >= 0; i--) ctx.lineTo(back[i][0], back[i][1]);
+        ctx.closePath(); ctx.fill();
+      }
+      ctx.lineJoin = "round";
+      for (const s of pn.series) {
+        ctx.strokeStyle = s.color; ctx.lineWidth = s.w || 2; ctx.setLineDash(s.dash || []);
+        ctx.beginPath(); let st = false;
+        for (let i = 0; i < pn.x.length; i++) { const v = s.y[i]; if (!Number.isFinite(v)) { st = false; continue; } const x = X(pn.x[i]), y = Y(v); if (st) ctx.lineTo(x, y); else { ctx.moveTo(x, y); st = true; } }
+        ctx.stroke(); ctx.setLineDash([]);
+      }
+      if (hoverX && hoverX.pi === pi) {
+        const xi = hoverX.i, xv = X(pn.x[xi]);
+        ctx.strokeStyle = C.muted; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(xv, m.t); ctx.lineTo(xv, m.t + ph); ctx.stroke();
+        for (const s of pn.series) { const v = s.y[xi]; if (!Number.isFinite(v)) continue; ctx.fillStyle = C.surface; ctx.beginPath(); ctx.arc(xv, Y(v), 4.2, 0, 6.2832); ctx.fill(); ctx.fillStyle = s.color; ctx.beginPath(); ctx.arc(xv, Y(v), 2.8, 0, 6.2832); ctx.fill(); }
+      }
+      ctx.restore();
+      geoms.push({ kind: "lines", ox, m, pw, ph, X, x0, x1, pn });
+    }
+  });
+  return geoms;
+}
+
+const miniSpecs = {};
+function ageSeries(arrFn, lo = 40, hi = 100, minN = 150) {
+  const agg = state.run.agg, x = [], y = [];
+  for (let a = lo; a <= hi; a++) { const ai = a - E.AGE0; x.push(a); y.push(agg.alive[ai] >= minN ? arrFn(ai) : NaN); }
+  return { x, y };
+}
+const pctTicks = { yDomain: [0, 100], yTicks: [0, 50, 100], yFmt: (v) => v + "%", yw: 32, xDomain: [40, 100], xTicks: [40, 60, 80, 100] };
+const SPECS = {
+  pyramid() {
+    const agg = state.run.agg, labels = [], values = [], colors = [];
+    const p = state.run.p, a0 = Math.max(40, Math.floor((E.STUDY_YEAR - p.birthMax) / 5) * 5), a1 = Math.min(105, E.STUDY_YEAR - p.birthMin);
+    const names = [];
+    for (let a = a0; a <= a1; a += 5) {
+      let n = 0; for (let k = a; k < a + 5 && k - E.AGE0 < E.NA; k++) n += agg.alive26[k - E.AGE0];
+      labels.push(a % 10 === 0 && (a1 - a0 <= 60 || a % 20 === 0) ? String(a) : ""); values.push(n / 1000); colors.push(a === 80 || a === 85 ? C.accent : C.context);
+      names.push(`Ages ${a}–${a + 4}`);
+    }
+    const mx = Math.max(1, ...values), t = niceTicks(0, mx, 2);
+    return { legend: lgSq(C.context, "Alive in 2026, by age") + lgSq(C.accent, "Ages 80–89"), unit: "k",
+      panels: [{ bars: { labels, values, colors, names, fmt: (v) => fmtInt(v * 1000) + " alive in 2026" }, yDomain: [0, Math.max(mx, t[t.length - 1])], yTicks: t, yFmt: (v) => v + "k" }] };
+  },
+  geno() {
+    const agg = state.run.agg, N = state.run.agg.N;
+    const dose = [0, 0, 1, 0, 1, 2], ramp = [C["ramp-0"], C["ramp-1"], C["ramp-2"]];
+    const values = Array.from(agg.geno, (g) => 100 * g / N);
+    const mx = Math.max(...values), t = niceTicks(0, mx, 2);
+    return { legend: lgSq(ramp[0], "No ε4") + lgSq(ramp[1], "One ε4") + lgSq(ramp[2], "Two ε4"),
+      panels: [{ bars: { labels: E.GENO, values, colors: dose.map((d) => ramp[d]), names: E.GENO, fmt: (v) => v.toFixed(1) + "% of lives" }, yDomain: [0, Math.max(mx * 1.05, t[t.length - 1])], yTicks: t, yFmt: (v) => v + "%", yw: 30 }] };
+  },
+  amyloid() {
+    const agg = state.run.agg, ramp = [C["ramp-0"], C["ramp-1"], C["ramp-2"]];
+    const ser = [0, 1, 2].map((d) => { const s = ageSeries((ai) => 100 * agg.aPosD[d * E.NA + ai] / Math.max(1, agg.aliveD[d * E.NA + ai]), 40, 100, 40); return { name: ["No ε4", "One ε4", "Two ε4"][d], color: ramp[d], y: s.y, x: s.x }; });
+    return { legend: lgLine(ramp[0], "No ε4") + lgLine(ramp[1], "One ε4") + lgLine(ramp[2], "Two ε4") + `<span>amyloid+ among the living</span>`,
+      panels: [Object.assign({ x: ser[0].x, series: ser }, pctTicks)] };
+  },
+  mets() {
+    const agg = state.run.agg;
+    const ser = [[0, "Lowest-third SES", C.accent], [2, "Highest-third SES", C["pair-b"]]].map(([g, name, color]) => { const s = ageSeries((ai) => 100 * agg.msS[g * E.NA + ai] / Math.max(1, agg.aliveS[g * E.NA + ai])); return { name, color, y: s.y, x: s.x }; });
+    const les = ageSeries((ai) => 100 * agg.wles[ai] / Math.max(1, agg.alive[ai]));
+    ser.push({ name: "WMH lesions growing, everyone", color: C.ink, w: 1.5, dash: [3, 2], y: les.y, x: les.x });
+    return { legend: lgLine(C.accent, "Low SES") + lgLine(C["pair-b"], "High SES") + `<span>with vascular risk</span>`
+      + `<span><i class="lg-line" style="border-color:${C.ink};border-top-style:dashed"></i>WMH lesions growing</span>`, panels: [Object.assign({ x: ser[0].x, series: ser }, pctTicks)] };
+  },
+  tivcorr() {
+    const c = state.run.S.ctiv, x = [], wb = [], hip = [];
+    c.age.forEach((a, i) => { if (a <= 100 && (a < E.AGE0 || state.run.agg.alive[a - E.AGE0] >= 150)) { x.push(a); wb.push(c.wb[i]); hip.push(c.hip[i]); } });
+    const lo = Math.max(0, Math.floor((Math.min(...hip.filter(Number.isFinite), ...wb.filter(Number.isFinite)) - 0.05) * 10) / 10);
+    return { legend: lgLine(C.accent, "Whole brain") + lgLine(C["pair-b"], "Hippocampus") + `<span>correlation with TIV</span>`,
+      panels: [{ x, series: [{ name: "Hippocampus", color: C["pair-b"], y: hip }, { name: "Whole brain", color: C.accent, y: wb }], xDomain: [20, 100], xTicks: [20, 40, 60, 80, 100],
+        yDomain: [lo, 1.02], yTicks: niceTicks(lo, 1, 3), yFmt: (v) => v.toFixed(1), yw: 26, tipFmt: (v) => "r " + v.toFixed(2), band: [80, 90] }] };
+  },
+  late() {
+    const agg = state.run.agg, s = ageSeries((ai) => 100 * agg.late[ai] / agg.alive[ai]), d = ageSeries((ai) => 100 * agg.tPos[ai] / agg.alive[ai]);
+    return { legend: lgLine(C.accent, "LATE") + lgLine(C["pair-b"], "Tau+ (for comparison)"), panels: [Object.assign({ x: s.x, series: [{ name: "Tau+", color: C["pair-b"], y: d.y, w: 1.5, dash: [3, 3] }, { name: "LATE", color: C.accent, y: s.y }] }, pctTicks)] };
+  },
+  dementia() {
+    const agg = state.run.agg, s = ageSeries((ai) => 100 * agg.dem[ai] / agg.alive[ai]);
+    const mx = Math.max(10, ...s.y.filter(Number.isFinite)), top = mx > 60 ? 100 : mx > 30 ? 60 : 30;
+    return { legend: lgLine(C.dementia, "Living with dementia, by age"), panels: [Object.assign({}, pctTicks, { x: s.x, series: [{ name: "Dementia", color: C.dementia, y: s.y }], yDomain: [0, top], yTicks: [0, top / 2, top], band: [80, 90] })] };
+  },
+  survival() {
+    const agg = state.run.agg, x = [], f = [], m = [];
+    for (let a = 40; a <= 105; a++) { const ai = a - E.AGE0; x.push(a); f.push(100 * agg.aliveF[ai] / Math.max(1, agg.entF)); m.push(100 * agg.aliveM[ai] / Math.max(1, agg.entM)); }
+    return { legend: lgLine(C.accent, "Women") + lgLine(C["pair-b"], "Men") + `<span>alive, of those at 40</span>`,
+      panels: [Object.assign({}, pctTicks, { x, xDomain: [40, 105], series: [{ name: "Women", color: C.accent, y: f }, { name: "Men", color: C["pair-b"], y: m }] })] };
+  },
+  superagers() {
+    const S = state.run.S, cs = state.run.agg.cs, lo = -4, hi = 2.5, bw = 0.25, nb = Math.round((hi - lo) / bw);
+    const counts = new Array(nb).fill(0);
+    for (let i = 0; i < cs.mem.length; i++) { if (cs.dem[i]) continue; let b = Math.floor((cs.mem[i] - lo) / bw); b = Math.max(0, Math.min(nb - 1, b)); counts[b]++; }
+    const values = counts.map((c) => c), colors = counts.map((_, i) => (lo + (i + 0.5) * bw >= S.refMean ? C.super : C.context));
+    const labels = counts.map((_, i) => { const v = lo + i * bw; return Math.abs(v - Math.round(v)) < 1e-9 && Math.round(v) % 2 === 0 ? tickLabel(v, 1) : ""; });
+    const mx = Math.max(...values), t = niceTicks(0, mx, 2);
+    return { legend: lgSq(C.super, `True SuperAgers: ${pct(S.sup8089)}`) + lgLine(C.ink, "Mean, ages 50–65"),
+      panels: [{ bars: { labels, values, colors, x0: lo, x1: hi, names: counts.map((_, i) => `memory ${tickLabel(lo + i * bw, 0.1)} to ${tickLabel(lo + (i + 1) * bw, 0.1)} SD`), fmt: (v) => fmtInt(v) + " people" }, vline: { x: S.refMean }, yDomain: [0, Math.max(mx, t[t.length - 1])], yTicks: t, yFmt: (v) => fmtInt(v), yw: 34 }] };
+  },
+  aging() {
+    const p = state.p, mk = (M) => E.prototype(p, { M }, 100);
+    const ms = [-1, 0, 1].map(mk), cols = [C["ord-0"], C["ord-1"], C["ord-2"]];
+    const x = ms[1].age;
+    const hip = ms.map((o, i) => ({ name: ["Fast agers (−1 SD)", "Average", "Slow agers (+1 SD)"][i], color: [C["ord-1"], C.ink, C.accent][i], w: i === 1 ? 2 : 1.6, dash: i === 0 ? [3, 2] : [], y: o.v.map((v) => 100 * v[E.IX.hip] / o.v[0][E.IX.hip]) }));
+    const mem = ms.map((o, i) => ({ name: hip[i].name, color: hip[i].color, w: hip[i].w, dash: hip[i].dash, y: o.v.map((v) => v[E.IX.mem]) }));
+    const ymin = Math.min(...mem[0].y), lo = Math.floor(Math.min(-1, ymin) * 2) / 2;
+    return { legend: lgLine(C["ord-1"], "Maintenance −1 SD") + lgLine(C.ink, "Average") + lgLine(C.accent, "+1 SD") + `<span>no disease</span>`,
+      panels: [
+        { title: "Hippocampus, %", tipFmt: (v) => v.toFixed(1) + "% of age 40", x, series: hip, xDomain: [40, 100], xTicks: [40, 70, 100], yDomain: [50, 100], yTicks: [50, 75, 100], yFmt: (v) => v + "%", yw: 30 },
+        { title: "Memory, SD", tipFmt: (v) => fmtSigned(v) + " SD", x, series: mem, xDomain: [40, 100], xTicks: [40, 70, 100], yDomain: [lo, 0.5], yTicks: niceTicks(lo, 0, 2), yFmt: (v) => tickLabel(v, 1), yw: 24 }] };
+  },
+  reserve() {
+    const p = state.p, k = E.prep(p);
+    const mk = (c) => E.prototype(p, { aOn: p.ad ? 72 : 999, crz: p.reserve ? c : 0, lvl: p.reserve ? c * Math.sqrt(k.aC * k.aC + k.sC * k.sC + 2 * k.aC * k.sC * p.rSesAbility) : 0 }, 100);
+    const rs = [-1, 0, 1].map(mk), x = rs[1].age;
+    const series = rs.map((o, i) => ({ name: ["Low reserve (−1 SD)", "Average", "High reserve (+1 SD)"][i], color: [C["ord-1"], C.ink, C.accent][i], w: i === 1 ? 2 : 1.6, dash: i === 0 ? [3, 2] : [], y: o.v.map((v) => v[E.IX.mem]) }));
+    const ymin = Math.min(...series[0].y.filter(Number.isFinite)), lo = Math.max(-8, Math.floor(ymin));
+    return { legend: lgLine(C["ord-1"], "Reserve −1 SD") + lgLine(C.ink, "Average") + lgLine(C.accent, "+1 SD") + `<span>${p.ad ? "memory, amyloid+ at 72" : "memory"}</span>`,
+      panels: [{ x, series, tipFmt: (v) => fmtSigned(v) + " SD", xDomain: [40, 100], xTicks: [40, 60, 80, 100], yDomain: [lo, 1], yTicks: niceTicks(lo, 1, 3), yFmt: (v) => tickLabel(v, 1), yw: 24, band: [80, 90] }] };
+  },
+  sleep() { return levelSpec(state.run.S.sleep, "Mean sleep disruption", C.accent); },
+  engage() { return levelSpec(state.run.S.eng, "Mean engagement", C.accent); }
+};
+/* a process level by age: mean and mean ± 1.28 SD among the living */
+function levelSpec(L, name, color) {
+  const agg = state.run.agg, x = [], m = [], lo = [], hi = [];
+  for (let a = 40; a <= 100; a++) {
+    const ai = a - E.AGE0, ok = agg.alive[ai] >= 150;
+    x.push(a); m.push(ok ? L.m[ai] : NaN); lo.push(ok ? L.m[ai] - 1.2816 * L.sd[ai] : NaN); hi.push(ok ? L.m[ai] + 1.2816 * L.sd[ai] : NaN);
+  }
+  const fin = (arr) => arr.filter(Number.isFinite);
+  let d0 = Math.min(...fin(lo)), d1 = Math.max(...fin(hi));
+  if (!(d1 > d0)) { d0 = -1; d1 = 1; }
+  const t = niceTicks(d0, d1, 3), step = t.length > 1 ? t[1] - t[0] : 1;
+  return { legend: lgLine(color, name) + `<span>shaded: middle 80%, SD units</span>`,
+    panels: [{ x, series: [{ name, color, y: m }], area: { lo, hi }, xDomain: [40, 100], xTicks: [40, 60, 80, 100], yDomain: [Math.min(d0, t[0]), Math.max(d1, t[t.length - 1])], yTicks: t, yFmt: (v) => tickLabel(v, step), yw: 26, tipFmt: (v) => sg(v) + " SD" }] };
+}
+const ANALYTIC = new Set(["aging", "reserve"]);
+function drawMiniFor(b, hoverX) {
+  const be = boxEls[b.id]; if (!be) return;
+  if (!ANALYTIC.has(b.chart) && !state.run) return;
+  if (be.cv.closest("details:not([open])")) return;   // a closed banner: drawn when it opens
+  let spec = miniSpecs[b.id];
+  if (!spec || !hoverX) { spec = SPECS[b.chart](); miniSpecs[b.id] = spec; be.legend.innerHTML = spec.legend; }
+  be.geom = drawSpec(be.cv, spec, hoverX);
+}
+function drawAnalytic(b) { if (ANALYTIC.has(b.chart)) drawMiniFor(b); }
+function drawAllMinis() { for (const b of MINIS) drawMiniFor(b); }
+function onMiniMove(b, ev) {
+  const be = boxEls[b.id], spec = miniSpecs[b.id]; if (!spec || !be.geom) return;
+  const r = be.cv.getBoundingClientRect(), px = ev.clientX - r.left, py = ev.clientY - r.top;
+  let hit = null;
+  be.geom.forEach((g, pi) => {
+    if (px < g.ox + g.m.l - 4 || px > g.ox + g.m.l + g.pw + 4) return;
+    if (g.kind === "bars") { const i = Math.max(0, Math.min(g.nb - 1, Math.floor((px - g.ox - g.m.l) / g.bw))); hit = { pi, i }; }
+    else { const a = g.x0 + (px - g.ox - g.m.l) / g.pw * (g.x1 - g.x0); let bi = 0, bd = Infinity; g.pn.x.forEach((xv, i) => { const d = Math.abs(xv - a); if (d < bd) { bd = d; bi = i; } }); hit = { pi, i: bi }; }
+  });
+  if (!hit) { be.tip.hidden = true; drawMiniFor(b); return; }
+  drawMiniFor(b, hit);
+  const pn = spec.panels[hit.pi];
+  let html;
+  if (pn.bars) html = `<b>${pn.bars.names[hit.i]}</b><br>${pn.bars.fmt(pn.bars.values[hit.i])}`;
+  else html = `<b>Age ${pn.x[hit.i]}</b>` + pn.series.slice().reverse().map((s) => Number.isFinite(s.y[hit.i]) ? `<br><span class="t-sub">${s.name}</span> ${pn.tipFmt ? pn.tipFmt(s.y[hit.i]) : pn.yFmt === pctTicks.yFmt ? s.y[hit.i].toFixed(1) + "%" : fmtSigned(s.y[hit.i])}` : "").join("");
+  be.tip.innerHTML = html; be.tip.hidden = false;
+  const mini = be.cv.parentElement, tw = be.tip.offsetWidth, th = be.tip.offsetHeight;
+  let left = px + be.cv.offsetLeft + 12, top = py + be.cv.offsetTop - th - 8;
+  if (left + tw > mini.clientWidth) left = px + be.cv.offsetLeft - tw - 12;
+  if (top < 0) top = py + be.cv.offsetTop + 14;
+  be.tip.style.left = Math.max(0, left) + "px"; be.tip.style.top = top + "px";
+}
+function fmtSigned(v) { return (v < 0 ? "−" : "") + Math.abs(v).toFixed(2); }
+
+/* ---------------- simulation ---------------- */
+let simTimer = 0;
+function scheduleSim(delay = 380) {
+  clearTimeout(simTimer);
+  setBusy(true, 0, "Waiting to simulate…");
+  simTimer = setTimeout(simulate, delay);
+}
+function setBusy(on, frac, text) {
+  state.busy = on;
+  const st = $("#status"); st.classList.toggle("busy", on);
+  $("#panel-world").classList.toggle("is-stale", on && !!state.run);
+  $("#status-bar").style.width = on ? Math.round(100 * frac) + "%" : "100%";
+  if (text) $("#status-text").textContent = text;
+}
+function simulate() {
+  const token = ++state.token;
+  const p = Object.assign({}, state.p);
+  if (p.birthMax < p.birthMin) p.birthMax = p.birthMin;
+  const k = E.prep(p), agg = E.newAgg(p);
+  const t0 = performance.now(), CH = 5000;
+  let i = 0;
+  setBusy(true, 0, `Simulating ${fmtInt(p.N)} lives…`);
+  const step = () => {
+    if (token !== state.token) return;
+    const to = Math.min(p.N, i + CH);
+    E.runChunk(agg, k, i, to); i = to;
+    setBusy(true, i / p.N, `Simulating… ${Math.round(100 * i / p.N)}%`);
+    if (i < p.N) { setTimeout(step, 0); return; }
+    const S = E.finish(agg);
+    state.run = { p, k, agg, S };
+    state.lastMs = performance.now() - t0;
+    drawSample();
+    renderKpis(); renderStubs();
+    drawAllMinis();
+    setBusy(false, 1, `${fmtInt(p.N)} lives`);
+    $("#status-sub").textContent = `World ${p.seed} · ${(state.lastMs / 1000).toFixed(1)} s`;
+    window.__plxReady = true;
+  };
+  setTimeout(step, 0);
+}
+function drawSample() {
+  const run = state.run; if (!run) return;
+  const N = run.p.N, n = Math.max(1, Math.round(N * state.frac));
+  // choose n distinct lives with a seeded shuffle
+  const idx = new Int32Array(N); for (let i = 0; i < N; i++) idx[i] = i;
+  let s = (state.sampleSeed * 2654435761) >>> 0;
+  const rnd = () => { s = (s + 0x6d2b79f5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  for (let i = 0; i < n; i++) { const j = i + Math.floor(rnd() * (N - i)); const tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp; }
+  const pinI = state.pin ? state.pin.i : -1;
+  state.sample = Array.from(idx.subarray(0, n), (i) => E.trace(i, run.p, run.k, run.S.refMean));
+  state.hover = null;
+  state.pin = pinI >= 0 && pinI < N ? E.trace(pinI, run.p, run.k, run.S.refMean) : null;
+  $("#pop-count").textContent = `${fmtInt(n)} of ${fmtInt(N)} lives`;
+  explainPin();
+  renderLegend(); drawAllPlots(); renderPerson(); updateProcs();
+}
+
+/* ---------------- stages ---------------- */
+function buildSteps() {
+  const nav = $("#steps");
+  nav.innerHTML = STAGES.map((s, i) => `${i ? '<span class="flow" aria-hidden="true"></span>' : ""}<button class="step" role="tab" type="button" id="tab-${s.id}" aria-controls="panel-${s.id}" aria-selected="${s.id === state.panel}" tabindex="${s.id === state.panel ? 0 : -1}" data-panel="${s.id}">${ICONS[s.id]}<span class="step-name">${s.title}</span></button>`).join("");
+  nav.addEventListener("click", (e) => { const b = e.target.closest(".step"); if (b) showPanel(b.dataset.panel, true); });
+  nav.addEventListener("keydown", (e) => {
+    const i = STAGES.findIndex((s) => s.id === state.panel);
+    const dir = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+    if (dir) { e.preventDefault(); const nx = STAGES[(i + dir + STAGES.length) % STAGES.length].id; showPanel(nx, true); $("#tab-" + nx).focus(); }
+  });
+  $("#stubs").innerHTML = STAGES.slice(1).map((s) => `<section class="panel" id="panel-${s.id}" role="tabpanel" aria-labelledby="tab-${s.id}" hidden>
+    <header class="panel-head"><div><h1>${s.title}</h1></div></header>
+    <div class="stub">${ICONS[s.id]}<div><p>${s.text}</p><p class="pool" data-pool="${s.id}"></p><p class="next">Built next</p></div></div></section>`).join("");
+}
+function renderStubs() {
+  if (!state.run) return;
+  const S = state.run.S;
+  const nDem = Math.round(S.dem8089 * S.n8089);
+  const lines = {
+    enroll: `The world holds <b>${fmtInt(S.n8089)}</b> people aged 80–89 in 2026; <b>${fmtInt(nDem)}</b> of them live with dementia.`,
+    select: `In truth, <b>${pct(S.sup8089)}</b> of the dementia-free 80–89-year-olds remember as well as the average 50–65-year-old.`,
+    measure: "", follow: "", analysis: ""
+  };
+  document.querySelectorAll("[data-pool]").forEach((el) => { el.innerHTML = lines[el.dataset.pool] || ""; el.hidden = !lines[el.dataset.pool]; });
+}
+function showPanel(id, user) {
+  state.panel = id;
+  for (const s of STAGES) {
+    const on = s.id === id, tab = $("#tab-" + s.id);
+    tab.setAttribute("aria-selected", on); tab.tabIndex = on ? 0 : -1;
+    $("#panel-" + s.id).hidden = !on;
+  }
+  if (id === "world") requestAnimationFrame(() => { drawAllPlots(); drawAllMinis(); });
+}
+
+/* ---------------- wiring ---------------- */
+function init() {
+  readColors();
+  DL.framed = !!(window.claude && typeof window.claude.use === "function");
+  if (DL.framed) window.claude.use("downloads").then((ns) => { DL.ns = ns; DL.ready = true; renderPerson(); }, () => { DL.ready = true; renderPerson(); });
+  else DL.ready = true;
+  buildSteps();
+  buildPlots();
+  buildBoxes();
+  buildProcs();
+  const hl = $("#sel-hl");
+  hl.innerHTML = Object.entries(HIGHLIGHT).map(([k, h]) => `<option value="${k}"${k === state.hl ? " selected" : ""}>${h.label}</option>`).join("");
+  hl.addEventListener("change", () => { state.hl = hl.value; renderLegend(); drawAllPlots(); });
+  $("#sel-frac").addEventListener("change", (e) => { state.frac = +e.target.value; drawSample(); });
+  $("#btn-resample").addEventListener("click", () => { state.sampleSeed++; state.pin = null; drawSample(); });
+  $("#btn-dg-all").addEventListener("click", () => { const open = !Object.values(dgEls).every((e) => e.det.open); for (const e of Object.values(dgEls)) e.det.open = open; });
+  const po = $("#po");
+  po.addEventListener("toggle", () => { if (po.open) requestAnimationFrame(() => { for (const b of BOXES) if (b.chart) drawMiniFor(b); }); else for (const b of BOXES) if (boxEls[b.id]) boxEls[b.id].tip.hidden = true; });
+  $("#btn-new").addEventListener("click", () => { state.p.seed = 1 + Math.floor(Math.random() * 9999); state.pin = null; scheduleSim(0); });
+  $("#btn-reset").addEventListener("click", () => {
+    const seed = state.p.seed; state.p = Object.assign({}, E.DEFAULTS, { seed });
+    for (const b of BOXES) {
+      for (const pr of (b.params || [])) { const el = $("#p-" + pr.k); if (el) el.value = state.p[pr.k]; syncParam(pr); }
+      if (b.toggle) { $("#tg-" + b.id).checked = state.p[b.toggle]; boxEls[b.id].el.classList.toggle("off", !state.p[b.toggle]); }
+    }
+    for (const b of MINIS) drawAnalytic(b);
+    updateProcs();
+    scheduleSim(0);
+  });
+  let start = "world";
+  const h = (location.hash || "").slice(1);
+  if (STAGES.some((s) => s.id === h)) start = h;
+  showPanel(start, false);
+  for (const b of MINIS) drawAnalytic(b);
+  updateProcs();
+  const rerender = () => { readColors(); drawAllPlots(); drawAllMinis(); };
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  if (mq.addEventListener) mq.addEventListener("change", rerender);
+  new MutationObserver(rerender).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  let rz = 0;
+  const ro = new ResizeObserver(() => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => { if (state.panel === "world") { drawAllPlots(); drawAllMinis(); dgRenderOpen(); } }); });
+  ro.observe($("#main"));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (state.run) { drawAllPlots(); drawAllMinis(); } dgRenderOpen(); });
+  scheduleSim(30);
+}
+init();
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulator Versions</title>
+<style>
+:root { --bg: #fcfbf8; --surface: #ffffff; --ink: #1c1c1e; --ink-2: #55534f; --muted: #85827b; --line: #e3e1da; --band: #f4f3ee; --accent: #b4521f; color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #131312; --surface: #1a1a18; --ink: #f1f0eb; --ink-2: #c4c2ba; --muted: #8f8c85; --line: #34322e; --band: #1f1f1c; --accent: #e2733d; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #131312; --surface: #1a1a18; --ink: #f1f0eb; --ink-2: #c4c2ba; --muted: #8f8c85; --line: #34322e; --band: #1f1f1c; --accent: #e2733d; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1240px; margin: 0 auto; padding: 28px 16px 56px; }
+h1 { font-size: 24px; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.01em; }
+p { margin: 0 0 10px; max-width: 86ch; color: var(--ink-2); }
+.legend { margin: 14px 0 22px; padding: 12px 16px 12px 32px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; max-width: 100ch; color: var(--ink-2); }
+.legend li { margin: 3px 0; } .legend b { color: var(--ink); font-weight: 600; }
+table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+th { text-align: left; font-weight: 600; font-size: 12px; color: var(--muted); padding: 9px 10px; border-bottom: 1px solid var(--line); background: var(--band); }
+td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+tr.maj td { background: color-mix(in srgb, var(--accent) 5%, var(--surface)); }
+td.v a { font-weight: 600; color: var(--accent); text-decoration: none; white-space: nowrap; }
+td.d, td.f { font: 12px ui-monospace, Menlo, Consolas, monospace; color: var(--ink-2); white-space: nowrap; }
+td.f a { color: var(--ink-2); }
+td.n { white-space: nowrap; color: var(--ink-2); }
+td.w b { font-weight: 600; } td.w .more { color: var(--ink-2); }
+td.w .note { display: block; margin-top: 3px; font-size: 12.5px; color: var(--muted); }
+td.s { font-size: 12.5px; color: var(--ink-2); white-space: nowrap; cursor: help; }
+@media (max-width: 860px) {
+  table, tbody, tr, td { display: block; width: 100%; } thead { display: none; }
+  table { border: 0; background: none; }
+  tr { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin: 0 0 10px; padding: 8px 12px; display: grid; grid-template-columns: auto auto 1fr; gap: 2px 10px; align-items: baseline; }
+  tr.maj { background: color-mix(in srgb, var(--accent) 5%, var(--surface)); } tr.maj td { background: none; }
+  td { border: 0; padding: 2px 0; } td.w, td.s, td.f { grid-column: 1 / -1; } td.f { white-space: normal; overflow-wrap: anywhere; } td.s { white-space: normal; }
+}
+</style></head><body><main>
+<h1>Simulator versions 1 to 103</h1>
+<p>Each file is the simulator as it was published at that version, named as it was then: Parallax for versions 1 to 77, LifeBrain Simulator for 78 to 86 and AgingBrain Simulator for 87 to 103. Each name ends in the version's date from the version list. Where a version was published more than once, the file is its last publish. Every file opens on its own in a browser. Of historical note, the name Parallax was used initially because the simulator allowed a user to view the same simulated lives from many different vantage points.</p>
+<p>What changed is each version of the simulator with major versions shaded. How each copy was obtained is also listed:</p>
+<ul class="legend"><li><b>Service copy</b> (2): The page exactly as the artifact service constructed it.</li><li><b>Rebuilt, matches service copy</b> (2): Rebuilt from the sources saved at the time; identical to the page the artifact constructed.</li><li><b>Saved build</b> (16): The built page saved when it was published.</li><li><b>Rebuilt, matches a copy</b> (12): Rebuilt from the sources saved at the time; the page matches a copy saved that day.</li><li><b>Rebuilt from sources</b> (63): Rebuilt from the page source, engine and wordmark saved at the time it was published.</li><li><b>Rebuilt from edits</b> (6): No source was saved at this version, so the recorded edits were replayed on the previous saved source; carrying the replay on through the next publish reproduces the next saved source exactly.</li><li><b>Rebuilt from edits, matches a copy</b> (1): Rebuilt by replaying the recorded edits; the page matches a copy saved that day.</li><li><b>Rebuilt from the next version</b> (1): No copy of its last publish was saved, so it was rebuilt from the next version's first publish by undoing that version's own changes, line for line, back to the previous version; with its new setting off it simulates the previous version's world exactly.</li></ul>
+<table><thead><tr><th>Version</th><th>Date</th><th>Name</th><th>What changed</th><th>Source</th><th>File</th></tr></thead><tbody>
+<tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v01_261005.html">v1</a></td><td class="d">261005</td><td class="n">Parallax</td>
+<td class="w"><b>World stage, the first version</b> <span class="more">Six stages in a left rail and a working World page: headline numbers, a sample of 120,000 simulated lives, and settings boxes that drive each life's yearly brain, cognition and pathology.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v01_261005.html">Parallax_Simulator_v01_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v02_261005.html">v2</a></td><td class="d">261005.2</td><td class="n">Parallax</td>
+<td class="w">‘What sets …’ banners under each plot, with each measure's chain term by term</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v02_261005.html">Parallax_Simulator_v02_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v03_261005.html">v3</a></td><td class="d">261005.3</td><td class="n">Parallax</td>
+<td class="w">SuperAgers' lives drawn green; dementia shown from diagnosis</td>
+<td class="s" title="No source was saved at this version, so the recorded edits were replayed on the previous saved source; carrying the replay on through the next publish reproduces the next saved source exactly.">Rebuilt from edits</td><td class="f"><a href="Parallax_Simulator_v03_261005.html">Parallax_Simulator_v03_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v04_261005.html">v4</a></td><td class="d">261005.4</td><td class="n">Parallax</td>
+<td class="w">Dementia drawn in deep red throughout</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v04_261005.html">Parallax_Simulator_v04_261005.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v05_261005.html">v5</a></td><td class="d">261005.5</td><td class="n">Parallax</td>
+<td class="w"><b>Expressed phenotypes and six causal chains</b> <span class="more">Six plots, each chosen among 14 phenotypes, and a card for each chain (aging, cardiovascular, AD cascade, sleep, engagement, LATE) with its drivers, course with age and settable links.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v05_261005.html">Parallax_Simulator_v05_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v06_261005.html">v6</a></td><td class="d">261005.6</td><td class="n">Parallax</td>
+<td class="w">A causal diagram for each chain, with its harm by age with and without it</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v06_261005.html">Parallax_Simulator_v06_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v07_261005.html">v7</a></td><td class="d">261005.7</td><td class="n">Parallax</td>
+<td class="w">A sex moderator for each chain; diagrams show women and men</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v07_261005.html">Parallax_Simulator_v07_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v08_261005.html">v8</a></td><td class="d">261005.8</td><td class="n">Parallax</td>
+<td class="w">Each chain's ‘Driven by’ settings folded into a banner</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v08_261005.html">Parallax_Simulator_v08_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v09_261005.html">v9</a></td><td class="d">261005.9</td><td class="n">Parallax</td>
+<td class="w">The chains' other sections folded into banners</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v09_261005.html">Parallax_Simulator_v09_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v10_261005.html">v10</a></td><td class="d">261005.10</td><td class="n">Parallax</td>
+<td class="w">Head size (TIV) added as a phenotype; hippocampal volume no longer corrected for it</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v10_261005.html">Parallax_Simulator_v10_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v11_261005.html">v11</a></td><td class="d">261005.11</td><td class="n">Parallax</td>
+<td class="w">Brain volumes start in proportion to head size at 20</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v11_261005.html">Parallax_Simulator_v11_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v12_261005.html">v12</a></td><td class="d">261005.12</td><td class="n">Parallax</td>
+<td class="w">Person IDs, a panel for the selected person, and a life-course download</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v12_261005.html">Parallax_Simulator_v12_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v13_261005.html">v13</a></td><td class="d">261005.13</td><td class="n">Parallax</td>
+<td class="w">Hippocampus steady until a person's own knee; whole brain linear from 20</td>
+<td class="s" title="No source was saved at this version, so the recorded edits were replayed on the previous saved source; carrying the replay on through the next publish reproduces the next saved source exactly.">Rebuilt from edits</td><td class="f"><a href="Parallax_Simulator_v13_261005.html">Parallax_Simulator_v13_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v14_261005.html">v14</a></td><td class="d">261005.14</td><td class="n">Parallax</td>
+<td class="w">MMSE in whole points and CDR-SB in half points</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v14_261005.html">Parallax_Simulator_v14_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v15_261005.html">v15</a></td><td class="d">261005.15</td><td class="n">Parallax</td>
+<td class="w">Head-size norms from Buckner et al. 2004; hippocampus a share of whole brain</td>
+<td class="s" title="Rebuilt by replaying the recorded edits; the page matches a copy saved that day.">Rebuilt from edits, matches a copy</td><td class="f"><a href="Parallax_Simulator_v15_261005.html">Parallax_Simulator_v15_261005.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v16_261006.html">v16</a></td><td class="d">261006</td><td class="n">Parallax</td>
+<td class="w">People and outcomes moved into a banner above the phenotype plots</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v16_261006.html">Parallax_Simulator_v16_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v17_261006.html">v17</a></td><td class="d">261006.2</td><td class="n">Parallax</td>
+<td class="w">pTau217 tracks amyloid only, not tau<span class="note">Published from another session; the next version merged it.</span></td>
+<td class="s" title="The page exactly as the artifact service holds it.">Service copy</td><td class="f"><a href="Parallax_Simulator_v17_261006.html">Parallax_Simulator_v17_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v18_261006.html">v18</a></td><td class="d">261006.3</td><td class="n">Parallax</td>
+<td class="w">Starting levels laid out as a wide last card</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v18_261006.html">Parallax_Simulator_v18_261006.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v19_261006.html">v19</a></td><td class="d">261006.4</td><td class="n">Parallax</td>
+<td class="w"><b>White matter lesions start, then grow</b> <span class="more">Most people never start lesions: the risk of starting rises with age and is far higher with vascular risk, and once begun, lesions grow at each person's own rate.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v19_261006.html">Parallax_Simulator_v19_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v20_261006.html">v20</a></td><td class="d">261006.5</td><td class="n">Parallax</td>
+<td class="w">CDR-SB rates dementia itself; MMSE near 24 at diagnosis; lesions' toll on cognition reduced</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v20_261006.html">Parallax_Simulator_v20_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v21_261006.html">v21</a></td><td class="d">261006.6</td><td class="n">Parallax</td>
+<td class="w">Life numbers replace person IDs everywhere</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v21_261006.html">Parallax_Simulator_v21_261006.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v22_261006.html">v22</a></td><td class="d">261006.7</td><td class="n">Parallax</td>
+<td class="w"><b>Life in detail</b> <span class="more">An expandable view of the selected life: its baseline states, and every phenotype on one age axis with the life's transitions marked.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v22_261006.html">Parallax_Simulator_v22_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v23_261006.html">v23</a></td><td class="d">261006.8</td><td class="n">Parallax</td>
+<td class="w">Life in detail on one scale: each phenotype's change from its level at 40</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v23_261006.html">Parallax_Simulator_v23_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v24_261006.html">v24</a></td><td class="d">261006.9</td><td class="n">Parallax</td>
+<td class="w">Life-in-detail legend ordered pathology, brain, cognition, clinical</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v24_261006.html">Parallax_Simulator_v24_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v25_261006.html">v25</a></td><td class="d">261006.10</td><td class="n">Parallax</td>
+<td class="w">Life-in-detail banner restyled</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v25_261006.html">Parallax_Simulator_v25_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v26_261006.html">v26</a></td><td class="d">261006.11</td><td class="n">Parallax</td>
+<td class="w">Default plots: head size, whole brain, hippocampus, WMH, memory, CDR-SB</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v26_261006.html">Parallax_Simulator_v26_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v27_261006.html">v27</a></td><td class="d">261006.12</td><td class="n">Parallax</td>
+<td class="w">Banners renamed ‘People and outcomes in detail’ and ‘Life of … in detail’</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v27_261006.html">Parallax_Simulator_v27_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v28_261006.html">v28</a></td><td class="d">261006.13</td><td class="n">Parallax</td>
+<td class="w">Text edits from the author's Word file applied</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v28_261006.html">Parallax_Simulator_v28_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v29_261006.html">v29</a></td><td class="d">261006.14</td><td class="n">Parallax</td>
+<td class="w">SuperAgers counted among the living aged 85 and over</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v29_261006.html">Parallax_Simulator_v29_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v30_261006.html">v30</a></td><td class="d">261006.15</td><td class="n">Parallax</td>
+<td class="w">SuperAgers defined at 85 everywhere; dementia-at-85 bars added</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v30_261006.html">Parallax_Simulator_v30_261006.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v31_261006.html">v31</a></td><td class="d">261006.16</td><td class="n">Parallax</td>
+<td class="w"><b>The properties of this simulated world</b> <span class="more">Pathology, dementia and survival by age, what makes people differ in memory, How the model works with its equations filled in, and 11 reality checks against published figures.</span></td>
+<td class="s" title="No source was saved at this version, so the recorded edits were replayed on the previous saved source; carrying the replay on through the next publish reproduces the next saved source exactly.">Rebuilt from edits</td><td class="f"><a href="Parallax_Simulator_v31_261006.html">Parallax_Simulator_v31_261006.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v32_261006.html">v32</a></td><td class="d">261006.17</td><td class="n">Parallax</td>
+<td class="w"><b>Calibrated to the reality checks</b> <span class="more">Starting settings retuned so all 11 checks fall in range, up from 5; head size tied to childhood ability.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v32_261006.html">Parallax_Simulator_v32_261006.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v33_261006.html">v33</a></td><td class="d">261006.18</td><td class="n">Parallax</td>
+<td class="w"><b>Enrollment and Selection stages</b> <span class="more">Who comes forward to enroll, then eight ways to select a sample (random, nondemented, age peers, SuperAger, maintainer, resilience, resistance, escape), each with its ages, size and share of women.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v33_261006.html">Parallax_Simulator_v33_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v34_261006.html">v34</a></td><td class="d">261006.19</td><td class="n">Parallax</td>
+<td class="w">An icon for each selection strategy</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v34_261006.html">Parallax_Simulator_v34_261006.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v35_261006.html">v35</a></td><td class="d">261006.20</td><td class="n">Parallax</td>
+<td class="w"><b>Analysis stage</b> <span class="more">The sample by age or one variable against another, with adjusted fits, a table of estimates, and the same fit in everyone alive at those ages for comparison.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v35_261006.html">Parallax_Simulator_v35_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v36_261006.html">v36</a></td><td class="d">261006.21</td><td class="n">Parallax</td>
+<td class="w">Analysis can adjust for head size</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v36_261006.html">Parallax_Simulator_v36_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v37_261006.html">v37</a></td><td class="d">261006.22</td><td class="n">Parallax</td>
+<td class="w">Nondemented selection can exclude biomarker-positive people</td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="Parallax_Simulator_v37_261006.html">Parallax_Simulator_v37_261006.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v38_261006.html">v38</a></td><td class="d">261006.23</td><td class="n">Parallax</td>
+<td class="w">A longitudinal view, color by group, and a click-through to each participant's life</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v38_261006.html">Parallax_Simulator_v38_261006.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v39_261007.html">v39</a></td><td class="d">261007</td><td class="n">Parallax</td>
+<td class="w"><b>Every life from 18</b> <span class="more">Lives are simulated from 18 to death (up to 110) rather than from 40, and the phenotype plots get an age range.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v39_261007.html">Parallax_Simulator_v39_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v40_261007.html">v40</a></td><td class="d">261007.2</td><td class="n">Parallax</td>
+<td class="w">Latest birth year 2008 by default, so every adult age is alive in 2026</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v40_261007.html">Parallax_Simulator_v40_261007.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v41_261007.html">v41</a></td><td class="d">261007.3</td><td class="n">Parallax</td>
+<td class="w"><b>Follow-up stage</b> <span class="more">The longitudinal view becomes its own stage, with trajectories, change, visits and survival; Analysis adds two age groups compared side by side.</span></td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="Parallax_Simulator_v41_261007.html">Parallax_Simulator_v41_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v42_261007.html">v42</a></td><td class="d">261007.4</td><td class="n">Parallax</td>
+<td class="w">Visits from monthly to every 2 years; follow-up from 1 year</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v42_261007.html">Parallax_Simulator_v42_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v43_261007.html">v43</a></td><td class="d">261007.5</td><td class="n">Parallax</td>
+<td class="w">WMH moved to the brain column of Life in detail</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v43_261007.html">Parallax_Simulator_v43_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v44_261007.html">v44</a></td><td class="d">261007.6</td><td class="n">Parallax</td>
+<td class="w">Adjusted values plotted on Analysis and Follow-up</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v44_261007.html">Parallax_Simulator_v44_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v45_261007.html">v45</a></td><td class="d">261007.7</td><td class="n">Parallax</td>
+<td class="w">APOE ε4 as a covariate and a split</td>
+<td class="s" title="No source was saved at this version, so the recorded edits were replayed on the previous saved source; carrying the replay on through the next publish reproduces the next saved source exactly.">Rebuilt from edits</td><td class="f"><a href="Parallax_Simulator_v45_261007.html">Parallax_Simulator_v45_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v46_261007.html">v46</a></td><td class="d">261007.8</td><td class="n">Parallax</td>
+<td class="w">Distinct colors for ε4 carriers</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v46_261007.html">Parallax_Simulator_v46_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v47_261007.html">v47</a></td><td class="d">261007.9</td><td class="n">Parallax</td>
+<td class="w">New sample button on Analysis and Follow-up</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v47_261007.html">Parallax_Simulator_v47_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v48_261007.html">v48</a></td><td class="d">261007.10</td><td class="n">Parallax</td>
+<td class="w">Multi-hue color gradients; ε4 dose colors</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v48_261007.html">Parallax_Simulator_v48_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v49_261007.html">v49</a></td><td class="d">261007.11</td><td class="n">Parallax</td>
+<td class="w">Random selection defaults to every age alive</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v49_261007.html">Parallax_Simulator_v49_261007.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v50_261007.html">v50</a></td><td class="d">261007.12</td><td class="n">Parallax</td>
+<td class="w"><b>Cohort effects</b> <span class="more">Exposure curves by calendar year, 1926–2026 (economic depression, war, smoking, pandemic, folic acid, screen time), set by dragging; not yet linked to how lives unfold.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v50_261007.html">Parallax_Simulator_v50_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v51_261007.html">v51</a></td><td class="d">261007.13</td><td class="n">Parallax</td>
+<td class="w">Hippocampal loss speeds up past the knee; slight cognitive loss from 20</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v51_261007.html">Parallax_Simulator_v51_261007.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v52_261007.html">v52</a></td><td class="d">261007.14</td><td class="n">Parallax</td>
+<td class="w"><b>Measurement process stage</b> <span class="more">For each variable, the error of one measurement (scaling with age, CDR-SB and sex) and its validity, with toggles on Analysis and Follow-up to show values as measured.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v52_261007.html">Parallax_Simulator_v52_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v53_261007.html">v53</a></td><td class="d">261007.15</td><td class="n">Parallax</td>
+<td class="w">MDC95 added to Measurement process</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v53_261007.html">Parallax_Simulator_v53_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v54_261007.html">v54</a></td><td class="d">261007.16</td><td class="n">Parallax</td>
+<td class="w">Definitions banner under How the model works</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v54_261007.html">Parallax_Simulator_v54_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v55_261007.html">v55</a></td><td class="d">261007.17</td><td class="n">Parallax</td>
+<td class="w">Causal chains in a closed banner with aligned cards</td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="Parallax_Simulator_v55_261007.html">Parallax_Simulator_v55_261007.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v56_261008.html">v56</a></td><td class="d">261008</td><td class="n">Parallax</td>
+<td class="w">Baseline determinants and Causal chains moved above the headline numbers</td>
+<td class="s" title="No source was saved at this version, so the recorded edits were replayed on the previous saved source; carrying the replay on through the next publish reproduces the next saved source exactly.">Rebuilt from edits</td><td class="f"><a href="Parallax_Simulator_v56_261008.html">Parallax_Simulator_v56_261008.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v57_261008.html">v57</a></td><td class="d">261008.2</td><td class="n">Parallax</td>
+<td class="w">Causal chains banner reworded</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v57_261008.html">Parallax_Simulator_v57_261008.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v58_261008.html">v58</a></td><td class="d">261008.3</td><td class="n">Parallax</td>
+<td class="w">The average person over a lifetime, without dementia and with it from 80</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v58_261008.html">Parallax_Simulator_v58_261008.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v59_261008.html">v59</a></td><td class="d">261008.4</td><td class="n">Parallax</td>
+<td class="w"><b>Intervention stage</b> <span class="more">A trial randomized at enrollment that slows aging or the AD cascade, treats vascular risk, improves sleep or raises engagement, its estimate set against the true effect.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v59_261008.html">Parallax_Simulator_v59_261008.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v60_261008.html">v60</a></td><td class="d">261008.5</td><td class="n">Parallax</td>
+<td class="w">Selection adds A4 (amyloid-positive, unimpaired), MCI and dementia strategies</td>
+<td class="s" title="No source was saved at this version, so the recorded edits were replayed on the previous saved source; carrying the replay on through the next publish reproduces the next saved source exactly.">Rebuilt from edits</td><td class="f"><a href="Parallax_Simulator_v60_261008.html">Parallax_Simulator_v60_261008.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v61_261008.html">v61</a></td><td class="d">261008.6</td><td class="n">Parallax</td>
+<td class="w"><b>Save and Load</b> <span class="more">Every setting at every level saved to a file and restored later, simulating again as needed; Analysis gets a strategy chooser and Selection a tau-positive strategy.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v61_261008.html">Parallax_Simulator_v61_261008.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v62_261008.html">v62</a></td><td class="d">261008.7</td><td class="n">Parallax</td>
+<td class="w">Named settings files; slimmer rail; strategy chooser on Follow-up and Intervention</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v62_261008.html">Parallax_Simulator_v62_261008.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v63_261008.html">v63</a></td><td class="d">261008.8</td><td class="n">Parallax</td>
+<td class="w"><b>Imagine stage and developer guide</b> <span class="more">A stage for building new stages with an AI agent: Download this page, example prompts, and the developer guide inside the file.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v63_261008.html">Parallax_Simulator_v63_261008.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v64_261008.html">v64</a></td><td class="d">261008.9</td><td class="n">Parallax</td>
+<td class="w">Starting settings matched to the author's saved file</td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="Parallax_Simulator_v64_261008.html">Parallax_Simulator_v64_261008.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v65_261009.html">v65</a></td><td class="d">261009</td><td class="n">Parallax</td>
+<td class="w"><b>AD cascade retimed</b> <span class="more">Timed to the biomarker cascade: amyloid PET about 10 years before tau PET, pTau217 between them, and cognition following the tau accumulated.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v65_261009.html">Parallax_Simulator_v65_261009.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v66_261009.html">v66</a></td><td class="d">261009.2</td><td class="n">Parallax</td>
+<td class="w">AD atrophy starts 3 years after tau positivity, cognitive decline 2.5 years later</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v66_261009.html">Parallax_Simulator_v66_261009.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v67_261009.html">v67</a></td><td class="d">261009.3</td><td class="n">Parallax</td>
+<td class="w"><b>Episodic and semantic memory</b> <span class="more">Memory becomes episodic memory, and semantic memory joins as a phenotype that gains a little each year and falls only in moderate AD dementia.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v67_261009.html">Parallax_Simulator_v67_261009.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v68_261009.html">v68</a></td><td class="d">261009.4</td><td class="n">Parallax</td>
+<td class="w"><b>Practice effects</b> <span class="more">For each measure, the gain at the first retest, its ceiling and how fast it fades, applied at Follow-up and Intervention visits.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v68_261009.html">Parallax_Simulator_v68_261009.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v69_261009.html">v69</a></td><td class="d">261009.5</td><td class="n">Parallax</td>
+<td class="w">Practice-effect panel widened</td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="Parallax_Simulator_v69_261009.html">Parallax_Simulator_v69_261009.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v70_261009.html">v70</a></td><td class="d">261009.6</td><td class="n">Parallax</td>
+<td class="w">World plots reordered; semantic memory's AD decline gentler</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v70_261009.html">Parallax_Simulator_v70_261009.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v71_261009.html">v71</a></td><td class="d">261009.7</td><td class="n">Parallax</td>
+<td class="w">Maintainers and dementia by 80 added to the highlights</td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="Parallax_Simulator_v71_261009.html">Parallax_Simulator_v71_261009.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v72_261009.html">v72</a></td><td class="d">261009.8</td><td class="n">Parallax</td>
+<td class="w">Measurement error and practice effects as toggles on each analysis page</td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="Parallax_Simulator_v72_261009.html">Parallax_Simulator_v72_261009.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v73_261010.html">v73</a></td><td class="d">261010</td><td class="n">Parallax</td>
+<td class="w"><b>Aggregate effects of causal chains</b> <span class="more">Chains switched on and off and scaled together with a dial from 0 to 200%, drawn on one reference life for the chosen phenotypes.</span></td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="Parallax_Simulator_v73_261010.html">Parallax_Simulator_v73_261010.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v74_261010.html">v74</a></td><td class="d">261010.2</td><td class="n">Parallax</td>
+<td class="w"><b>Behavioral floor and small linear aging</b> <span class="more">Behavioral measures level off at their extremes, and normal cognitive aging becomes a slow linear loss from 25, with a late rise.</span></td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="Parallax_Simulator_v74_261010.html">Parallax_Simulator_v74_261010.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v75_261010.html">v75</a></td><td class="d">261010.3</td><td class="n">Parallax</td>
+<td class="w"><b>Resilience falls with age</b> <span class="more">From 78, the toll of AD, LATE and white matter lesions on cognition doubles every 5 years, replacing aging's late rise, so the oldest old reach the dementia seen in populations.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v75_261010.html">Parallax_Simulator_v75_261010.html</a></td></tr><tr class="maj">
+<td class="v"><a href="Parallax_Simulator_v76_261010.html">v76</a></td><td class="d">261010.4</td><td class="n">Parallax</td>
+<td class="w"><b>Insights and puzzles</b> <span class="more">A dated record of what the decisions needed to make the model work have taught, with rules in the developer guide for adding to it.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v76_261010.html">Parallax_Simulator_v76_261010.html</a></td></tr><tr class="">
+<td class="v"><a href="Parallax_Simulator_v77_261010.html">v77</a></td><td class="d">261010.5</td><td class="n">Parallax</td>
+<td class="w">Banner subtitles reworded</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="Parallax_Simulator_v77_261010.html">Parallax_Simulator_v77_261010.html</a></td></tr><tr class="">
+<td class="v"><a href="LifeBrain_Simulator_v78_261010.html">v78</a></td><td class="d">261010.6</td><td class="n">LifeBrain Simulator</td>
+<td class="w">New wordmark and tagline</td>
+<td class="s" title="Rebuilt from the sources saved at the time; identical to the page the artifact service holds.">Rebuilt, matches service copy</td><td class="f"><a href="LifeBrain_Simulator_v78_261010.html">LifeBrain_Simulator_v78_261010.html</a></td></tr><tr class="">
+<td class="v"><a href="LifeBrain_Simulator_v79_261010.html">v79</a></td><td class="d">261010.7</td><td class="n">LifeBrain Simulator</td>
+<td class="w">Wordmark color moved to the o of Simulator<span class="note">Also published for a moment at a separate link; same page.</span></td>
+<td class="s" title="Rebuilt from the sources saved at the time; identical to the page the artifact service holds.">Rebuilt, matches service copy</td><td class="f"><a href="LifeBrain_Simulator_v79_261010.html">LifeBrain_Simulator_v79_261010.html</a></td></tr><tr class="">
+<td class="v"><a href="LifeBrain_Simulator_v80_261010.html">v80</a></td><td class="d">261010.8</td><td class="n">LifeBrain Simulator</td>
+<td class="w">Fixes from a review; developer-guide section on changing the model</td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="LifeBrain_Simulator_v80_261010.html">LifeBrain_Simulator_v80_261010.html</a></td></tr><tr class="">
+<td class="v"><a href="LifeBrain_Simulator_v81_261011.html">v81</a></td><td class="d">261011</td><td class="n">LifeBrain Simulator</td>
+<td class="w">Era of AI cohort row; Insights and puzzles pruned</td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="LifeBrain_Simulator_v81_261011.html">LifeBrain_Simulator_v81_261011.html</a></td></tr><tr class="maj">
+<td class="v"><a href="LifeBrain_Simulator_v82_261012.html">v82</a></td><td class="d">261012</td><td class="n">LifeBrain Simulator</td>
+<td class="w"><b>Version history</b> <span class="more">This record of every version, with its date, what changed and who made it, and a developer-guide section on keeping it.</span><span class="note">Published twice; this is the second.</span></td>
+<td class="s" title="Rebuilt from the sources saved at the time; the page matches a copy saved that day.">Rebuilt, matches a copy</td><td class="f"><a href="LifeBrain_Simulator_v82_261012.html">LifeBrain_Simulator_v82_261012.html</a></td></tr><tr class="maj">
+<td class="v"><a href="LifeBrain_Simulator_v83_261013.html">v83</a></td><td class="d">261013</td><td class="n">LifeBrain Simulator</td>
+<td class="w"><b>Late onset of normal memory aging</b> <span class="more">Episodic memory and executive function now begin their normal decline at 60 (0.03 SD a year), speed keeps its decline from 25, and the cohort gain rises to 0.15 SD a decade, matching practice-adjusted longitudinal data; all 11 reality checks stay in range.</span><span class="note">Published from another session.</span></td>
+<td class="s" title="The page exactly as the artifact service holds it.">Service copy</td><td class="f"><a href="LifeBrain_Simulator_v83_261013.html">LifeBrain_Simulator_v83_261013.html</a></td></tr><tr class="">
+<td class="v"><a href="LifeBrain_Simulator_v84_261013.html">v84</a></td><td class="d">261013.2</td><td class="n">LifeBrain Simulator</td>
+<td class="w">Cohort curves for women and men; smoking by sex; new Education row</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="LifeBrain_Simulator_v84_261013.html">LifeBrain_Simulator_v84_261013.html</a></td></tr><tr class="maj">
+<td class="v"><a href="LifeBrain_Simulator_v85_261013.html">v85</a></td><td class="d">261013.3</td><td class="n">LifeBrain Simulator</td>
+<td class="w"><b>Schooling, and definitions of exceptional aging</b> <span class="more">Each person now has an eventual level of schooling, set by birth year, sex, SES and ability; each year adds 0.07 SD to cognition at 40, carrying part of the cohort gain. SuperAgers and maintainers are defined in one place, and a new maintainer check (Josefsson et al. 2012) falls below its range.</span></td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="LifeBrain_Simulator_v85_261013.html">LifeBrain_Simulator_v85_261013.html</a></td></tr><tr class="">
+<td class="v"><a href="LifeBrain_Simulator_v86_261013.html">v86</a></td><td class="d">261013.4</td><td class="n">LifeBrain Simulator</td>
+<td class="w">Maintainer check compared with Betula's complete cases, as simulated</td>
+<td class="s" title="Rebuilt from the page source, engine and wordmark saved at the time it was published.">Rebuilt from sources</td><td class="f"><a href="LifeBrain_Simulator_v86_261013.html">LifeBrain_Simulator_v86_261013.html</a></td></tr><tr class="maj">
+<td class="v"><a href="AgingBrain_Simulator_v87_261014.html">v87</a></td><td class="d">261014</td><td class="n">AgingBrain Simulator</td>
+<td class="w"><b>Study year, rare variants, clinical stages, dropout</b> <span class="more">The year a study runs is a setting; rare autosomal dominant variants can be switched on; CDR global and MCI stage every life and serve Selection; Measurement process adds missed visits and dropout; white matter's background growth joins aging; a hippocampus–memory check (Gorbach et al. 2020) is added.</span></td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v87_261014.html">AgingBrain_Simulator_v87_261014.html</a></td></tr><tr class="maj">
+<td class="v"><a href="AgingBrain_Simulator_v88_261014.html">v88</a></td><td class="d">261014.2</td><td class="n">AgingBrain Simulator</td>
+<td class="w"><b>Own cognitive drift, dementia's stages and course</b> <span class="more">Each person's cognition drifts on its own from 40, more each year until 60, unrelated to the brain, pathology or any trait. The risk of death with dementia rises with its stage, as in the Odense study, and dementia's course slows toward population rates: aging's late rise returns in place of the fall in resilience, so the oldest reach dementia from a lower level rather than through pathology striking harder, and CDR-SB climbs in a straight line. Maintainers now appear in true values, a new insight compares dementia's stages and survival with Odense, and the World's plots start with no highlight.</span><span class="note">Published four times; this is the last. A version 89 published that morning was folded into it.</span></td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v88_261014.html">AgingBrain_Simulator_v88_261014.html</a></td></tr><tr class="">
+<td class="v"><a href="AgingBrain_Simulator_v89_261015.html">v89</a></td><td class="d">261015</td><td class="n">AgingBrain Simulator</td>
+<td class="w">SuperAger check by the Northwestern rule and maintainer check by Josefsson's own rule; published values and citations corrected against the sources; settings calibrated to the papers, with amyloid anchored to the Mayo Clinic Study of Aging and the AD cascade retimed; each check now counts the people its source studied, and aging's late rise is 70% of what it was<span class="note">Published five times on 15 Oct; this is the last.</span></td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v89_261015.html">AgingBrain_Simulator_v89_261015.html</a></td></tr><tr class="maj">
+<td class="v"><a href="AgingBrain_Simulator_v90_261015.html">v90</a></td><td class="d">261015.2</td><td class="n">AgingBrain Simulator</td>
+<td class="w"><b>Terminal decline</b> <span class="more">A seventh causal chain: a terminal phase, tied to each person's own risk of death, that lasts about 3 years and ends in death while every cognitive domain falls fast, as decline speeds up before death in the Rush cohorts (Boyle et al. 2013); about 30% of deaths follow one. It takes over part of the decline near death, so aging's late rise falls to 40% of version 88's: pathology-free people in their 90s lose less memory, fewer of the pathology-free oldest die with dementia, and decline before death speeds up and varies more between people. A new insight, Where is terminal decline?, sets out the problem and this fix.</span><span class="note">Includes the 16 Oct text fixes and the 17 Oct change that keeps Imagine after a new stage; neither was given a version. Changed twice more on 17 Oct, also without a new version: Imagine’s Download this page became Download this version of the html application, on the button and in the guide. This file is from before that; version 91 has it.</span></td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v90_261015.html">AgingBrain_Simulator_v90_261015.html</a></td></tr><tr class="maj">
+<td class="v"><a href="AgingBrain_Simulator_v91_261020.html">v91</a></td><td class="d">261020</td><td class="n">AgingBrain Simulator</td>
+<td class="w"><b>Recruitment, and tau later after amyloid</b> <span class="more">Enrollment recruits as a population study, a memory clinic (referrals follow memory decline beyond what is usual for one's age) or research volunteers (better-off, healthier and concerned people come forward more), so a study can sample as clinic and research cohorts do. Tau PET now turns positive 16 years after amyloid (14 before), bringing the share of amyloid-positive people who are tau-positive to the Mayo Clinic Study of Aging's and the rate at which unimpaired amyloid-positive people turn tau-positive near A4's; the reality checks stand as before.</span></td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v91_261020.html">AgingBrain_Simulator_v91_261020.html</a></td></tr><tr class="">
+<td class="v"><a href="AgingBrain_Simulator_v92_261020.html">v92</a></td><td class="d">261020.2</td><td class="n">AgingBrain Simulator</td>
+<td class="w">Polygenic risk calibrated: amyloid onset ×1.25 per SD of a polygenic score without APOE (×1.3, uncited, since the first version), matching the share of amyloid PET variance a standard AD score carries in the Mayo Clinic Study of Aging and within EMIF-AD's odds ratio per SD; the reality checks stand as before</td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v92_261020.html">AgingBrain_Simulator_v92_261020.html</a></td></tr><tr class="">
+<td class="v"><a href="AgingBrain_Simulator_v93_261021.html">v93</a></td><td class="d">261021</td><td class="n">AgingBrain Simulator</td>
+<td class="w">Removed the redundant maintenance term in Baseline determinants, so maintenance appears only in the Aging cascade, with its own switch there; it is now drawn on its own rather than shared with resistance and resilience, which moves the world by a few tenths of a point and leaves the reality checks as they were</td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v93_261021.html">AgingBrain_Simulator_v93_261021.html</a></td></tr><tr class="">
+<td class="v"><a href="AgingBrain_Simulator_v94_261021.html">v94</a></td><td class="d">261021.2</td><td class="n">AgingBrain Simulator</td>
+<td class="w">Raw whole-brain volume check removed</td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v94_261021.html">AgingBrain_Simulator_v94_261021.html</a></td></tr><tr class="">
+<td class="v"><a href="AgingBrain_Simulator_v95_261021.html">v95</a></td><td class="d">261021.3</td><td class="n">AgingBrain Simulator</td>
+<td class="w">Three example prompts added in Imagine: Fjell anchors, Alternative worlds and Diagnosis by decline</td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v95_261021.html">AgingBrain_Simulator_v95_261021.html</a></td></tr><tr class="maj">
+<td class="v"><a href="AgingBrain_Simulator_v96_261022.html">v96</a></td><td class="d">261022</td><td class="n">AgingBrain Simulator</td>
+<td class="w"><b>How an added stage was built</b> <span class="more">A stage added through Imagine now carries a banner under its name: the version it was built from, the date, its new name (that version and a tag, as v97_MA) and every prompt and revision, word for word, with the files attached. The guide makes this the default.</span></td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v96_261022.html">AgingBrain_Simulator_v96_261022.html</a></td></tr><tr class="">
+<td class="v"><a href="AgingBrain_Simulator_v97_261023.html">v97</a></td><td class="d">261023</td><td class="n">AgingBrain Simulator</td>
+<td class="w">Head size untied from childhood ability in v93 (0.35 → 0), which led to the raw whole-brain check's removal in v94<span class="note">Its other changes corrected text in Insights, the reality-check notes and code comments; the simulated world is that of version 96.</span></td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v97_261023.html">AgingBrain_Simulator_v97_261023.html</a></td></tr><tr class="">
+<td class="v"><a href="AgingBrain_Simulator_v98_261023.html">v98</a></td><td class="d">261023.2</td><td class="n">AgingBrain Simulator</td>
+<td class="w">pTau217 measured with 15% error (ALZpath scale); hippocampal check at Fraser's young ages, with faster pre-knee loss</td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v98_261023.html">AgingBrain_Simulator_v98_261023.html</a></td></tr><tr class="maj">
+<td class="v"><a href="AgingBrain_Simulator_v99_261023.html">v99</a></td><td class="d">261023.3</td><td class="n">AgingBrain Simulator</td>
+<td class="w"><b>Five fixes from an outside check</b> <span class="more">An outside check of version 96 against 64 recent biomarker papers found mismatches, and the five that could be fixed without moving the reality checks are in. APOE ε4 raises amyloid onset risk ×3.76 with one allele and ×8.93 with two (Castellano et al. 2025; ×2.8 per allele, so ×7.8 with two, before). Amyloid keeps rising past 110 CL, to 125 CL 20 years after positivity (Gantenberg et al. 2026; Bollack et al. 2024), with its early rise as before. Age-related tau (PART) rises at each person's own rate, so 2.2% of unimpaired amyloid-negative people aged 70–90 are tau-positive (2.1% in Ossenkoppele et al. 2025; none before). Plasma pTau217's rise with amyloid levels off, so it is 1.6-fold at 20–29 CL (1.2-fold before; Yang et al. 2026) and slows in amyloid-positive people as plaques fill in. AD's hippocampal atrophy is 1.4 times as fast, so the hippocampus at the onset of AD dementia is 1.35 mL below that of unimpaired A−T− people of the same age and sex (1.35 in ADNI, Zhang et al. 2026; 1.15 before). Twelve of the 13 checks pass, as before.</span></td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v99_261023.html">AgingBrain_Simulator_v99_261023.html</a></td></tr><tr class="maj">
+<td class="v"><a href="AgingBrain_Simulator_v100_261024.html">v100</a></td><td class="d">261024</td><td class="n">AgingBrain Simulator</td>
+<td class="w"><b>A second AD cascade</b> <span class="more">AD cascade expanded, off to start and never on with the AD cascade: the plaque drives tau's rise, and AD's toll comes from tau's level, tau's rise and amyloid itself, by weights that leave the untreated world as it was. Intervention can now lower amyloid or tau, which tells the paths apart.</span><span class="note">Made in another session and published from its file unchanged.</span></td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v100_261024.html">AgingBrain_Simulator_v100_261024.html</a></td></tr><tr class="maj">
+<td class="v"><a href="AgingBrain_Simulator_v101_261029.html">v101</a></td><td class="d">261029</td><td class="n">AgingBrain Simulator</td>
+<td class="w"><b>Childhood mortality</b> <span class="more">A new determinant, off to start, so the world is version 100's until it is switched on. On, Lives simulated counts births, and a child who dies before 18 never joins the adults, at the rate Cohort effects' Mortality by age 18 gives each year of birth, for girls and for boys, scaled by SES and childhood ability. Survival is now Adult survival, and Cohort effects add Mortality by age 18 and Vaccinations.</span></td>
+<td class="s" title="No copy of its last publish was saved, so it was rebuilt from the next version&#x27;s first publish by undoing that version&#x27;s own changes, line for line, back to the previous version; with its new setting off it simulates the previous version&#x27;s world exactly.">Rebuilt from the next version</td><td class="f"><a href="AgingBrain_Simulator_v101_261029.html">AgingBrain_Simulator_v101_261029.html</a></td></tr><tr class="">
+<td class="v"><a href="AgingBrain_Simulator_v102_261104.html">v102</a></td><td class="d">261104</td><td class="n">AgingBrain Simulator</td>
+<td class="w">Maintainers by the formal rule of Josefsson et al. (2012): the check counts dropouts in each age cohort's average and compares with Betula's attrition-corrected 18%, and the page's maintainer definition and Selection's maintainer strategy use the same rule in place of an absolute one<span class="note">Its last publish, the same day, also has the earliest birth years stand in for Betula's older cohorts in the maintainer check, and counts SuperAgers everywhere by the Northwestern rule.</span></td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v102_261104.html">AgingBrain_Simulator_v102_261104.html</a></td></tr><tr class="">
+<td class="v"><a href="AgingBrain_Simulator_v103_261109.html">v103</a></td><td class="d">261109</td><td class="n">AgingBrain Simulator</td>
+<td class="w">Selection can select on measured values, with a switch off to start and misclassification counted</td>
+<td class="s" title="The built page saved when it was published.">Saved build</td><td class="f"><a href="AgingBrain_Simulator_v103_261109.html">AgingBrain_Simulator_v103_261109.html</a></td></tr>
+</tbody></table>
+</main></body></html>

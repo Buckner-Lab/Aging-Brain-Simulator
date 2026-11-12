@@ -1,0 +1,771 @@
+==================== Buckner_etal_Figure1PanelA_261110
+This panel has no analysis to run (see its notes).
+
+==================== Buckner_etal_Figure1PanelB_261110
+dementia_rule: global cognition at or below -2.3 SD after a fall of at least 1.2 SD from its level at 40
+mmse_when_dementia_begins: median 24.0, middle half 23.0–24.0 (6913 onsets in lives 1–20,000)
+reality_checks: 12 of 13 within the accepted range
+versions_in_file: v1 to v99
+
+(AgingBrain_Simulator_261023.html; analysis 1.8 s)
+
+==================== Buckner_etal_Figure2PanelA_261110
+This panel has no analysis to run (see its notes).
+
+==================== Buckner_etal_Figure2PanelB_261110
+
+effect_at_85_SD
+phenotype        Aging  Cardiovascular  AD cascade  Sleep  Engagement  LATE  Terminal decline
+---------------  -----  --------------  ----------  -----  ----------  ----  ----------------
+Amyloid PET                                   2.33
+pTau217           0.26                        1.94
+Tau PET            0.2                        1.07
+WMH               0.58            1.26        0.09
+Hippocampus       2.07            0.28        0.27               0.03  0.11
+Cortex            1.67            0.44         0.3               0.04  0.04
+Whole brain       1.29            0.08        0.09               0.01  0.03
+Episodic memory   0.66            0.05        0.25   0.06        0.04  0.42              0.92
+Semantic memory                                  0                                       1.34
+Speed             0.93            0.18        0.13   0.06        0.04  0.13              1.12
+Executive         0.79            0.14        0.15   0.05        0.05   0.2              1.08
+Motivation        0.19            0.12        0.07   0.11         0.2
+MMSE              0.32            0.32        0.32      0           0  0.32              1.92
+CDR-SB               0               0           0      0           0     0              2.08
+
+open_circles: Aging → CDR-SB; Cardiovascular → CDR-SB; AD cascade → Semantic memory; AD cascade → CDR-SB; Sleep → MMSE; Sleep → CDR-SB; Engagement → Whole brain; Engagement → MMSE; Engagement → CDR-SB; LATE → CDR-SB
+each_chain_compares: Aging: average person vs. no aging; Cardiovascular: vascular risk from 55 vs. none; AD cascade: amyloid from 65 vs. never; Sleep: average sleeper vs. no disruption; Engagement: average person vs. engagement off; LATE: LATE from 80 vs. never; Terminal decline: a terminal phase from 82 vs. none
+
+(AgingBrain_Simulator_261023.html; analysis 0.2 s)
+
+==================== Buckner_etal_Figure2PanelC_261110
+lives_plotted: 240 of 120000
+develop_dementia: 102
+dots_in_2026: 111 (3 with dementia)
+
+everyone_alive
+age   alive   mean    p10    p90
+---  ------  -----  -----  -----
+ 40  117723   0.22  -1.17   1.59
+ 50  115512   0.19  -1.21   1.57
+ 60  110564   0.15  -1.28   1.56
+ 70   99644  -0.27  -1.83   1.27
+ 80   75919  -0.86  -2.68   0.88
+ 85   56881  -1.19  -3.13   0.64
+ 90   35760  -1.51  -3.45   0.36
+100    5771  -2.13  -3.77  -0.43
+
+
+(AgingBrain_Simulator_261023.html; analysis 0.1 s)
+
+==================== Buckner_etal_Figure2PanelD_261110
+alive_60_90_in_2026: 29096
+seek_to_enroll: 29096
+meet_the_criterion: 27366
+selected: 400 (220 women, 180 men)
+points_drawn: seek only 1730, meet only 1600, selected 400
+
+(AgingBrain_Simulator_261023.html; analysis 0.2 s)
+
+==================== Buckner_etal_Figure2PanelE_261110
+participants: 400
+error_SD: 0.4
+validity: 1
+fitted_slope: 0.976
+intercept: -0.031
+r_with_true: 0.948
+retest_r: 0.902
+MDC95_SD: 1.08
+
+(AgingBrain_Simulator_261023.html; analysis 0.2 s)
+
+==================== Buckner_etal_Figure2PanelF_261110
+legend: Biomarker− (166) · Biomarker+ (85) · Mean, with its 95% CI · Mean in everyone alive at these ages · Values adjusted for sex and TIV, at the sample's means · Measured, with error
+groups: Ages 60–69 n = 177, Ages 80–89 n = 74
+
+group_means_adjusted
+row                                     n       Mean     SD     95% CI
+--------------------------------------  ------  -------  -----  ------------------
+Ages 60–69, Biomarker−, sample          137     −0.0771  1.17   −0.2748 to 0.1206
+Ages 60–69, Biomarker−, everyone alive  10,209  −0.0661  1.09   −0.0872 to −0.0450
+Ages 60–69, Biomarker+, sample          40      −0.240   1.01   −0.562 to 0.083
+Ages 60–69, Biomarker+, everyone alive  2,556   −0.224   1.13   −0.268 to −0.180
+Ages 80–89, Biomarker−, sample          29      −0.853   0.879  −1.187 to −0.518
+Ages 80–89, Biomarker−, everyone alive  1,901   −1.14    1.26   −1.19 to −1.08
+Ages 80–89, Biomarker+, sample          45      −1.69    1.31   −2.08 to −1.30
+Ages 80–89, Biomarker+, everyone alive  3,691   −1.63    1.46   −1.68 to −1.58
+
+
+difference_80_89_minus_60_69
+row                           n       Difference  95% CI          p        d
+----------------------------  ------  ----------  --------------  -------  -----
+Sample                        251     −1.25       −1.57 to −0.93  < 0.001  −1.06
+Everyone alive at these ages  18,357  −1.36       −1.40 to −1.33  < 0.001  −1.13
+
+app_says: In the sample, episodic memory is 1.25 SD lower at ages 80–89 than at ages 60–69 (95% CI −1.57 to −0.93, p < 0.001; d = −1.06), adjusted for sex and TIV. In everyone alive at these ages the difference is −1.36.
+
+(AgingBrain_Simulator_261023.html; analysis 0.5 s)
+
+==================== Buckner_etal_Figure2PanelG_261110
+participants: 65
+legend: Biomarker− (18) · Biomarker+ (47) · Mean course by 5-year age at entry · Same, everyone alive at 81–90 · Measured, with error and practice
+
+mean_courses
+who             entry   age   mean     n
+--------------  -----  ----  -----  ----
+sample          81–85  83.3  -0.81    40
+sample          81–85  85.2  -0.65    36
+sample          81–85  87.2  -0.64    32
+sample          81–85    89  -0.79    29
+sample          86–90  87.6  -1.19    25
+sample          86–90  89.6   -1.3    22
+sample          86–90  91.4  -1.41    13
+sample          86–90  93.4  -0.92     7
+everyone 81–90  81–85  82.9  -1.39  1567
+everyone 81–90  81–85  84.8  -1.48  1308
+everyone 81–90  81–85  86.8  -1.58  1053
+everyone 81–90  81–85  88.7  -1.69   821
+everyone 81–90  86–90  87.7  -1.65   933
+everyone 81–90  86–90  89.6  -1.73   716
+everyone 81–90  86–90  91.5  -1.89   524
+everyone 81–90  86–90  93.5  -1.93   350
+
+
+change_per_year
+row                       n      Seen twice or more  Change per year, SD  95% CI              SD     Across ages in 2026, per year
+------------------------  -----  ------------------  -------------------  ------------------  -----  -----------------------------
+Sample                    65     58                  −0.0719              −0.1140 to −0.0298  0.160  −0.0727
+Everyone, alive at 81–90  2,500  2,024               −0.150               −0.157 to −0.144    0.147  −0.0698
+
+app_says: In the sample, episodic memory changes by −0.0719 SD per year on average (95% CI −0.1140 to −0.0298, 58 seen twice or more); across participants in 2026 it differs by −0.0727 per year of age. In everyone alive at these ages, followed the same way, the change is −0.150 per year, outside the sample's interval.
+
+(AgingBrain_Simulator_261023.html; analysis 0.8 s)
+
+==================== Buckner_etal_Figure2PanelH_261110
+legend: Treated (200) · Controls (200) · Mean, with its 95% CI · The treated without the intervention
+bars: Treated n = 195, Controls n = 197
+
+each_arm
+row                                   n    Change per year, SD  95% CI              SD      Change by year 10  95% CI, change by year 10  Seen then
+------------------------------------  ---  -------------------  ------------------  ------  -----------------  -------------------------  ---------
+Treated                               200  −0.0866              −0.1001 to −0.0732  0.0952  −0.604             −0.690 to −0.518           131
+Controls                              200  −0.0759              −0.0888 to −0.0630  0.0919  −0.689             −0.795 to −0.584           136
+The treated without the intervention  200  −0.0911              −0.1050 to −0.0771  0.0985  −0.643             −0.739 to −0.546           130
+
+
+effect_treated_minus_controls
+row                                    Per year  95% CI             p      By year 10  95% CI, by year 10  p, by year 10
+-------------------------------------  --------  -----------------  -----  ----------  ------------------  -------------
+The trial's estimate                   −0.0108   −0.0293 to 0.0078  0.256  0.0858      −0.0496 to 0.2212   0.213
+The true effect in these participants  0.00461   —                  —      0.0517      —                   —
+
+app_says: The intervention: amyloid and tau build up 50% slower, from enrollment. Episodic memory changes by −0.0866 SD per year in the treated and −0.0759 SD in the controls: the trial estimates an effect of −0.0108 SD per year (95% CI −0.0293 to 0.0078, p = 0.256). Each participant against their own untreated life, the true effect in this sample is 0.00461 SD per year.
+
+(AgingBrain_Simulator_261023.html; analysis 0.6 s)
+
+==================== Buckner_etal_Figure3PanelA_261110
+
+example_women
+woman                   life  born  amyloid_pos  tau_pos  MCI    dementia  terminal  death  amy_at_85  tau_at_85  wmh_at_85  hip_at_85  mem_at_85  cdr_at_85
+--------------------  ------  ----  -----------  -------  -----  --------  --------  -----  ---------  ---------  ---------  ---------  ---------  ---------
+median woman           83855  1939  86           never    84     never     never      89.4       0.28        0.5       0.81       1.32       0.56       0.26
+MCI                     9661  1940  61           72       82     88        94         95.2       2.83       3.78       0.54       2.37       1.53       0.52
+NW SuperAger           49924  1935  never        never    never  never     91         93.3          0       0.25       0.58       1.64       0.37          0
+Josefsson maintainer  106393  1929  78           88       never  never     never      88.1       1.19       0.35       0.46       0.94       0.46          0
+slope maintainer       87873  1998  82           never    never  never     90         91.6       0.52        0.1       0.64       1.08       0.11          0
+
+note: phenotype columns: change from 40 at 85 in SD of 85-year-olds, worse positive
+
+(AgingBrain_Simulator_261023.html; analysis 0.1 s)
+
+==================== Buckner_etal_Figure3PanelB_261110
+women_at_85: 31702
+median_woman_pie_all_women:
+  level at 40: 46.6
+  aging: 14.6
+  engagement: 3
+  cardiovascular: 0
+  sleep: 0.8
+  AD cascade: 23.5
+  LATE: 9.3
+  terminal decline: 2.2
+
+group_pies_percent
+group                 share_of_women_at_85  level_at_40_vs_free  raw_level_share  level at 40  aging  engagement  cardiovascular  sleep  AD cascade  LATE  terminal decline
+--------------------  --------------------  -------------------  ---------------  -----------  -----  ----------  --------------  -----  ----------  ----  ----------------
+MCI                   21.7%                               -0.78  65%                     64.5   11.2         4.9             0.1    0.9        10.6     7               0.7
+NW SuperAger          19.9%                                0.97  62%                     62.5     20         3.4             0.1    0.8           7   5.8               0.4
+Josefsson maintainer  14.0%                                1.13  61%                     61.5   22.4         3.1               0    0.7         6.4   5.5               0.3
+slope maintainer      18.1%                               -0.07  -11%                       0   61.2         2.8               0      1        21.1  12.7               1.1
+
+
+example_women_memory_at_85
+woman                 memory  level at 40  aging  engagement  cardiovascular  sleep  AD cascade  LATE  terminal decline
+--------------------  ------  -----------  -----  ----------  --------------  -----  ----------  ----  ----------------
+median woman           -1.02        -0.27  -0.71        0.01               0  -0.05           0     0                 0
+MCI                    -2.07         0.19  -1.19        -0.1               0  -0.15       -0.82     0                 0
+NW SuperAger            0.75         1.11  -0.42           0               0   0.06           0     0                 0
+Josefsson maintainer    1.04         1.61  -0.56       -0.04               0   0.03           0     0                 0
+slope maintainer       -0.37        -0.28  -0.12        0.04               0  -0.01           0     0                 0
+
+
+(AgingBrain_Simulator_261023.html; analysis 7.7 s)
+
+==================== Buckner_etal_Figure3PanelC_261110
+women_at_85: 31702
+dementia_free: 27059
+median_memory_at_40: 0.68
+josefsson_cut: 0.48
+
+corner_shares_percent
+group                     n  top left (low, stable)  top right (high, stable)  bottom left (low, decline)  bottom right (high, decline)
+--------------------  -----  ----------------------  ------------------------  --------------------------  ----------------------------
+all dementia-free     27059                    11.1                      10.1                        38.9                          39.9
+MCI                    6894                    12.8                       0.4                        70.4                          16.4
+NW SuperAger           6294                     4.5                      32.6                         1.9                          60.9
+Josefsson maintainer   4445                     2.7                        40                         0.4                          56.8
+slope maintainer       5730                    52.4                      47.6                           0                             0
+
+
+(AgingBrain_Simulator_261023.html; analysis 3.1 s)
+
+==================== Buckner_etal_Figure3PanelD_261110
+cdr0_measured_05_or_more: 31%
+all_dementia_free_corners: 15.6 / 14.8 / 34.3 / 35.3
+
+selection_on_measured_values
+group                 true  measured  incorrectly_included  missed  jaccard  measured_corners_TL_TR_BL_BR
+--------------------  ----  --------  --------------------  ------  -------  ----------------------------
+MCI                   6894     11822                  6261    1333  42%      16.6 / 11.3 / 41.8 / 30.2
+NW SuperAger          6294      6337                  1072    1029  71%      8.6 / 41.3 / 3.6 / 46.4
+Josefsson maintainer  4445      4785                  1043     703  68%      8 / 50.2 / 1.4 / 40.5
+slope maintainer      5730      8206                  4558    2082  35%      51.3 / 48.7 / 0 / 0
+
+
+(AgingBrain_Simulator_261023.html; analysis 5.3 s)
+
+==================== Buckner_etal_Figure4PanelA_261110
+lives_plotted: 240 of 120000
+develop_dementia: 102
+first_life_ids: 109009, 25362, 71468, 103666, 95397, 38152, 115928, 8235, 87536, 710
+
+mean_of_everyone_alive
+age     amy   hip    mem   sem
+---  ------  ----  -----  ----
+ 40    2.01  7.98   0.22     0
+ 50    2.68  7.65   0.19  0.05
+ 60    8.27  7.24   0.15   0.1
+ 70   24.33   6.7  -0.27  0.16
+ 80    50.3  5.96  -0.86  0.24
+ 90   79.28  5.12  -1.51  0.42
+100  105.79  4.37  -2.13  0.76
+
+sample_at_80_mean:
+  amy: 51.35
+  hip: 6.03
+  mem: -0.93
+  sem: 0.06
+
+(AgingBrain_Simulator_261023.html; analysis 0.3 s)
+
+==================== Buckner_etal_Figure4PanelB_261110
+never_dementia_lives: 78451
+dementia_at_80_lives: 1467
+
+change_from_40_SD_worse_up
+life            age  lives   amy  ptau   tau   hip   mem    sem   spd   cdr
+--------------  ---  -----  ----  ----  ----  ----  ----  -----  ----  ----
+never            50  74027  0.01     0     0  0.28  0.01  -0.05  0.17     0
+never            60  69244  0.08  0.13  0.06  0.62  0.02  -0.12  0.34     0
+never            70  58895   0.3  0.56  0.16  1.05  0.23   -0.2  0.51  0.01
+never            75  50324  0.48  0.84  0.23   1.3  0.33  -0.26   0.6  0.02
+never            80  39286  0.69  1.13  0.34  1.56  0.44  -0.34  0.69  0.04
+never            85  26648  0.95  1.42  0.47  1.84  0.56  -0.45   0.8  0.05
+never            90  14757  1.21  1.69  0.63  2.13  0.68  -0.58  0.93  0.07
+never            95   6009  1.49  1.94  0.82  2.43  0.82  -0.75  1.07  0.09
+never           100   1546  1.77  2.15  1.01  2.66  0.96  -0.97  1.26  0.14
+dementia at 80   50   1467  0.03  0.01     0  0.31  0.03  -0.05  0.21     0
+dementia at 80   60   1467  0.25  0.39  0.08  0.71  0.07   -0.1  0.44     0
+dementia at 80   70   1467  0.78  1.16  0.35  1.25  0.44  -0.15  0.74  0.12
+dementia at 80   75   1467  1.11  1.58  0.74  1.68   0.8  -0.17  0.99  0.28
+dementia at 80   80   1467  1.42  1.99  1.27  2.31  1.54      0  1.55  2.43
+dementia at 80   85    580  1.84   2.4  1.93  3.27  2.22      0   2.1  5.62
+dementia at 80   90    119  1.93  2.42  1.85  3.58  2.46   0.09  2.55  7.09
+
+
+(AgingBrain_Simulator_261023.html; analysis 0.1 s)
+
+==================== Buckner_etal_Figure4PanelC_261110
+
+percent_by_age
+age  surviving_from_40  amyloid_positive  amyloid_pos_unimpaired_of_nondemented  dementia
+---  -----------------  ----------------  -------------------------------------  --------
+ 40                100                 0                                      0         0
+ 45               99.3                 0                                      0         0
+ 50               98.1                 0                                      0         0
+ 55               96.4               5.1                                    5.1         0
+ 60               93.9              12.1                                   12.1       0.1
+ 65               90.2              21.1                                   20.9       0.3
+ 70               84.6              31.8                                     31         1
+ 75               76.5              44.2                                   42.5       3.5
+ 80               64.5              56.4                                   53.7       8.3
+ 85               48.3              68.4                                   65.1      14.6
+ 90               30.4              78.9                                   75.5      21.8
+ 95               14.8              87.7                                   84.6      30.6
+100                4.9              93.9                                   92.3      42.4
+105                0.9              96.1                                   93.6      55.3
+
+
+(AgingBrain_Simulator_261023.html; analysis 0.1 s)
+
+==================== Buckner_etal_Figure4PanelD_261110
+lives: 30000
+
+share_percent
+age      n  level at 40  aging  engagement  cardiovascular  sleep  AD cascade  LATE  terminal decline
+---  -----  -----------  -----  ----------  --------------  -----  ----------  ----  ----------------
+ 40  29399         99.2      0           0               0    0.8           0     0                 0
+ 45  29193         98.9    0.1           0               0    0.8           0     0               0.1
+ 50  28854         97.8    0.5           0               0    0.8           0   0.5               0.3
+ 55  28365           96    1.5           0               0    0.8           0   1.3               0.4
+ 60  27601         92.2      4           0               0    0.8         0.1   2.2               0.6
+ 65  26556         85.7      8         0.7               0    0.8         0.6   3.4               0.7
+ 70  24962           77   11.3         1.4               0    0.8         3.7   4.9               0.9
+ 75  22577         66.6   13.3         2.1             0.1    0.8         9.3   6.1               1.9
+ 80  19043           56   14.2         2.6             0.1    0.8        16.6   7.6               2.1
+ 85  14164         47.3   15.2         3.1               0    0.8        22.3   8.8               2.5
+ 90   8809         41.3   16.5         3.7               0    0.7        24.5   9.6               3.7
+ 95   4306           38   18.3         4.1               0    0.5        24.9  10.2                 4
+100   1427         39.2   17.4         5.2               0    0.4        22.7  10.2               4.9
+
+
+(AgingBrain_Simulator_261023.html; analysis 2.2 s)
+
+==================== Buckner_etal_Figure4PanelE_261110
+summary: 12 of 13 within the accepted range
+
+checks
+check                                                                     model     range          scaled  status
+------------------------------------------------------------------------  --------  -------------  ------  --------
+Amyloid-positive and unimpaired, ages 50–59, % of those without dementia  4.9%      0.5–5%           0.98  In range
+Amyloid-positive and unimpaired, ages 80–89, % of those without dementia  35.9%     33–50%           0.17  In range
+Dementia prevalence, ages 65–69                                           0.6%      1.5–4.5%         -0.3  Outside
+Dementia prevalence, ages 90 and older                                    34.9%     28–42%           0.49  In range
+Dementia incidence, ages 90–94, per year                                  9.3%      9–17%            0.04  In range
+Early-life ability vs global cognition at 77–81, observed r               0.64      0.55–0.75        0.45  In range
+Hippocampal volume loss per year, ages 35–45                              0.38%/yr  0.2–0.6%/yr      0.45  In range
+Hippocampal volume loss per year, ages 70–79                              1.11%/yr  0.8–1.5%/yr      0.44  In range
+Median age at death, lives reaching 40                                    83.0 y    80–86 y           0.5  In range
+SuperAgers by the Northwestern rule, dementia-free, aged 80+              14.7%     5–15%            0.97  In range
+Memory maintainers over 15 years, relative to age peers                   15.9%     12–18%           0.65  In range
+Hippocampal and episodic memory change, APOE ε4 carriers, r               0.17      0.06–0.35        0.38  In range
+Hippocampal and episodic memory change, non-carriers, r                   0.08      −0.02 to 0.16    0.56  In range
+
+
+(AgingBrain_Simulator_261023.html; analysis 0.2 s)
+
+==================== Buckner_etal_Figure5PanelA_261110
+
+slopes_SD_per_decade
+criterion                                     qualified  mean_of_100_sample_slopes  range           all_qualified_true
+--------------------------------------------  ---------  -------------------------  --------------  ------------------
+Everyone                                          29096                      -0.68  -0.91 to -0.52               -0.68
+MMSE >= 24                                        27366                      -0.51  -0.79 to -0.31               -0.51
+MMSE >= 24, amyloid < 12 CL, tau < 1.25 SUVR      15458                      -0.49  -0.69 to -0.28               -0.46
+
+
+left_plot_true_mean_memory
+criterion                                     age 61  age 65  age 70  age 75  age 80  age 85  age 89
+--------------------------------------------  ------  ------  ------  ------  ------  ------  ------
+Everyone                                        0.07   -0.13   -0.44   -0.75   -1.14   -1.55   -1.78
+MMSE >= 24                                      0.08   -0.11   -0.38   -0.59   -0.87   -1.14   -1.31
+MMSE >= 24, amyloid < 12 CL, tau < 1.25 SUVR    0.08   -0.09   -0.33   -0.54   -0.77    -1.1   -1.06
+
+
+(AgingBrain_Simulator_261023.html; analysis 3.0 s)
+
+==================== Buckner_etal_Figure5PanelB_261110
+people: 64615
+measured_twice: 60427
+
+curves
+age  cross_sectional  longitudinal_with_practice  longitudinal_practice_removed  true_change
+---  ---------------  --------------------------  -----------------------------  -----------
+ 40            -0.09                        0.09                          -0.01        -0.01
+ 45            -0.17                        0.17                          -0.03        -0.03
+ 50             -0.3                        0.25                          -0.05        -0.05
+ 55            -0.35                        0.33                          -0.07        -0.07
+ 60            -0.49                        0.38                          -0.13        -0.12
+ 65            -0.71                         0.3                          -0.31         -0.3
+ 70               -1                        0.15                          -0.56        -0.55
+ 75            -1.22                       -0.06                          -0.87        -0.87
+ 80            -1.47                       -0.38                          -1.29        -1.28
+ 85            -1.74                       -0.77                          -1.78        -1.78
+
+
+(AgingBrain_Simulator_261023.html; analysis 17.1 s)
+
+==================== Buckner_etal_Figure5PanelC_261110
+people_80_89: 4587
+norm_people_56_66: 14385
+memory_threshold_SD: 0.06
+true_SuperAgers: 713
+labeled_visit1: 712
+labeled_who_are_true: 81%
+labeled_again_visit2: 72%
+labeled_memory_above_threshold:
+  visit1: 0.7
+  visit2: 0.52
+  true: 0.53
+left_plot_every_second_person: 2294
+left_plot_counts_all:
+  correct: 577
+  wrongly_labeled: 135
+  missed: 136
+left_plot_counts_plotted:
+  correct: 271
+  wrongly_labeled: 65
+  missed: 68
+
+(AgingBrain_Simulator_261023.html; analysis 0.1 s)
+
+==================== Buckner_etal_Figure5PanelD_261110
+eligible: 4801
+
+trials
+years  significant_benefit  significant_harm  mean_estimate_SD_per_yr  mean_true_effect  analyzed_per_trial
+-----  -------------------  ----------------  -----------------------  ----------------  ------------------
+    2  4%                                  0                   0.0051            0.0035                1184
+    4  9%                                  1                    0.008            0.0073                1184
+    6  13%                                 0                   0.0112            0.0114                1184
+    8  19%                                 0                   0.0151            0.0153                1184
+   10  28%                                 0                   0.0185            0.0187                1184
+
+
+(AgingBrain_Simulator_261023.html; analysis 12.4 s)
+
+==================== Buckner_etal_Figure5PanelE_261110
+norm_people_2006: 81583
+people_2026: 14405 of 14822
+
+shares
+definition  qualify  share
+----------  -------  -----
+H               922  6.4%
+D              2836  19.7%
+S              2279  15.8%
+M               894  6.2%
+B              4014  27.9%
+
+H_among_80_plus: 19.9%
+classified_by_any: 5598
+
+overlap
+combination  share_of_any
+-----------  ------------
+B            42.6%
+DSB          9.9%
+DS           9.6%
+DSMB         9.3%
+H            4.5%
+DSM          4.3%
+D            4.1%
+DB           3.5%
+HDS          2.9%
+HDSB         2.1%
+HB           1.9%
+HD           1.7%
+HDSMB        1.5%
+HDB          1.1%
+HDSM         0.8%
+
+
+(AgingBrain_Simulator_261023.html; analysis 40.2 s)
+
+==================== Buckner_etal_Figure5PanelF_261110
+
+change_from_35_SD
+world                  age  cross_sectional_2026  chained_2026  born_1931  born_1941  born_1951  born_1961
+---------------------  ---  --------------------  ------------  ---------  ---------  ---------  ---------
+no gains                40                     0         -0.01      -0.01      -0.01      -0.01      -0.01
+no gains                50                 -0.04         -0.05      -0.05      -0.05      -0.05      -0.05
+no gains                60                 -0.11         -0.12      -0.11      -0.12       -0.1      -0.11
+no gains                70                 -0.52         -0.58      -0.58      -0.59      -0.57      -0.57
+no gains                80                 -1.08         -1.36      -1.37      -1.39      -1.36      -1.34
+no gains                85                 -1.41         -1.96      -1.96         -2      -1.94      -1.92
+level gains (default)   40                 -0.08         -0.01      -0.01      -0.01      -0.01      -0.01
+level gains (default)   50                 -0.28         -0.05      -0.05      -0.05      -0.05      -0.05
+level gains (default)   60                 -0.49         -0.12      -0.11      -0.12       -0.1      -0.11
+level gains (default)   70                 -1.04         -0.58      -0.58      -0.59      -0.57      -0.57
+level gains (default)   80                 -1.74         -1.36      -1.37      -1.39      -1.36      -1.35
+level gains (default)   85                 -2.16         -1.96      -1.95         -2      -1.94      -1.92
+level and slope gains   40                 -0.06         -0.01      -0.01      -0.01      -0.01      -0.01
+level and slope gains   50                 -0.23         -0.04      -0.05      -0.05      -0.04      -0.04
+level and slope gains   60                 -0.38         -0.09      -0.12      -0.11      -0.08      -0.08
+level and slope gains   70                  -0.6         -0.22      -0.72      -0.44      -0.27       -0.2
+level and slope gains   80                 -1.13         -0.56      -1.68      -1.03      -0.62      -0.43
+level and slope gains   85                 -1.67         -0.97      -2.37       -1.5       -0.9      -0.62
+
+reality_checks:
+  no gains: 10 of 13 within the accepted range
+  level gains (default): 12 of 13 within the accepted range
+  level and slope gains: 10 of 13 within the accepted range
+
+(AgingBrain_Simulator_261023.html; analysis 75.5 s)
+
+==================== Buckner_etal_Figure6PanelA_261110
+strategy: Random
+n: 400
+r: 0.43
+mean_hippocampus_mL: 5.86
+reference_n: 3496
+reference_r: 0.46
+
+(AgingBrain_Simulator_261023.html; analysis 0.1 s)
+
+==================== Buckner_etal_Figure6PanelB_261110
+strategy: Nondemented
+n: 400
+r: 0.31
+mean_hippocampus_mL: 5.94
+reference_n: 3496
+reference_r: 0.46
+
+(AgingBrain_Simulator_261023.html; analysis 0.2 s)
+
+==================== Buckner_etal_Figure6PanelC_261110
+strategy: Biomarker negative
+n: 400
+r: 0.28
+mean_hippocampus_mL: 6.13
+reference_n: 3496
+reference_r: 0.46
+
+(AgingBrain_Simulator_261023.html; analysis 0.3 s)
+
+==================== Buckner_etal_Figure6PanelD_261110
+strategy: NW SuperAger
+n: 400
+r: 0.08
+mean_hippocampus_mL: 6.25
+reference_n: 3496
+reference_r: 0.46
+
+(AgingBrain_Simulator_261023.html; analysis 0.1 s)
+
+==================== Buckner_etal_Figure6PanelE_261110
+strategy: MCI
+n: 400
+r: 0.14
+mean_hippocampus_mL: 5.7
+reference_n: 3496
+reference_r: 0.46
+
+(AgingBrain_Simulator_261023.html; analysis 0.1 s)
+
+==================== Buckner_etal_Figure6PanelF_261110
+
+medians
+ages   strategy            median_r   p2_5  p97_5
+-----  ------------------  --------  -----  -----
+70-74  Random                  0.31  0.204  0.414
+70-74  Nondemented            0.223  0.141  0.333
+70-74  Biomarker negative     0.182  0.122  0.284
+70-74  NW SuperAger           0.071  0.006  0.152
+70-74  MCI                     0.12  0.055  0.176
+75-79  Random                 0.398  0.292  0.499
+75-79  Nondemented            0.276  0.181  0.382
+75-79  Biomarker negative     0.242  0.147  0.316
+75-79  NW SuperAger           0.059  -0.01  0.139
+75-79  MCI                    0.173  0.101  0.254
+80-84  Random                 0.467  0.391  0.543
+80-84  Nondemented            0.302  0.227  0.377
+80-84  Biomarker negative     0.251  0.183  0.309
+80-84  NW SuperAger           0.104  0.059  0.149
+80-84  MCI                    0.146  0.063  0.221
+85-89  Random                 0.449  0.376  0.514
+85-89  Nondemented            0.298  0.226   0.37
+85-89  Biomarker negative     0.304  0.304  0.304
+85-89  NW SuperAger           0.094  0.094  0.094
+85-89  MCI                    0.177  0.127  0.221
+
+
+(AgingBrain_Simulator_261023.html; analysis 4.9 s)
+
+==================== Buckner_etal_Figure7PanelA_261110
+
+new_dementia_percent_per_year
+world               amyloid+ at 70 (realized)  65-69  70-74  75-79  80-84  85-89  90-94  95-99  100+
+------------------  -------------------------  -----  -----  -----  -----  -----  -----  -----  ----
+original model      32%                          0.4    0.8    1.2    1.8    2.2    2.6      3   3.5
+more AD risk        49%                          0.8    1.3    1.9    2.5      3    3.4    3.9   4.5
+faster AD cascade   31%                          0.8    1.2    1.6    2.1    2.5    2.9    3.4   3.9
+stronger LATE       32%                          0.6      1    1.6    2.3    3.1    3.5    4.3   4.4
+late-rising aging   32%                          0.5      1    1.9    3.3    5.4    9.7   17.2  29.9
+falling resilience  32%                          0.4    0.8    1.5      4    6.2    9.8   18.5  32.7
+
+
+(AgingBrain_Simulator_261014.html; analysis 64.9 s)
+
+==================== Buckner_etal_Figure7PanelB_261110
+
+summary
+world               in_range
+------------------  --------
+original model      11 of 14
+more AD risk        6 of 14
+faster AD cascade   8 of 14
+stronger LATE       11 of 14
+late-rising aging   14 of 14
+falling resilience  13 of 14
+
+
+checks
+world               check                                                         model     range          status
+------------------  ------------------------------------------------------------  --------  -------------  --------
+original model      Amyloid-positive, cognitively unimpaired, age 50              8.6%      5–15%          In range
+original model      Amyloid-positive, cognitively unimpaired, age 90              46.9%     34–54%         In range
+original model      Dementia prevalence, ages 65–69                               2.2%      1.5–4.5%       In range
+original model      Dementia prevalence, ages 90 and older                        12.9%     28–42%         Outside
+original model      Dementia incidence, ages 90–94, per year                      2.6%      9–17%          Outside
+original model      Early-life ability vs global cognition at 77–81, observed r   0.57      0.55–0.75      In range
+original model      Hippocampal volume loss per year, ages 50–54                  0.32%/yr  0.2–0.6%/yr    In range
+original model      Hippocampal volume loss per year, ages 70–79                  1.40%/yr  0.8–1.5%/yr    In range
+original model      Whole-brain volume vs global cognition, ages 72–75, observed  0.27      0.2–0.45       In range
+original model      Median age at death, lives reaching 40                        83.9 y    80–86 y        In range
+original model      SuperAgers among the living aged 85+, by one test at 85       15.9%     3–43%          In range
+original model      Memory maintainers over 15 years, relative to age peers       14.7%     12–18%         In range
+original model      Hippocampal and episodic memory change, APOE ε4 carriers, r   0.33      0.06–0.35      In range
+original model      Hippocampal and episodic memory change, non-carriers, r       0.17      −0.02 to 0.16  Outside
+more AD risk        Amyloid-positive, cognitively unimpaired, age 50              15.3%     5–15%          Outside
+more AD risk        Amyloid-positive, cognitively unimpaired, age 90              64.8%     34–54%         Outside
+more AD risk        Dementia prevalence, ages 65–69                               3.7%      1.5–4.5%       In range
+more AD risk        Dementia prevalence, ages 90 and older                        17.3%     28–42%         Outside
+more AD risk        Dementia incidence, ages 90–94, per year                      3.4%      9–17%          Outside
+more AD risk        Early-life ability vs global cognition at 77–81, observed r   0.53      0.55–0.75      Outside
+more AD risk        Hippocampal volume loss per year, ages 50–54                  0.34%/yr  0.2–0.6%/yr    In range
+more AD risk        Hippocampal volume loss per year, ages 70–79                  1.64%/yr  0.8–1.5%/yr    Outside
+more AD risk        Whole-brain volume vs global cognition, ages 72–75, observed  0.28      0.2–0.45       In range
+more AD risk        Median age at death, lives reaching 40                        83.1 y    80–86 y        In range
+more AD risk        SuperAgers among the living aged 85+, by one test at 85       15.0%     3–43%          In range
+more AD risk        Memory maintainers over 15 years, relative to age peers       14.4%     12–18%         In range
+more AD risk        Hippocampal and episodic memory change, APOE ε4 carriers, r   0.37      0.06–0.35      Outside
+more AD risk        Hippocampal and episodic memory change, non-carriers, r       0.22      −0.02 to 0.16  Outside
+faster AD cascade   Amyloid-positive, cognitively unimpaired, age 50              8.5%      5–15%          In range
+faster AD cascade   Amyloid-positive, cognitively unimpaired, age 90              39.7%     34–54%         In range
+faster AD cascade   Dementia prevalence, ages 65–69                               5.3%      1.5–4.5%       Outside
+faster AD cascade   Dementia prevalence, ages 90 and older                        15.0%     28–42%         Outside
+faster AD cascade   Dementia incidence, ages 90–94, per year                      2.9%      9–17%          Outside
+faster AD cascade   Early-life ability vs global cognition at 77–81, observed r   0.54      0.55–0.75      Outside
+faster AD cascade   Hippocampal volume loss per year, ages 50–54                  0.40%/yr  0.2–0.6%/yr    In range
+faster AD cascade   Hippocampal volume loss per year, ages 70–79                  1.49%/yr  0.8–1.5%/yr    In range
+faster AD cascade   Whole-brain volume vs global cognition, ages 72–75, observed  0.28      0.2–0.45       In range
+faster AD cascade   Median age at death, lives reaching 40                        83.0 y    80–86 y        In range
+faster AD cascade   SuperAgers among the living aged 85+, by one test at 85       16.3%     3–43%          In range
+faster AD cascade   Memory maintainers over 15 years, relative to age peers       13.6%     12–18%         In range
+faster AD cascade   Hippocampal and episodic memory change, APOE ε4 carriers, r   0.39      0.06–0.35      Outside
+faster AD cascade   Hippocampal and episodic memory change, non-carriers, r       0.23      −0.02 to 0.16  Outside
+stronger LATE       Amyloid-positive, cognitively unimpaired, age 50              8.6%      5–15%          In range
+stronger LATE       Amyloid-positive, cognitively unimpaired, age 90              45.1%     34–54%         In range
+stronger LATE       Dementia prevalence, ages 65–69                               3.1%      1.5–4.5%       In range
+stronger LATE       Dementia prevalence, ages 90 and older                        17.4%     28–42%         Outside
+stronger LATE       Dementia incidence, ages 90–94, per year                      3.5%      9–17%          Outside
+stronger LATE       Early-life ability vs global cognition at 77–81, observed r   0.55      0.55–0.75      In range
+stronger LATE       Hippocampal volume loss per year, ages 50–54                  0.33%/yr  0.2–0.6%/yr    In range
+stronger LATE       Hippocampal volume loss per year, ages 70–79                  1.45%/yr  0.8–1.5%/yr    In range
+stronger LATE       Whole-brain volume vs global cognition, ages 72–75, observed  0.26      0.2–0.45       In range
+stronger LATE       Median age at death, lives reaching 40                        83.5 y    80–86 y        In range
+stronger LATE       SuperAgers among the living aged 85+, by one test at 85       15.1%     3–43%          In range
+stronger LATE       Memory maintainers over 15 years, relative to age peers       14.1%     12–18%         In range
+stronger LATE       Hippocampal and episodic memory change, APOE ε4 carriers, r   0.31      0.06–0.35      In range
+stronger LATE       Hippocampal and episodic memory change, non-carriers, r       0.17      −0.02 to 0.16  Outside
+late-rising aging   Amyloid-positive, cognitively unimpaired, age 50              8.6%      5–15%          In range
+late-rising aging   Amyloid-positive, cognitively unimpaired, age 90              43.9%     34–54%         In range
+late-rising aging   Dementia prevalence, ages 65–69                               2.3%      1.5–4.5%       In range
+late-rising aging   Dementia prevalence, ages 90 and older                        38.7%     28–42%         In range
+late-rising aging   Dementia incidence, ages 90–94, per year                      9.7%      9–17%          In range
+late-rising aging   Early-life ability vs global cognition at 77–81, observed r   0.55      0.55–0.75      In range
+late-rising aging   Hippocampal volume loss per year, ages 50–54                  0.32%/yr  0.2–0.6%/yr    In range
+late-rising aging   Hippocampal volume loss per year, ages 70–79                  1.37%/yr  0.8–1.5%/yr    In range
+late-rising aging   Whole-brain volume vs global cognition, ages 72–75, observed  0.27      0.2–0.45       In range
+late-rising aging   Median age at death, lives reaching 40                        83.4 y    80–86 y        In range
+late-rising aging   SuperAgers among the living aged 85+, by one test at 85       11.8%     3–43%          In range
+late-rising aging   Memory maintainers over 15 years, relative to age peers       14.9%     12–18%         In range
+late-rising aging   Hippocampal and episodic memory change, APOE ε4 carriers, r   0.32      0.06–0.35      In range
+late-rising aging   Hippocampal and episodic memory change, non-carriers, r       0.16      −0.02 to 0.16  In range
+falling resilience  Amyloid-positive, cognitively unimpaired, age 50              8.6%      5–15%          In range
+falling resilience  Amyloid-positive, cognitively unimpaired, age 90              35.1%     34–54%         In range
+falling resilience  Dementia prevalence, ages 65–69                               2.2%      1.5–4.5%       In range
+falling resilience  Dementia prevalence, ages 90 and older                        33.5%     28–42%         In range
+falling resilience  Dementia incidence, ages 90–94, per year                      9.8%      9–17%          In range
+falling resilience  Early-life ability vs global cognition at 77–81, observed r   0.57      0.55–0.75      In range
+falling resilience  Hippocampal volume loss per year, ages 50–54                  0.32%/yr  0.2–0.6%/yr    In range
+falling resilience  Hippocampal volume loss per year, ages 70–79                  1.40%/yr  0.8–1.5%/yr    In range
+falling resilience  Whole-brain volume vs global cognition, ages 72–75, observed  0.27      0.2–0.45       In range
+falling resilience  Median age at death, lives reaching 40                        83.4 y    80–86 y        In range
+falling resilience  SuperAgers among the living aged 85+, by one test at 85       16.9%     3–43%          In range
+falling resilience  Memory maintainers over 15 years, relative to age peers       14.7%     12–18%         In range
+falling resilience  Hippocampal and episodic memory change, APOE ε4 carriers, r   0.33      0.06–0.35      In range
+falling resilience  Hippocampal and episodic memory change, non-carriers, r       0.17      −0.02 to 0.16  Outside
+
+
+(AgingBrain_Simulator_261014.html; analysis 62.9 s)
+
+==================== Buckner_etal_Figure7PanelC_261110
+
+mean_episodic_memory_by_age
+world               group              age 40  age 45  age 50  age 55  age 60  age 65  age 70  age 75  age 80  age 85  age 90  age 95  age 100
+------------------  -----------------  ------  ------  ------  ------  ------  ------  ------  ------  ------  ------  ------  ------  -------
+falling resilience  free of pathology    0.22    0.21    0.21     0.2     0.2    0.06   -0.07   -0.17   -0.24   -0.28   -0.35   -0.46    -0.42
+falling resilience  everyone             0.22    0.21     0.2    0.18    0.13   -0.12   -0.39   -0.66      -1   -1.36   -1.52   -1.54    -1.48
+late-rising aging   free of pathology    0.22    0.21     0.2    0.19    0.18    0.02   -0.15   -0.31   -0.45   -0.63   -0.86   -1.16    -1.45
+late-rising aging   everyone             0.22    0.21    0.19    0.17     0.1   -0.16   -0.48   -0.81   -1.13   -1.45   -1.77   -2.11     -2.4
+original model      free of pathology    0.22    0.21    0.21     0.2     0.2    0.06   -0.07   -0.17   -0.24   -0.28   -0.34   -0.43     -0.4
+original model      everyone             0.22    0.21     0.2    0.18    0.13   -0.12   -0.39   -0.66   -0.89   -1.07   -1.18   -1.27    -1.33
+
+
+(AgingBrain_Simulator_261014.html; analysis 62.0 s)
+
+==================== Buckner_etal_Figure7PanelD_261110
+
+mmse_change_since_onset_chained
+world               people_at_onset  year 1  year 2  year 3  year 4  year 5  year 6  year 7  year 8  year 9  year 10  year 11
+------------------  ---------------  ------  ------  ------  ------  ------  ------  ------  ------  ------  -------  -------
+falling resilience            18919    -5.3   -11.1   -15.4     -18   -19.7   -20.7   -21.7   -22.5   -23.4    -24.3    -25.3
+late-rising aging             16510    -1.5    -3.5    -5.7    -8.1   -10.5   -12.8   -14.9   -16.9   -18.8    -20.5    -22.1
+
+reference: Cache County Alzheimer dementia: about -1.5 points a year (Tschanz et al., 2011)
+
+(AgingBrain_Simulator_261014.html; analysis 40.8 s)
+
+==================== Buckner_etal_Figure7PanelE_261110
+This panel has no analysis to run (see its notes).
+
+==================== Buckner_etal_Figure8PanelA_261110
+This panel has no analysis to run (see its notes).
+
+==================== Buckner_etal_Figure8PanelB_261110
+This panel has no analysis to run (see its notes).
+
+==================== Buckner_etal_Figure8PanelC_261110
+This panel has no analysis to run (see its notes).
+
+==================== Buckner_etal_Figure8PanelD_261110
+versions_recorded: 99
+
+milestones
+version  date       entry
+-------  ---------  ---------------------------------
+v1       261005     World stage, the first version
+v33      261006.18  Enrollment and Selection stages
+v35      261006.20  Analysis stage
+v41      261007.3   Follow-up stage
+v52      261007.14  Measurement process stage
+v59      261008.4   Intervention stage
+v61      261008.6   Save and Load
+v63      261008.8   Imagine stage and developer guide
+v75      261010.3   Resilience falls with age
+v76      261010.4   Insights and puzzles
+
+
+(AgingBrain_Simulator_261023.html; analysis 0.1 s)
+

@@ -1,0 +1,16 @@
+# OS clutter
+.DS_Store
+Thumbs.db
+
+# Manuscript drafts are distributed through bioRxiv, not this repository
+*.docx
+
+# Local outputs from running the figure scripts
+node_modules/
+package.json
+package-lock.json
+__pycache__/
+Buckner_etal_SuppFigure_scripts_261110/*.py
+Buckner_etal_SuppFigure_scripts_261110/*.png
+Buckner_etal_SuppFigure_scripts_261110/*.csv
+Buckner_etal_SuppFigure_scripts_261110/*settings*.json
