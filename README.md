@@ -8,12 +8,12 @@ the paper's figures and supplementary figures.
 
 The simulator generates worlds of 120,000 individual lives. Each life starts from baseline parameters (genetic risk, birth year, childhood
 ability, …) and changes with age through explicit causal cascades (aging, cardiovascular, the AD cascade, sleep, engagement, LATE). The
-simulator then runs studies on those worlds through selection, measurement, follow-up and intervention stages. Each version is a single,
-self-contained HTML file. Nothing needs to be installed.
+simulator then runs studies on those worlds through selection, measurement, follow-up and intervention stages. Each version is a single HTML file
+that opens on its own in a browser.
 
 **Open the simulators:** download or clone this repository and open
 [`HistoricalSimulatorVersions/000_AgingBrain_Simulator_VersionList_000_261110.html`](HistoricalSimulatorVersions/000_AgingBrain_Simulator_VersionList_000_261110.html)
-in a browser. Every version opens from that list. (GitHub shows HTML files as source code, so open them from a local copy.)
+in a browser. Every version opens from that list.
 
 ## What is here
 
@@ -29,8 +29,8 @@ ends in the version's date (YYMMDD).
 ## Using a simulator
 
 Open any file from the [version list](HistoricalSimulatorVersions/000_AgingBrain_Simulator_VersionList_000_261110.html) in a local copy of
-the repository, or download a single file and open it. It runs entirely in the browser. The default world (seed 7, 120,000 lives born 1926–2008, study year
-2026) takes a few seconds to simulate. Every world and draw is seeded, so a given version with given settings gives the same numbers on
+the repository, or download a single file and open it. It runs entirely in the browser. The default world is seed 7, 120,000 lives born 1926–2008, study year
+2026. Every world and draw is seeded, so a given version with given settings gives the same numbers on
 any computer.
 
 Each file carries its own documentation: a developer guide, a model description, reality checks and a version history.
@@ -59,32 +59,9 @@ pip install playwright numpy matplotlib && playwright install chromium   # once
 python Buckner_etal_SuppFigure6PanelE_261110.py AgingBrain_Simulator_v102_261109.html
 ```
 
-### Which simulator file each set of scripts uses
-
-The scripts name their simulator files as the paper's analyses did. Those names differ from the names in `HistoricalSimulatorVersions/`.
-So both script folders work as they stand, each one holds a copy of the files it needs under the name its scripts expect. Each copy is
-byte-for-byte identical to the historical file:
-
-| Name used by the scripts | Version | Identical to |
-|---|---|---|
-| `Buckner_etal_Figure_scripts_261110/AgingBrain_Simulator_261023.html` | 99 (Figures 1–6, 8) | `HistoricalSimulatorVersions/AgingBrain_Simulator_v99_261023.html` |
-| `Buckner_etal_Figure_scripts_261110/AgingBrain_Simulator_261014.html` | 88 (Figure 7) | `HistoricalSimulatorVersions/AgingBrain_Simulator_v88_261014.html` |
-| `Buckner_etal_Figure_scripts_261110/AgingBrain_Simulator_v91_261018.html` | 91 branch (source of Figure 5F's generational settings; not run itself) | a working branch, not one of the published versions |
-| `Buckner_etal_SuppFigure_scripts_261110/AgingBrain_Simulator_v102_261109.html` | 102 (all supplementary figures) | `HistoricalSimulatorVersions/AgingBrain_Simulator_v102_261104.html` |
-
-### Checked in this repository
-
-The repository's own files were rerun on 2026-11-10 (Node 24, Python 3.12, Playwright 1.65, headless Chromium):
-
-- **Figures 1–8:** all 40 scripts ran. Each output matches `expected_output_261110.txt` line for line, apart from the timing lines.
-- **Supplementary Figures 1–8:** all 54 scripts ran without error against version 102. The printed values checked against the "Against
-  the legend" column of the supplementary README agree with it.
-
-Where a panel cannot be reproduced exactly, and why, is set out in each folder's README.
-
 ## Citation
 
-If you use the simulator or these scripts, please cite the paper above. A full reference will be added when the preprint is posted.
+If you use the simulator or these scripts, please cite the paper above.
 
 Correspondence: Randy L. Buckner (randy_buckner@harvard.edu)
 
