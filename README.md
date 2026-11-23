@@ -1,5 +1,7 @@
 # AgingBrain Simulator
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24473909.svg)](https://doi.org/10.5281/zenodo.24473909)
+
 Every published version of the AgingBrain Simulator, from version 1 to version 104, together with the scripts that reproduce each panel of
 the paper's figures and supplementary figures.
 
@@ -64,7 +66,13 @@ python Buckner_etal_SuppFigure6PanelE_261110.py AgingBrain_Simulator_v102_261109
 
 ## Citation
 
-If you use the simulator or these scripts, please cite the paper above.
+If you use the simulator or these scripts, please cite the paper above. To cite the simulator and scripts themselves, use the archived
+software on Zenodo:
+
+> Buckner RL. *AgingBrain Simulator.* Zenodo (2026). <https://doi.org/10.5281/zenodo.24473909>
+
+This DOI always resolves to the latest release. Each release also has its own DOI, listed on the
+[Zenodo record](https://doi.org/10.5281/zenodo.24473909).
 
 Correspondence: Randy L. Buckner (randy_buckner@harvard.edu)
 

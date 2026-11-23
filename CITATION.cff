@@ -2,6 +2,11 @@ cff-version: 1.2.0
 message: "If you use the simulator or these scripts, please cite them using the metadata below."
 type: software
 title: "AgingBrain Simulator"
+doi: 10.5281/zenodo.24473909
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24473909
+    description: "Concept DOI: always resolves to the latest release on Zenodo"
 abstract: >-
   Every published version of the AgingBrain Simulator, from version 1 to
   version 104, together with the scripts that reproduce each panel of the
