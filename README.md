@@ -22,7 +22,7 @@ in a browser.
 | Folder | Contents |
 |---|---|
 | [`HistoricalSimulatorVersions/`](HistoricalSimulatorVersions/) | 104 simulator files, one per version, and the version list [`000_AgingBrain_Simulator_VersionList_000_261122.html`](HistoricalSimulatorVersions/000_AgingBrain_Simulator_VersionList_000_261122.html). The list says what changed in each version and how each copy was obtained. |
-| [`FavoriteSimulatorStageAdditions/`](FavoriteSimulatorStageAdditions/) | Example simulator versions with new stages added through the Imagine function, starting with [Blood Factor Power Analysis](FavoriteSimulatorStageAdditions/AgingBrain_Simulator_261121_v104_BFP.html), built on version 104. A banner under the new stage's name describes the prompts that built it. |
+| [`FavoriteSimulatorStageAdditions/`](FavoriteSimulatorStageAdditions/) | Example simulator versions with new stages added through the Imagine function, starting with [Blood Factor Power Analysis](FavoriteSimulatorStageAdditions/AgingBrain_Simulator_v104_BFP_261123.html), built on version 104. A banner under the new stage's name describes the prompts that built it. |
 | [`Buckner_etal_Figure_scripts_261110/`](Buckner_etal_Figure_scripts_261110/) | One script per panel of Figures 1–8 (40 in all), a runner, and the expected output. See its [README](Buckner_etal_Figure_scripts_261110/README_261110.md) for what each script reproduces and where it cannot. |
 | [`Buckner_etal_SuppFigure_scripts_261110/`](Buckner_etal_SuppFigure_scripts_261110/) | One script per panel of Supplementary Figures 1–8 (54 in all). See its [README](Buckner_etal_SuppFigure_scripts_261110/README_Buckner_etal_SuppFigures_261110.md), which compares each script with the figure legend. |
 
