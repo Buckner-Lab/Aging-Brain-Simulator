@@ -5,7 +5,17 @@
   "creators": [
     {
       "name": "Buckner, Randy L.",
-      "affiliation": "Center for Brain Science, Harvard University, Cambridge, Massachusetts, United States; Athinoula A. Martinos Center for Biomedical Imaging, Massachusetts General Hospital, Charlestown, Massachusetts, United States; Department of Psychiatry, Massachusetts General Hospital, Charlestown, Massachusetts, United States"
+      "affiliations": [
+        {
+          "name": "Center for Brain Science, Harvard University, Cambridge, Massachusetts, United States"
+        },
+        {
+          "name": "Athinoula A. Martinos Center for Biomedical Imaging, Massachusetts General Hospital, Charlestown, Massachusetts, United States"
+        },
+        {
+          "name": "Department of Psychiatry, Massachusetts General Hospital, Charlestown, Massachusetts, United States"
+        }
+      ]
     }
   ],
   "license": "MIT",
