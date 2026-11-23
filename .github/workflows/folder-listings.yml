@@ -1,0 +1,39 @@
+# Keeps each folder's index.html (the file list GitHub Pages shows for that
+# folder) in step with the files in the repository. After every push to main,
+# it reruns .github/scripts/make_folder_indexes.py and commits any listing that
+# changed. Most pushes change no listing, and then it commits nothing.
+name: Update folder listings
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: folder-listings
+  cancel-in-progress: false
+
+jobs:
+  listings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Write folder listings
+        run: python3 .github/scripts/make_folder_indexes.py
+
+      - name: Commit any listing that changed
+        run: |
+          git add -A -- '*/index.html'
+          if git diff --cached --quiet; then
+            echo "Folder listings are already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update folder listings"
+          git pull --rebase origin main
+          git push origin HEAD:main

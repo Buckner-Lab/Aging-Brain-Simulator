@@ -5,9 +5,6 @@
 Every published version of the AgingBrain Simulator, from version 1 to version 104, together with the scripts that reproduce each panel of
 the paper's figures and supplementary figures.
 
-> Buckner RL, …, Nyberg L. *Synthesizing and Predicting Brain and Cognitive Aging Data Patterns Using an Evolving Simulator Enabled by
-> Agentic Artificial Intelligence.* bioRxiv (forthcoming).
-
 The simulator generates worlds of 120,000 individual lives. Each life starts from baseline parameters (genetic risk, birth year, childhood
 ability, …) and changes with age through explicit causal cascades (aging, cardiovascular, the AD cascade, sleep, engagement, LATE). The
 simulator then runs studies on those worlds through selection, measurement, follow-up and intervention stages. Each version is a single HTML file
@@ -66,8 +63,7 @@ python Buckner_etal_SuppFigure6PanelE_261110.py AgingBrain_Simulator_v102_261109
 
 ## Citation
 
-If you use the simulator or these scripts, please cite the paper above. To cite the simulator and scripts themselves, use the archived
-software on Zenodo:
+If you use the simulator or these scripts, please cite the archived software on Zenodo:
 
 > Buckner RL. *AgingBrain Simulator.* Zenodo (2026). <https://doi.org/10.5281/zenodo.24473909>
 

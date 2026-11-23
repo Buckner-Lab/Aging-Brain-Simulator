@@ -10,11 +10,8 @@ identifiers:
 abstract: >-
   Every published version of the AgingBrain Simulator, from version 1 to
   version 104, together with the scripts that reproduce each panel of the
-  figures and supplementary figures of Buckner et al., "Synthesizing and
-  Predicting Brain and Cognitive Aging Data Patterns Using an Evolving
-  Simulator Enabled by Agentic Artificial Intelligence" (bioRxiv,
-  forthcoming). Each version is a single HTML file that runs entirely in a
-  web browser.
+  paper's figures and supplementary figures. Each version is a single HTML
+  file that runs entirely in a web browser.
 authors:
   - family-names: Buckner
     given-names: Randy L.
