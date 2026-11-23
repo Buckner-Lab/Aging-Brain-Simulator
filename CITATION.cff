@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use the simulator or these scripts, please cite them using the metadata below."
+type: software
+title: "AgingBrain Simulator"
+abstract: >-
+  Every published version of the AgingBrain Simulator, from version 1 to
+  version 104, together with the scripts that reproduce each panel of the
+  figures and supplementary figures of Buckner et al., "Synthesizing and
+  Predicting Brain and Cognitive Aging Data Patterns Using an Evolving
+  Simulator Enabled by Agentic Artificial Intelligence" (bioRxiv,
+  forthcoming). Each version is a single HTML file that runs entirely in a
+  web browser.
+authors:
+  - family-names: Buckner
+    given-names: Randy L.
+    affiliation: >-
+      Center for Brain Science, Harvard University, Cambridge, Massachusetts,
+      United States; Athinoula A. Martinos Center for Biomedical Imaging,
+      Massachusetts General Hospital, Charlestown, Massachusetts, United
+      States; Department of Psychiatry, Massachusetts General Hospital,
+      Charlestown, Massachusetts, United States
+repository-code: "https://github.com/Buckner-Lab/Aging-Brain-Simulator"
+url: "https://buckner-lab.github.io/Aging-Brain-Simulator/"
+license: MIT
+keywords:
+  - brain aging
+  - cognitive aging
+  - Alzheimer's disease
+  - simulation
+  - agentic artificial intelligence
