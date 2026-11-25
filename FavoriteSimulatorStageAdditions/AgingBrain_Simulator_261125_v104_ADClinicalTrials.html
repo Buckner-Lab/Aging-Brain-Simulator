@@ -855,6 +855,9 @@ details.bnr.prov { margin: 0 0 14px; }
 .pt-dia { fill: var(--card); stroke-width: 1.8; stroke-linejoin: miter; }
 .pt-dia-w { stroke: var(--ink); stroke-width: 1.4; }
 .legend .pt-lgdia { flex: none; margin-right: 6px; vertical-align: -1px; }
+/* the one-trial plot's buttons: Simulate full-sized trial, an action, so without the toggles' dot; Offset adjust; Lecanemab trial */
+.an-tg.pt-act { padding: 3px 10px; }
+.an-tg.pt-act::before { display: none; }
 .pt-null { fill: none; stroke: var(--ink-2); stroke-width: 1.6; stroke-dasharray: 5 4; }
 .pt-alt { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linejoin: round; }
 .pt-pow { fill: var(--accent); fill-opacity: .16; }
@@ -1311,7 +1314,7 @@ details.bnr.prov { margin: 0 0 14px; }
     <div id="stubs"></div>
     <section class="panel" id="panel-prevent" role="tabpanel" aria-labelledby="tab-prevent" hidden>
       <header class="panel-head">
-        <div><h1>Early AD Clinical Trials</h1><p class="lede" id="pt-lede"></p></div>
+        <div><h1>Early AD Clinical Trials</h1><p class="lede" id="pt-lede"></p><p class="lede">This stage uses the AD cascade expanded.</p></div>
         <div class="actions"><button class="btn" id="btn-pt-new" type="button" title="Simulate a new world with the same features, and run the trial again with the same design">New sample</button><button class="btn quiet" id="btn-pt-again" type="button" title="Draw the participants and randomize them again, in the same world">Another trial</button></div>
       </header>
       <div class="an-src"><p class="an-sample stale-able" id="pt-sample"></p><p class="pt-busy" id="pt-busy" role="status"></p></div>
@@ -1319,7 +1322,7 @@ details.bnr.prov { margin: 0 0 14px; }
         <section class="box an-ctl pt-ctl" id="pt-ctl"></section>
         <div class="pt-col stale-able" id="pt-out1">
           <section class="box an-out">
-            <div class="sel-head"><h3 id="pt-title"></h3><button class="an-tg" id="pt-leq" type="button" aria-pressed="false" title="Show lecanemab's pivotal trial, CLARITY AD, as small diamonds: its change in CDR-SB in each arm at 18 months, and its benefit at 6 and 18 months">Lecanemab trial</button></div>
+            <div class="sel-head"><h3 id="pt-title"></h3><div class="an-tgs pt-tgs"><button class="an-tg pt-act" id="pt-full" type="button">Simulate full-sized trial</button><button class="an-tg" id="pt-adj" type="button" aria-pressed="true" title="With Lecanemab trial on: move CLARITY AD's two arm diamonds up or down together to center on this trial's arms at 18 months, so that the gap between them, its benefit, can be set against this trial's">Offset adjust</button><button class="an-tg" id="pt-leq" type="button" aria-pressed="true" title="Show lecanemab's pivotal trial, CLARITY AD, as small diamonds: its change in CDR-SB in each arm at 18 months, and its benefit at 6 and 18 months">Lecanemab trial</button></div></div>
             <div class="legend" id="pt-lg"></div>
             <div class="wp-chart" id="pt-plot"></div>
             <div class="legend pt-dlg" id="pt-dlg"></div>
@@ -1449,7 +1452,7 @@ details.bnr.prov { margin: 0 0 14px; }
             <li><b>Analysis</b>: the sample in the study year, by age, as two age groups, or one variable against another; adjustments for age, sex, head size and ε4; groups by color; the same fit in everyone alive at those ages; click a participant for their life in detail.</li>
             <li><b>Follow-up</b>: the sample seen again at regular visits for up to 20 years, as trajectories or as change against a value at entry; people leave by dying, and, when they are set, by dropping out, and they miss visits.</li>
             <li><b>Intervention</b>: the sample randomized at entry, one arm given an intervention on one chain, or one that lowers amyloid or AD tau; the trial's estimate is set against the true effect, from each treated person's life lived without it.</li>
-            <li><b>Early AD Clinical Trials</b> (added through Imagine, v104_PT, as the Prevention Trial; renamed): an anti-amyloid therapy against placebo in people without dementia or with early AD, starting from early AD as CLARITY AD enrolled it with CDR-SB as the outcome, chosen by age (CLARITY AD's 50–90 to start), clinical stage, amyloid PET and tau PET (<code>ptPool</code>; true values, from those seeking to enroll). One clinical stage is early AD as the lecanemab trial, CLARITY AD, enrolled it: a global CDR of 0.5 or 1 with MMSE 22–30, mild dementia included, the eligible thinned by CDR-SB at entry so that its spread matches that trial's (mean 3.2, SD 1.34; <code>PT_CLAR</code>). The therapy slows the AD cascade from entry, from ineffective to complete arrest, in the AD cascade expanded put in the AD cascade's place whatever the World page uses (<code>ptP</code>: AD's toll along tau's rise alone, at the world's total weight so that untreated lives stay the world's own, and all of that rise driven by the plaque): it clears its share of the plaque from the year after entry (<code>E.trace</code>'s <code>"amy"</code>), so tau's rise and AD's toll slow by that share, and at complete arrest AD does no further harm, wherever tau stands (Figure 4D slowed the AD cascade itself, as Intervention's <code>"ad"</code> does); the same in everyone or shared unevenly around the same average (response heterogeneity, <code>ptXi</code>; it has no room at 0% or 100%, <code>ptH</code>); the design sets the participants, trial length, visits and analysis (each slope counting the same, as in Figure 4D, or weighted by its precision), and the outcome is CDR-SB, episodic memory or hippocampal volume, with practice and a chosen reliability (the error of one measurement, shown with its test–retest r among everyone aged 60–90). It shows one trial (each arm's change from entry, its benefit at each visit, against placebo and true, <code>ptPlotDiff</code>, and its effect size at each visit, the benefit over the spread of change, Cohen's d, against the expected, <code>ptPlotEff</code>; with CDR-SB, a toggle adds lecanemab's pivotal trial, CLARITY AD, as small diamonds, <code>PT_LEQ</code>: each arm's change at 18 months, the benefit at 6 and 18 months, the values published, and the effect sizes those imply with the numbers analyzed), 200 trials like it (what power is), power by number of participants and trial length, and what matters most (the participants needed for 80% power as each choice changes, worked out in the background), the curves from the first 1,500 eligible people in a fixed order, each followed with and without the therapy (<code>ptSlopes</code>, <code>ptStat</code>, <code>ptTest</code>). The sample is the trial's own number of participants, drawn from up to twice that number of eligible people. A sample bigger than those eligible grows the world through Lives simulated's sizes, each twice the one before, up to 1,920,000, to the smallest whose eligible cover it (<code>ptWorldFor</code>, <code>ptGrow</code>; a grown world keeps every life it had and adds more): at once when the sample size is asked for, and at a click when a narrower screen leaves too few.</li>
+            <li><b>Early AD Clinical Trials</b> (added through Imagine, v104_PT, as the Prevention Trial; renamed; its opening line adds that it uses the AD cascade expanded): an anti-amyloid therapy against placebo in people without dementia or with early AD, starting from early AD as CLARITY AD enrolled it with CDR-SB as the outcome, chosen by age (CLARITY AD's 50–90 to start), clinical stage, amyloid PET and tau PET (<code>ptPool</code>; true values, from those seeking to enroll). One clinical stage is early AD as the lecanemab trial, CLARITY AD, enrolled it: a global CDR of 0.5 or 1 with MMSE 22–30, mild dementia included, the eligible thinned by CDR-SB at entry so that its spread matches that trial's (mean 3.2, SD 1.34; <code>PT_CLAR</code>). The therapy slows the AD cascade from entry, from ineffective to complete arrest (45% to start), in the AD cascade expanded put in the AD cascade's place whatever the World page uses (<code>ptP</code>: AD's toll along tau's rise alone, at the world's total weight so that untreated lives stay the world's own, and all of that rise driven by the plaque): it clears its share of the plaque from the year after entry (<code>E.trace</code>'s <code>"amy"</code>), so tau's rise and AD's toll slow by that share, and at complete arrest AD does no further harm, wherever tau stands (Figure 4D slowed the AD cascade itself, as Intervention's <code>"ad"</code> does); the same in everyone or shared unevenly around the same average (response heterogeneity, <code>ptXi</code>, moderate, 50%, to start; it has no room at 0% or 100%, <code>ptH</code>); the design sets the participants, trial length, visits and analysis (each slope counting the same, as in Figure 4D, or weighted by its precision), and the outcome is CDR-SB, episodic memory or hippocampal volume, with practice and a chosen reliability (the error of one measurement, shown with its test–retest r among everyone aged 60–90). It shows one trial (each arm's change from entry, its benefit at each visit, against placebo and true, <code>ptPlotDiff</code>, and its effect size at each visit, the benefit over the spread of change, Cohen's d, against the expected, <code>ptPlotEff</code>; with CDR-SB, a toggle, on to start, adds lecanemab's pivotal trial, CLARITY AD, as small diamonds, <code>PT_LEQ</code>: each arm's change at 18 months, the benefit at 6 and 18 months, the values published, and the effect sizes those imply with the numbers analyzed; beside it, Offset adjust, on to start (<code>state.pt.adj</code>, <code>ptLeqOff</code>), moves the two arm diamonds up or down together to center on this trial's arms at 18 months, leaving the gap between them, the benefit, as published), 200 trials like it (what power is), power by number of participants and trial length, and what matters most (the participants needed for 80% power as each choice changes, worked out in the background), the curves from the first 1,500 eligible people in a fixed order, each followed with and without the therapy (<code>ptSlopes</code>, <code>ptStat</code>, <code>ptTest</code>). The sample is the trial's own number of participants, drawn from up to twice that number of eligible people. A sample bigger than those eligible grows the world through Lives simulated's sizes, each twice the one before, up to 1,920,000, to the smallest whose eligible cover it (<code>ptWorldFor</code>, <code>ptGrow</code>; a grown world keeps every life it had and adds more): at once when the sample size is asked for, and at a click when a narrower screen leaves too few (the sample line's link, or Simulate full-sized trial above the one-trial plot, <code>#pt-full</code>, <code>ptFullBtn</code>, off once the trial enrolls all it asks for).</li>
           </ul>
 
           <h3>7. Adding a stage in Imagine's slot</h3>
@@ -8195,14 +8198,32 @@ PT_LEQ.eff = PT_LEQ.ben.map((a) => { const sd = (a.hi - a.lo) / (2 * 1.959964) /
 const ptLeqOn = (q) => !!q.ref && q.y === "cdr";
 const ptDia = (x, y, r, c, tip) => `<path class="pt-dia" d="M${(x).toFixed(1)} ${(y - r).toFixed(1)}L${(x + r).toFixed(1)} ${(y).toFixed(1)}L${(x).toFixed(1)} ${(y + r).toFixed(1)}L${(x - r).toFixed(1)} ${(y).toFixed(1)}Z" style="stroke:${c}"><title>${tip}</title></path>`;
 const ptLgDia = (c) => `<svg class="pt-lgdia" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path class="pt-dia" d="M6 1.5L10.5 6L6 10.5L1.5 6Z" style="stroke:${c}"/></svg>`;
+/* Offset adjust (state.pt.adj): lecanemab's two arm diamonds move up or down together so that their midpoint sits on this trial's arms
+   at 18 months (sT and sC, each arm's mean change from entry at each visit; read between the visits on either side when none falls on
+   18 months), so that the gap between them, its benefit, can be set against this trial's without the difference in how far each trial's
+   placebo group progressed. The shift, in the outcome's units: 0 when off, NaN when this trial's visits stop short of 18 months */
+function ptLeqOff(q, sT, sC) {
+  if (!q.adj) return 0;
+  const at = (sr, y) => {
+    for (let i = 0; i < sr.length; i++) {
+      const a = sr[i]; if (Math.abs(a.y - y) < 1e-9) return a.m;
+      if (a.y > y) { if (!i) return NaN; const b = sr[i - 1]; return b.m + (a.m - b.m) * (y - b.y) / (a.y - b.y); }
+    }
+    return NaN;
+  };
+  const a = PT_LEQ.arms[0], t = at(sT, a.y), c = at(sC, a.y);
+  return Number.isFinite(t) && Number.isFinite(c) ? (t + c) / 2 - (a.T + a.C) / 2 : NaN;
+}
 const PT_Z = 1.959964, PT_Z80 = 0.841621;
 const PT_LIM = { lo: PT_AGE, hi: PT_AGE, amyLo: [0, PT_AMAX], amyHi: [0, PT_AMAX], n: [PT_NMIN, PT_NMAX] };
 // the starting design: early AD as CLARITY AD enrolled it, at its ages (50–90), with its outcome (CDR-SB), amyloid PET of 33 CL or more,
-// 1,200 participants, the AD cascade slowed by half (AD's harm with it), visits every 6 months and each participant's slope counting the
-// same, at 4 years. (The stage began from Figure 4D's A4-like trial: ages 65–85, CDR-SB 0, episodic memory with practice.)
+// 1,200 participants, the AD cascade slowed by 45% (AD's harm with it), its response moderately heterogeneous (50%), visits every 6
+// months and each participant's slope counting the same, at 4 years; lecanemab's pivotal trial shown for reference (ref), its arm
+// diamonds offset to center on this trial's arms at 18 months (adj). (The stage began from Figure 4D's A4-like trial: ages 65–85,
+// CDR-SB 0, episodic memory with practice.)
 // amyHi at PT_AMAX is no upper limit; err is each outcome's error of one measurement, null for Measurement process's
-const PT_DEF = { lo: 50, hi: 90, stage: "clar", amyLo: 33, amyHi: PT_AMAX, tau: "any", x: 50, het: 0, n: 1200, yrs: 4, step: 6, an: "eq", y: "cdr",
-  err: { cdr: null, mem: null, hip: null }, prac: true, seed: 1, ref: false };
+const PT_DEF = { lo: 50, hi: 90, stage: "clar", amyLo: 33, amyHi: PT_AMAX, tau: "any", x: 45, het: 50, n: 1200, yrs: 4, step: 6, an: "eq", y: "cdr",
+  err: { cdr: null, mem: null, hip: null }, prac: true, seed: 1, ref: true, adj: true };
 state.pt = JSON.parse(JSON.stringify(PT_DEF));
 // the standard normal distribution function (Numerical Recipes' erfc; error below 1.2e-7)
 function ptPhi(z) {
@@ -8574,6 +8595,8 @@ function buildPt() {
   $("#btn-pt-new").addEventListener("click", anNewSample);
   $("#btn-pt-again").addEventListener("click", () => { state.pt.seed++; renderPt(); });
   $("#pt-leq").addEventListener("click", () => { state.pt.ref = !state.pt.ref; renderPt(); });
+  $("#pt-adj").addEventListener("click", () => { state.pt.adj = !state.pt.adj; renderPt(); });
+  $("#pt-full").addEventListener("click", () => { PT_GROW = 1; renderPt(); });
   $("#pt-sample").addEventListener("click", (e) => { if (e.target.closest("[data-ptgrow]")) { PT_GROW = 1; renderPt(); } });
   // links in text the controls rewrite: back to Measurement process's error, and to Measurement process itself
   $("#pt-ctl").addEventListener("click", (e) => {
@@ -8704,6 +8727,18 @@ function ptSampleLine(q, pool, N, fit, growing) {
   else h = `Sample: all <b>${fmtInt(pool.n)}</b> eligible in ${wd}, of the ${fmtInt(q.n)} asked for: even the largest world here has no more.`;
   $("#pt-sample").innerHTML = h + who;
 }
+/* Simulate full-sized trial: grows the world, as the sample line's link does, until the trial enrolls all the participants it asks for
+   (or as many as the largest world here holds); off when it already does, while a world is simulated, and when no larger world adds any */
+function ptFullBtn(q, pool, fit) {
+  const b = $("#pt-full"); if (!b) return;
+  const W = state.run.p.N, short = pool.n >= 10 && q.n > pool.n;
+  b.disabled = !(short && fit.target > W && !state.busy);
+  b.title = pool.n < 10 ? "Too few people are eligible for a trial: widen the criteria"
+    : !short ? `The trial already enrolls all ${fmtInt(q.n)} participants it asks for`
+    : fit.target <= W ? `Even the largest world here has only ${fmtInt(pool.n)} eligible, of the ${fmtInt(q.n)} asked for`
+    : state.busy ? "A world is being simulated"
+    : `Grow the world to ${fmtInt(fit.target)} lives (${ptSimTime(fit.target)}) so that the trial enrolls ${fit.cap >= q.n ? `all ${fmtInt(q.n)} participants` : `about ${fmtInt(fit.cap)} of the ${fmtInt(q.n)} participants`} it asks for; Lives simulated, on the World page, changes with it`;
+}
 const ptClear = (msg) => {
   for (const id of ["pt-title", "pt-mtitle", "pt-ptitle", "pt-wtitle", "pt-lg", "pt-dlg", "pt-elg", "pt-mlg", "pt-plg", "pt-wlg", "pt-say", "pt-msay", "pt-psay", "pt-wsay", "pt-table", "pt-mtable", "pt-dplot", "pt-eplot", "pt-mplot", "pt-pplot", "pt-wplot"]) $("#" + id).innerHTML = "";
   $("#pt-plot").innerHTML = `<p class="hint">${msg}</p>`;
@@ -8713,13 +8748,16 @@ function renderPt() {
   const q = state.pt, run = state.run, w = run.agg.w26, busy = $("#pt-busy"), outs = [$("#pt-out1"), $("#pt-out2")];
   PTJ.main++; PTJ.bg++;
   ptSyncCtl(); $("#pt-leq").setAttribute("aria-pressed", String(!!q.ref));
+  const adjB = $("#pt-adj"); adjB.setAttribute("aria-pressed", String(!!q.adj)); adjB.disabled = !ptLeqOn(q);   // it moves the diamonds, so needs them shown
   const pool = ptPool(q), W = run.p.N, fit = ptWorldFor(pool, q.n);
+  ptFullBtn(q, pool, fit);
   // a sample bigger than the eligible, just asked for: the world grows to supply it (Lives simulated, on the World page), and the stage
-  // is drawn again once it has; asked for otherwise (a narrower screen, a loaded file), the sample line offers to grow it
+  // is drawn again once it has; asked for otherwise (a narrower screen, a loaded file), the sample line offers to grow it, as does
+  // Simulate full-sized trial
   if (q.n > pool.n && pool.n >= 10 && PT_GROW && fit.target > W && !state.busy) {
     ptSampleLine(q, pool, pool.n, fit, true);
     busy.textContent = `Growing the world from ${fmtInt(W)} to ${fmtInt(fit.target)} lives, so that ${fmtInt(Math.min(q.n, fit.cap))} can be enrolled…`;
-    outs.forEach((o) => o.classList.add("pt-wait"));
+    outs.forEach((o) => o.classList.add("pt-wait")); $("#pt-full").disabled = true;
     ptGrow(fit.target);
     return;
   }
@@ -8727,7 +8765,7 @@ function renderPt() {
   if (q.n > pool.n && pool.n >= 10 && PT_GROW && fit.target > W && state.busy) {
     ptSampleLine(q, pool, pool.n, fit, true);
     busy.textContent = `Growing the world from ${fmtInt(W)} lives, so that ${fmtInt(Math.min(q.n, fit.cap))} can be enrolled…`;
-    outs.forEach((o) => o.classList.add("pt-wait"));
+    outs.forEach((o) => o.classList.add("pt-wait")); $("#pt-full").disabled = true;
     return;
   }
   if (q.n <= pool.n || fit.target <= W) PT_GROW = 0;
@@ -8767,7 +8805,7 @@ function renderPt() {
   $("#pt-lg").innerHTML = `<span>${sw(PT_COL.T)}Treated (${fmtInt(arms.T.length)})</span><span>${sw(PT_COL.C)}Placebo (${fmtInt(arms.C.length)})</span>`
     + `<span><i class="lg-band"></i>95% CI</span><span>${sw(PT_COL.T, true)}The treated without the therapy</span>`
     + (ptLeqOn(q) ? `<span>${ptLgDia(PT_COL.T)}Lecanemab, CLARITY AD</span><span>${ptLgDia(PT_COL.C)}Its placebo</span>` : "");
-  ptPlotOne($("#pt-plot"), C, q);
+  const leqOff = ptPlotOne($("#pt-plot"), C, q);   // how far Offset adjust moved lecanemab's arm diamonds (0 when not, NaN when it could not)
   $("#pt-dlg").innerHTML = `<span>${sw(PT_COL.B)}Benefit in this trial</span><span><i class="lg-band"></i>95% CI</span><span>${sw("var(--ink)")}True benefit</span>`
     + (ptLeqOn(q) ? `<span>${ptLgDia("var(--ink)")}CLARITY AD, with its 95% CI</span>` : "");
   ptPlotDiff($("#pt-dplot"), C, q);
@@ -8788,6 +8826,8 @@ function renderPt() {
       + ` Last, the effect size (Cohen's d): each visit's benefit over the spread of people's change from entry, which grows too, so the effect size grows more slowly than the benefit; expected, the true benefit over that spread.`
       + (q.het > 0 && q.x > 0 && q.x < 100 ? " Response heterogeneity keeps the average slowing and shares it out unevenly, so it moves the averages little." : "")
       + (!q.ref ? "" : ptLeqOn(q) ? ` Diamonds: lecanemab's pivotal trial, CLARITY AD (van Dyck et al., 2023), in early AD (MCI or mild dementia, aged 50–90, amyloid positive, CDR-SB about 3.2 at entry). CDR-SB rose 1.21 points with lecanemab and 1.66 with placebo by 18 months, a benefit of 0.45 (95% CI 0.23 to 0.67), and 0.17 (0.05 to 0.29) at 6 months; values at its other visits were not published. Its effect sizes, ${PT_LEQ.eff[0].m.toFixed(2)} at 6 months and ${PT_LEQ.eff[1].m.toFixed(2)} at 18, are worked out from those CIs and the ${fmtInt(PT_LEQ.nT)} and ${fmtInt(PT_LEQ.nC)} analyzed.`
+        + (!q.adj ? "" : Number.isFinite(leqOff) ? ` Offset adjust moves its two arm diamonds ${leqOff >= 0 ? "up" : "down"} ${Math.abs(leqOff).toFixed(2)} points together, to center on this trial's arms at 18 months, so that the gap between them, its benefit, can be set against this trial's.`
+          : " Offset adjust centers its arm diamonds on this trial's arms at 18 months, past this trial's last visit, so they stay at CLARITY AD's values.")
         : " Lecanemab's pivotal trial, CLARITY AD, reported CDR-SB: choose CDR-SB as the outcome to see its results here.")
       : "Too few participants were seen twice to compare the arms.");
   const row = (name, a) => `<tr><td>${name}</td><td class="num">${fmtInt(a.n)}</td><td class="num">${anNf(a.m)}</td><td class="num">${a.n > 1 ? anNf(a.sd) : "—"}</td></tr>`;
@@ -8855,12 +8895,13 @@ function ptPlotOne(box, C, q) {
   const k = q.y, u = PT_U[k];
   const ser = (arr) => arr.map((ch, i) => (ch.length >= 5 ? Object.assign(anMean(ch), { y: C.ys[i] }) : null)).filter(Boolean);
   const sT = ser(C.T), sC = ser(C.C), sU = ser(C.U);
-  if (sT.length < 2 || sC.length < 2) { box.innerHTML = `<p class="hint">Too few participants are seen at the visits to draw.</p>`; return; }
+  if (sT.length < 2 || sC.length < 2) { box.innerHTML = `<p class="hint">Too few participants are seen at the visits to draw.</p>`; return NaN; }
   // the scale holds the treated's band without the therapy too, so that changing the therapy moves the treated line, not the axes
   let y0 = 0, y1 = 0;
   for (const s of [sT, sC, sU]) for (const a of s) { if (a.lo < y0) y0 = a.lo; if (a.hi > y1) y1 = a.hi; }
-  const leq = ptLeqOn(q);   // the lecanemab trial's arms at 18 months, for reference
-  if (leq) for (const a of PT_LEQ.arms) { y1 = Math.max(y1, a.T, a.C); y0 = Math.min(y0, a.T, a.C); }
+  // the lecanemab trial's arms at 18 months, for reference, moved by Offset adjust (dv) to center on this trial's arms there
+  const leq = ptLeqOn(q), off = leq ? ptLeqOff(q, sT, sC) : 0, dv = Number.isFinite(off) ? off : 0;
+  if (leq) for (const a of PT_LEQ.arms) { y1 = Math.max(y1, a.T + dv, a.C + dv); y0 = Math.min(y0, a.T + dv, a.C + dv); }
   if (!(y1 - y0 > 1e-9)) { y0 -= 0.1; y1 += 0.1; }
   const pad = (y1 - y0) * 0.06; y0 -= pad; y1 += pad;
   const xEnd = leq ? Math.max(q.yrs, 1.5) : q.yrs, pd = Math.min(0.5, Math.max(0.05, 0.06 * xEnd)), x0 = -pd, x1 = xEnd + pd;
@@ -8881,7 +8922,8 @@ function ptPlotOne(box, C, q) {
   s += line(sC, "pt-mean", PT_COL.C) + line(sT, "pt-mean", PT_COL.T);
   if (C.ys.length <= 21) for (const [sr, c] of [[sC, PT_COL.C], [sT, PT_COL.T]]) s += sr.map((a) => `<circle class="an-mcd" cx="${f1(X(a.y))}" cy="${f1(Y(a.m))}" r="2.8" style="fill:${c}"/>`).join("");
   s += `<line class="wp-cur" x1="0" x2="0" y1="${m.t}" y2="${m.t + ih}" visibility="hidden"/><rect class="wp-hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}"/>`;
-  if (leq) for (const a of PT_LEQ.arms) s += ptDia(X(a.y), Y(a.C), 5, PT_COL.C, `CLARITY AD, placebo: +${a.C.toFixed(2)} points at 18 months`) + ptDia(X(a.y), Y(a.T), 5, PT_COL.T, `CLARITY AD, lecanemab: +${a.T.toFixed(2)} points at 18 months`);
+  const mv = dv ? `; drawn ${Math.abs(dv).toFixed(2)} ${dv > 0 ? "higher" : "lower"} by Offset adjust` : "";
+  if (leq) for (const a of PT_LEQ.arms) s += ptDia(X(a.y), Y(a.C + dv), 5, PT_COL.C, `CLARITY AD, placebo: +${a.C.toFixed(2)} points at 18 months${mv}`) + ptDia(X(a.y), Y(a.T + dv), 5, PT_COL.T, `CLARITY AD, lecanemab: +${a.T.toFixed(2)} points at 18 months${mv}`);
   s += `</svg><div class="tip" hidden></div>`;
   box.innerHTML = s;
   const svg = $("svg", box), hit = $(".wp-hit", svg), cur = $(".wp-cur", svg);
@@ -8894,6 +8936,7 @@ function ptPlotOne(box, C, q) {
     wpTip(box, `<b>${ptVisLab(yv)}</b> <span class="t-sub">· change from entry, ${esc(u)}</span>` + ln("Treated", a) + ln("Placebo", c) + (uu ? `<br><span class="t-sub">Treated without the therapy: ${sg(uu.m, anDigits(uu.m) > 2 ? 3 : 2)}</span>` : ""), ev.clientX - b.left, ev.clientY - b.top);
   });
   hit.addEventListener("pointerleave", () => { cur.setAttribute("visibility", "hidden"); wpTip(box, null); });
+  return off;
 }
 /* one trial's benefit at each visit, on the same years as the arms above: in this trial, the treated's mean change from entry against
    the placebo group's (turned so that up is less decline), with its 95% CI; and true, each participant's life with the therapy against
@@ -9501,7 +9544,7 @@ function keepRead(o) {
   pt.amyLo = num(PI.amyLo, DP.amyLo, 0, PT_AMAX, true); pt.amyHi = num(PI.amyHi, DP.amyHi, 0, PT_AMAX, true); pt.tau = one(PI.tau, PT_TAU.map(([v]) => v), DP.tau);
   pt.x = num(PI.x, DP.x, 0, 100); pt.het = num(PI.het, DP.het, 0, 100); pt.n = num(PI.n, DP.n, PT_NMIN, PT_NMAX, true); pt.yrs = num(PI.yrs, DP.yrs, 1, PT_YMAX, true);
   pt.step = one(PI.step, PT_STEPS.map(([v]) => v), DP.step); pt.an = one(PI.an, PT_AN.map(([v]) => v), DP.an); pt.y = one(PI.y, PT_Y, DP.y);
-  pt.prac = bool(PI.prac, DP.prac); pt.seed = num(PI.seed, DP.seed, 0, 1e9, true); pt.ref = bool(PI.ref, !!DP.ref);
+  pt.prac = bool(PI.prac, DP.prac); pt.seed = num(PI.seed, DP.seed, 0, 1e9, true); pt.ref = bool(PI.ref, !!DP.ref); pt.adj = bool(PI.adj, !!DP.adj);
   pt.err = Object.fromEntries(PT_Y.map((k) => [k, isNum(EI[k]) ? clamp(EI[k], 0, MS_ERR[k][2]) : null]));
   return { p, cohort, view, enr, sel, ms, msVar, mx, an, subj, iv, pt, adNote, agNote, eduNote, dmNote, msNote, dcNote, lrNote, dfNote, cbNote, tdNote, lgNote, prNote, mtNote, hpNote, ptNote, v19New, v19Own };
 }
@@ -9667,7 +9710,8 @@ The new stage, called Prevention Trial: Build a stage that allows a user to expl
     { revision: true, text: `Rename the stage "Early AD Clinical Trials".`, files: [] },
     { revision: true, text: `Make the default outcome CDR-SB.`, files: [] },
     { revision: true, text: `Make the default early AD as in CLARITY.`, files: [] },
-    { revision: true, text: `Make the colors for the benefit line and effect size line different from those for active versus placebo above, so as not to confuse them.`, files: [] }] }
+    { revision: true, text: `Make the colors for the benefit line and effect size line different from those for active versus placebo above, so as not to confuse them.`, files: [] },
+    { revision: true, text: `Make the lecanemab trial button selected (on) by default; set the heterogeneity to be moderate (50%) by default. Set "Slows the AD cascade" to 45% by default. Make a button to the left of the lecanemab button that says "Simulate full-sized trial", which, when clicked, simulates the full size of the trial. Finally, make an "Offset adjust" toggle to the left of the lecanemab trial button that, when the lecanemab button is on, shifts the lecanemab diamond up or down to center on the current estimates, so that the difference in trajectories can easily be compared without the baseline level shift. Make the default that the toggle is set to on. In the notes below the Early AD Clinical Trials title, add a brief line: "This stage uses the extended AD cascade."`, files: [] }] }
 };
 function provBanners() {
   for (const [id, v] of Object.entries(PROV)) {
