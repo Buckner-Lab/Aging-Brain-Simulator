@@ -856,6 +856,9 @@ details.bnr.prov { margin: 0 0 14px; }
 .fld em.sam-r { font-variant-numeric: tabular-nums; cursor: help; }
 .sam-ctl .fld.sam-sw { cursor: pointer; }
 .sam-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px 16px; }
+#sam-life { container: sam-life / inline-size; }
+.sam-stack { display: none; }
+@container sam-life (width < 516px) { .sam-side { display: none; } .sam-stack { display: inline; } }
 .sam-mis-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 10px 16px; }
 @media (max-width: 640px) { .sam-mis-grid { grid-template-columns: minmax(0, 1fr); } }
 .sam-fig { margin: 0; min-width: 0; }
@@ -917,6 +920,8 @@ details.bnr.prov { margin: 0 0 14px; }
 .sam-grid2 .hint { margin: 0 0 4px; }
 .sam-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 14px; align-items: start; }
 @media (max-width: 1100px) { .sam-two { grid-template-columns: minmax(0, 1fr); } }
+.sam-two-stack { display: none; }
+@media (max-width: 1100px) { .sam-two-side { display: none; } .sam-two-stack { display: inline; } }
 .sam-tr-p { min-width: 0; }
 .sam-tr-t { margin: 4px 0 0; font-size: 12.5px; font-weight: 600; color: var(--ink); }
 .sam-tr-t span { font-weight: 400; color: var(--muted); font-family: var(--mono); font-size: 11px; }
@@ -1375,6 +1380,7 @@ details.bnr.prov { margin: 0 0 14px; }
           <section class="box an-ctl sam-ctl" id="sam-ctl"></section>
           <section class="box an-out stale-able">
             <div class="sel-head"><h3 id="sam-sc-t"></h3></div>
+            <p class="sub">These plots show every simulated person and who the rule selects in a world where there is no measurement error and in a world where there is error. The selected people differ in their baseline memory level (X-axis) and their rate of change (Y-axis). Different rules select distinct cohorts that vary on these two dimensions and are more or less sensitive to misclassification due to measurement error.</p>
             <div class="legend" id="sam-sc-lg"></div>
             <div class="sam-pair">
               <figure class="sam-fig"><figcaption class="sam-pt" id="sam-sc0t"></figcaption><div class="wp-chart" id="sam-sc0"></div></figure>
@@ -1386,6 +1392,7 @@ details.bnr.prov { margin: 0 0 14px; }
         </div>
         <section class="box sam-life stale-able" id="sam-life">
           <div class="sel-head"><h3 id="sam-life-t"></h3><button class="btn quiet sm" id="sam-life-x" type="button" hidden>Back to the first example</button></div>
+          <p class="sub">Click on any dot, which represents a simulated person, in the above panels. Below is the detailed life of that simulated person plotted showing how their phenotypes change with age (<span class="sam-side">left below</span><span class="sam-stack">top</span>) and what contributes to the decline in the episodic memory (<span class="sam-side">right below</span><span class="sam-stack">bottom</span>).</p>
           <div class="sam-who" id="sam-life-who"></div>
           <div class="sam-pair">
             <figure class="sam-fig"><figcaption class="sam-pt">The life, as in Figure 2A</figcaption><div class="wp-chart" id="sam-la"></div><div class="legend" id="sam-la-lg"></div></figure>
@@ -1420,7 +1427,7 @@ details.bnr.prov { margin: 0 0 14px; }
         <div class="sel-grid">
           <section class="box an-ctl sam-ctl" id="sam-cctl"></section>
           <section class="box an-out stale-able">
-            <div class="sel-head"><h3 id="sam-cmp-t"></h3><div class="wp-seg" id="sam-cmp-on" role="group" aria-label="Select on"><button type="button" data-v="true" aria-pressed="true">True values</button><button type="button" data-v="meas" aria-pressed="false">As measured</button></div></div>
+            <div class="sel-head"><h3 id="sam-cmp-t"></h3><div class="wp-seg" id="sam-cmp-on" role="group" aria-label="Select on"><button type="button" data-v="true" aria-pressed="false">True values</button><button type="button" data-v="meas" aria-pressed="true">As measured</button></div></div>
             <div class="legend" id="sam-bars-lg"></div>
             <div class="wp-chart" id="sam-bars"></div>
             <div class="wp-tw" id="sam-cmp-tbl"></div>
@@ -1443,11 +1450,13 @@ details.bnr.prov { margin: 0 0 14px; }
         <div class="sam-two">
           <section class="box an-out stale-able">
             <div class="sel-head"><h3>Who meets more than one rule</h3></div>
+            <p class="sub">An interesting feature of identifying successful agers is that they select different people. The below plots show overlap between the rules as implemented. Note that much of the divergence is because some rules are stricter than others. See the plots in the panel <span class="sam-two-side">to the right</span><span class="sam-two-stack">below</span> to understand how selective the rules are given their chosen parameters.</p>
             <div class="wp-chart" id="sam-up"></div>
             <p class="wp-cap" id="sam-up-say"></p>
           </section>
           <section class="box an-out stale-able">
             <div class="sel-head"><h3>How rare each rule's people are, along its own scale</h3></div>
+            <p class="sub">The selectivity of each rule emerges from the exact parameters that are set. For example, the SuperAger criteria becomes more or less selective based on the reference age set for the target memory score; the Josefsson maintainer rule's selectivity changes based on its SD threshold. The two rules will converge even more than their applied defaults if the thresholds are aligned. The plots below show where each rule's chosen parameters fall along its potential line of selectivity.</p>
             <div class="legend" id="sam-rare-lg"></div>
             <div class="sam-grid2" id="sam-rare"></div>
           </section>
@@ -3400,7 +3409,7 @@ const STAGES = [
   { id: "analysis", title: "Analysis", text: "Analyze the data that would be obtained from the study sample and interpret the patterns against the truth." },
   { id: "follow", title: "Follow-up", text: "Follow the participants over the years from enrollment, losing some along the way, and analyze how they change." },
   { id: "interv", title: "Intervention", text: "Randomize the participants at enrollment to an intervention or to none, follow both groups, and compare how they change." },
-  { id: "sam", title: "SuperAgers and Maintainers", text: "Pick exceptional agers from this world by three rules, SuperAger, Josefsson maintainer and slope maintainer, and see whom each selects, in true values and as measured, how their lives ran before and how they run after." },
+  { id: "sam", title: "SuperAgers and Maintainers", text: "Pick successful agers from this world by three different rules: SuperAger, Josefsson maintainer and slope maintainer, and see who is selected by each rule, how they converge and diverge, how the rules are biased toward selecting individuals with high levels at baseline, and how sensitive they are to measurement error." },
   { id: "imagine", title: "Imagine", text: "Build a stage of your own: give this page to an AI agent with a prompt, and your analysis or view of the data takes this place, with Imagine kept after it for the next one." }
 ];
 
@@ -8268,7 +8277,7 @@ const SAM_RB = Object.fromEntries(SAM_RULES.map((x) => [x.id, x]));
 const SAM_PL = { super: "SuperAgers", jos: "Josefsson maintainers", slope: "slope maintainers" };
 // the starting settings: who is judged (ages in the study year, sex), each rule's criteria, and the error of one test (SD)
 const SAM_DEF = { tab: "super", lo: 80, hi: 89, sex: "all", refLo: 56, refHi: 66, thr: 0, floor: 1, minAge: 80, slide: false, jSD: 1, jRef: "cohort",
-  sLoss: 0.3, sSpan: 10, eMem: 0.4, eExe: 0.4, eSem: 0.3, exFrom: "true", exSeed: 1, cmpOn: "true", pick: null, pickSeed: null };
+  sLoss: 0.3, sSpan: 10, eMem: 0.4, eExe: 0.4, eSem: 0.3, exFrom: "true", exSeed: 1, cmpOn: "meas", pick: null, pickSeed: null };
 // each number's range and step, for the fields and for Load
 const SAM_NUM = { lo: [60, 110, 1], hi: [60, 110, 1], refLo: [18, 100, 1], refHi: [18, 100, 1], thr: [-2, 3, 0.1], floor: [0, 3, 0.1], minAge: [60, 100, 1],
   jSD: [-1, 3, 0.1], sLoss: [0, 2, 0.05], eMem: [0, 1.5, 0.05], eExe: [0, 1.5, 0.05], eSem: [0, 1.5, 0.05] };
@@ -8277,11 +8286,11 @@ state.sam = Object.assign({}, SAM_DEF);
 const SAM_AGE0 = 60, SAM_NZ = 13, SAM_FWD = 10;
 // the phenotypes of the average course: key, name, unit
 const SAM_TR = [["mem", "Episodic memory", "SD"], ["hip", "Hippocampal volume", "mL"], ["amy", "Amyloid PET", "CL"], ["tau", "Tau PET", "SUVR"], ["cdr", "CDR-SB", "points"]];
-// the references each rule draws from (as the simulator's paper cites them)
+// the references each rule draws from (as the simulator's paper cites them, with Weintraub et al., 2025, added at the author's request)
 const SAM_REFS = {
   harrison: ["Harrison, T.M., Weintraub, S., Mesulam, M.M., and Rogalski, E. (2012). Superior memory and higher cortical volumes in unusually successful cognitive aging. J. Int. Neuropsychol. Soc. 18, 1081–1085.", "10.1017/S1355617712000847"],
   rogalski: ["Rogalski, E.J., Gefen, T., Shi, J., Samimi, M., Bigio, E., Weintraub, S., et al. (2013). Youthful memory capacity in old brains: anatomic and genetic clues from the Northwestern SuperAging Project. J. Cogn. Neurosci. 25, 29–36.", "10.1162/jocn_a_00300"],
-  powell: ["Powell, A., Lam, B.C.P., Foxe, D., Close, J.C.T., Sachdev, P.S., and Brodaty, H. (2024). Frequency of cognitive “super-aging” in three Australian samples using different diagnostic criteria. Int. Psychogeriatr. 36, 939–955.", "10.1017/S1041610223000935"],
+  weintraub: ["Weintraub, S., Gefen, T., Geula, C., and Mesulam, M.M. (2025). The first 25 years of the Northwestern University SuperAging Program. Alzheimers Dement. 21, e70312.", "10.1002/alz.70312"],
   barnett: ["Barnett, A.G., van der Pols, J.C., and Dobson, A.J. (2005). Regression to the mean: what it is and how to deal with it. Int. J. Epidemiol. 34, 215–220.", "10.1093/ije/dyh299"],
   josefsson: ["Josefsson, M., de Luna, X., Pudas, S., Nilsson, L.-G., and Nyberg, L. (2012). Genetic and lifestyle predictors of 15-year longitudinal change in episodic memory. J. Am. Geriatr. Soc. 60, 2308–2312.", "10.1111/jgs.12000"],
   nyberg: ["Nyberg, L., Lövdén, M., Riklund, K., Lindenberger, U., and Bäckman, L. (2012). Memory aging and brain maintenance. Trends Cogn. Sci. 16, 292–305.", "10.1016/j.tics.2012.04.005"],
@@ -8289,7 +8298,7 @@ const SAM_REFS = {
   willis: ["Willis, S.L., and Schaie, K.W. (2005). Cognitive trajectories in midlife and cognitive functioning in old age. In Middle Adulthood: A Lifespan Perspective, S.L. Willis and M. Martin, eds. (Sage), pp. 243–276.", "10.4135/9781452225999.n8"],
   persson: ["Persson, J., Nyberg, L., Lind, J., Larsson, A., Nilsson, L.-G., Ingvar, M., et al. (2006). Structure-function correlates of cognitive decline in aging. Cereb. Cortex 16, 907–915.", "10.1093/cercor/bhj036"],
   cronbach: ["Cronbach, L.J., and Furby, L. (1970). How we should measure “change”: or should we? Psychol. Bull. 74, 68–80.", "10.1037/h0029382"] };
-const SAM_RREF = { super: ["harrison", "rogalski", "powell", "barnett"], jos: ["josefsson", "nyberg", "josefsson23"], slope: ["willis", "persson", "cronbach"] };
+const SAM_RREF = { super: ["harrison", "rogalski", "weintraub", "barnett"], jos: ["josefsson", "nyberg", "josefsson23"], slope: ["willis", "persson", "cronbach"] };
 
 /* the world's data for the stage, made once per world in slices so the page stays responsive: for everyone alive in the study year from
    SAM_AGE0, the level of episodic memory at 40 (lv) and the standard normal draws of every measurement the rules use (z, SAM_NZ per row:
@@ -8857,7 +8866,7 @@ function samAbout(id, D, ST, med) {
     rule = `Without dementia in ${y}, having lost no more than ${Q.sLoss} SD of episodic memory over the ${Q.sSpan} years before it: two tests, ${Q.sSpan} years apart. Level does not count.`;
     how = `Two tests, ${Q.sSpan} years apart. Only change counts, so slope maintainers come from the whole range of levels: <b>${samP(qT.ls + qT.ld, nT)}</b> were below the median at 40 and <b>${hiP}</b> above. A change carries the error of both tests: the reliability of measured ${Q.sSpan}-year change here is <b>${Number.isFinite(rc) ? rc.toFixed(2) : "—"}</b>, against ${Number.isFinite(rl) ? rl.toFixed(2) : "—"} for memory measured once, so this rule is the most sensitive to error (Jaccard ${pct(ST.jac, 0)}).`;
   }
-  $("#sam-about").innerHTML = `<div><h4><i style="background:${SAM_RB[id].color}"></i>The rule</h4><p>${esc(rule)}</p></div><div><h4>How it selects here</h4><p>${how}</p></div><div><h4>References</h4><ol class="sam-refs">${SAM_RREF[id].map(samRefLi).join("")}</ol></div>`;
+  $("#sam-about").innerHTML = `<div><h4><i style="background:${SAM_RB[id].color}"></i>The rule</h4><p>${esc(rule)}</p></div><div><h4>How it selects here</h4><p>${how}</p></div><div><h4>Suggested readings:</h4><ol class="sam-refs">${SAM_RREF[id].map(samRefLi).join("")}</ol></div>`;
 }
 const w26age = (r) => state.run.agg.w26.age[r];
 /* Figure 2C and 2D: each person's level of episodic memory at 40 against its change over the past years (the slope rule's span), in true
@@ -9063,7 +9072,7 @@ function samCourseCharts(host, C, say) {
 }
 function samTraj(id, D) {
   const Q = state.sam, f = D.f[id], rule = SAM_RB[id], ready = samNeed(D.rows), [lo, hi] = samLoHi(Q);
-  $("#sam-tr-t").textContent = `The average course, from 40 to ${SAM_FWD} years after ${SY()}`;
+  $("#sam-tr-t").textContent = "The average course of selected phenotypes leading up to selection and for the decade after selection";
   const groups = [{ label: "Meet the rule", c: rule.color, test: (i) => f[i] & 1, w: 2.4 }, { label: "Selected as measured", c: rule.color, d: "5 3", test: (i) => f[i] & 2, w: 2 }, { label: "Everyone without dementia", c: "var(--ink-2)", test: () => true, w: 1.6 }];
   $("#sam-tr-lg").innerHTML = samLgLine(rule.color, "Selected as measured", "5 3") + samLgLine("var(--ink-2)", `Everyone without dementia at ${lo}–${hi}`) + `<span><i class="lg-line" style="border-color:var(--ink-2);border-top-style:dotted"></i>${SY()}</span>`;
   if (!ready) { $("#sam-tr-grid").innerHTML = ""; $("#sam-tr-tbl").innerHTML = ""; return; }
@@ -9111,7 +9120,7 @@ function renderSamCmp() {
     + `The first two take mostly people who started high, many of whom declined; the slope rule takes people who held steady, from every level. `
     + (Number.isFinite(su.jac + sj.jac + ss.jac) ? `Measurement error changes whom it selects least for ${SAM_PL[byJ[0]]} (Jaccard ${pct(S[byJ[0]].jac, 0)}) and most for ${SAM_PL[byJ[2]]} (${pct(S[byJ[2]].jac, 0)}).` : "");
   samByAge(meas);
-  $("#sam-ctr-t").textContent = `How they got there and what follows: the average course, ${meas ? "as measured" : "in true values"}`;
+  $("#sam-ctr-t").textContent = "The average course of selected phenotypes leading up to selection and for the decade after selection";
   $("#sam-ctr-lg").innerHTML = groups.map((g) => samLgLine(g.c, g.label)).join("") + `<span><i class="lg-line" style="border-color:var(--ink-2);border-top-style:dotted"></i>${SY()}</span>`;
   if (C) { samCourseCharts($("#sam-ctr-grid"), C); $("#sam-ctr-note").textContent = `Years run from ${SY()}, when each person is judged (0), back to age 40 for the youngest judged (${lo}) and ${SAM_FWD} years ahead, among those alive each year.`; }
   else $("#sam-ctr-grid").innerHTML = "";
@@ -9772,15 +9781,22 @@ function buildImagine() {
    expandable banner under the stage's name and opening line. The page as the author publishes it has no added stage, so PROV is empty. */
 const PROV = {
   sam: { from: "v104 (261115)", date: "261124", name: "v104_SAM", prompts: [
-    { text: `I'm attaching AgingBrain Simulator, a brain aging simulator in a single HTML file. Before changing anything, read the AGINGBRAIN SIMULATOR DEVELOPER GUIDE inside the file (the section with id="im-doc"; a comment at the top of the file points to it). Then add the stage described below in the Imagine stage's slot, just before it, and keep Imagine, its box in the left bar and its page, as the last stage, ready for the next stage. Keep everything else exactly as it is, record how the stage was built in its banner (section 7 of the guide), with this prompt and any later ones word for word, check the new stage in light and dark themes and at phone width, and give me back the complete updated file.
+    { text: `I'm attaching AgingBrain Simulator, a brain-aging simulator in a single HTML file. Before changing anything, read the AGINGBRAIN SIMULATOR DEVELOPER GUIDE inside the file (the section with id="im-doc"; a comment at the top of the file points to it). Then add the stage described below in the Imagine stage's slot, just before it, and keep Imagine, its box in the left bar and its page, as the last stage, ready for the next stage. Keep everything else exactly as it is, record how the stage was built in its banner (section 7 of the guide), with this prompt and any later ones word for word, check the new stage in light and dark themes and at phone width, and give me back the complete updated file.
 
-The new stage, called SuperAgers and Maintainers: Digest the paper and build a stage the helps a user understand how the world select SuperAgers and Maintainers by distinct rules (SuperAger, Josefsson Maintainer, and SLope Maintaner). Make a tab for each run that shows the rule, describes how it selects, the references it draws from, its scatter plot with and without measurement error as in Figure 2C and 2D, with the ability to select any individual and show is evolving life as shown in 2A and 2C. Below have 10 selected examples of exceptional agers that meet the criteria and the ability to reselect 10 to show examples of random people selected. Allow the criteria (how extreme in reference memory age or SD) and measurement noise to be changed to show effects on who is selected, with aggregate plots that show misclassification at the boundary as in Figure 4C and also the expected memory and hippocampal change on average for such individuals backwards from identification and forward 10 years for episodic memory, hippocampal volume, amyloid and tau PET, and CDR SB. In a final tab show a comparison between the rules that illustrates how each selects percentages of people who have high versus low baseline abilities, what percentages truly maintained and how such changes with age by year, and average plots of how people got to that selection point from age 40 and how they would progress after selection across rules. Allow criteria and measurement properties to be changed to show how they affect the plots and percentages across the three rules and the average person. Show how who is selected overlaps and also how the rarity of who each rule selects along its curve (SD and reference age, as appropriate to the rule).`,
+The new stage, called SuperAgers and Maintainers: Digest the paper and build a stage that helps a user understand how the world selects SuperAgers and Maintainers by distinct rules (SuperAger, Josefsson Maintainer, and Slope Maintainer). Make a tab for each rule that shows the rule, describes how it selects and the references it draws from, and shows its scatter plot with and without measurement error, as in Figures 2C and 2D, with the ability to select any individual and show their evolving life, as shown in 2A and 2C. Below, have 10 selected examples of exceptional agers who meet the criteria, and the ability to reselect 10 to show examples of random people selected. Allow the criteria (how extreme in reference memory age or SD) and measurement noise to be changed to show effects on who is selected, with aggregate plots that show misclassification at the boundary, as in Figure 4C, and also the expected memory and hippocampal change on average for such individuals, backwards from identification and forward 10 years, for episodic memory, hippocampal volume, amyloid and tau PET, and CDR-SB. In a final tab, show a comparison between the rules that illustrates how each selects percentages of people who have high versus low baseline abilities, what percentages truly maintained and how this changes with age, year by year, and average plots of how people got to that selection point from age 40 and how they would progress after selection, across rules. Allow criteria and measurement properties to be changed to show how they affect the plots and percentages across the three rules and the average person. Show how those selected overlap, and also the rarity of those each rule selects along its curve (SD and reference age, as appropriate to the rule).`,
       files: [{ name: "AgingBrain_Simulator_v104_261115.html", about: "the simulator the stage was added to" },
         { name: "AgingBrain_Simulator_Paper_v95_261123.docx", about: "the simulator's paper, whose Figures 2 and 4C the stage follows" }] },
-    { revision: true, text: "take out the line for meet thr ule and only leave those who are selected based on measured values.", files: [] },
-    { revision: true, text: "show r here next to set error so users know what r it causes / corresponds to", files: [{ name: "1795518473507_image.png", about: "a screenshot of the stage's error fields" }] },
-    { revision: true, text: "make a toggle for superagers such that when on (set as default) let the rul reference move so that the rarity of the selected at 80 matches the rarity at older ages, rather than the default which causes older individuals to be selected to be even rarer. That is, if the rule reference selects 5% at 80 make the threshold for the 90 year old select the top 5% at that age, so the reference slides with age to capture the same level of extreme individual", files: [] },
-    { revision: true, text: "Make the default that the switch is off", files: [] }] }
+    { revision: true, text: "Take out the line for “Meet the rule” and leave only those who are selected based on measured values.", files: [] },
+    { revision: true, text: "Show r here, next to the set error, so users know what r it causes or corresponds to.", files: [{ name: "1795518473507_image.png", about: "a screenshot of the stage's error fields" }] },
+    { revision: true, text: "Make a toggle for SuperAgers such that, when on (set as default), it lets the rule reference move so that the rarity of those selected at 80 matches the rarity at older ages, rather than the default, which causes the older individuals selected to be even rarer. That is, if the rule reference selects 5% at 80, make the threshold for the 90-year-old select the top 5% at that age, so the reference slides with age to capture the same level of extreme individual.", files: [] },
+    { revision: true, text: "Make it the default that the switch is off.", files: [] },
+    { revision: true, text: "Make the description under SuperAgers and Maintainers read “Pick successful agers from this world by three different rules: SuperAger, Josefsson maintainer and slope maintainer, and see who is selected by each rule, how they converge and diverge, how the rules bias to select individuals with high levels at baseline, and how sensitive they are to measurement error.” Also edit How this stage was built for spelling and grammar. Under “SuperAgers at 80–89: level at 40 against change,” add a description to read “These plots show every simulated person and who the rule selects in a world where there is no measurement error and in the real world where there is error. The selected people differ in their baseline memory level (X-axis) and their rate of change (Y-axis). Different rules select distinct cohorts that vary on these two dimensions and are more or less sensitive to misclassification due to measurement error.” Under the Life XXX,XXX title, put a descriptor: “Click on any dot, which represents a simulated person, in the above panels. Below is the detailed life of that simulated person plotted showing how their phenotypes change with age (left below) and what contributes to the decline in the episodic memory (right below).” Make the title that reads “The average course, from 40 to 10 years after 2026” read “The average course of selected phenotypes leading up to selection and for the decade after selection.”", files: [] },
+    { revision: true, text: "References updated.", files: [{ name: "1795623063853_image.png", about: "a screenshot of the PubMed page of the reference added" }] },
+    { revision: true, text: "Change to “in a world where there is error.”", files: [{ name: "1795623495482_image.png", about: "a screenshot of the scatter's description" }] },
+    { revision: true, text: "Fix the grammar issue you note here: Opening line grammar: “how the rules bias to select individuals” isn't quite grammatical. “How the rules are biased toward selecting individuals with high levels at baseline” would fix it. I kept your wording. Change nothing else.", files: [] },
+    { revision: true, text: "Instead of writing “References,” say “Suggested readings:”", files: [] },
+    { revision: true, text: "Change the older line, as attached, in the Compare the rules section to the newer line, as attached here as well.", files: [{ name: "1795624046443_image.png", about: "a screenshot of the comparison tab's old title for the average course" }, { name: "1795624049158_image.png", about: "a screenshot of the rule tabs' title for the average course" }] },
+    { revision: true, text: "Under “Who meets more than one rule,” add this description: “An interesting feature of identifying successful agers is that they select different people. The below plots show overlap between the rules as implemented. Note that much of the divergence is because some rules are stricter than others. See the plots in the panel to the right to understand how selective the rules are given their chosen parameters.” Under “How rare each rule's people are…,” add the description: “The selectivity of each rule emerges from the exact parameters that are set. For example, the SuperAger criteria becomes more or less selective based on the reference age set for the target memory score; the Josefsson maintainer rule's selectivity changes based on its SD threshold. The two rules will converge even more than their applied defaults if the thresholds are aligned. The plots below show where each rule's chosen parameters fall along its potential line of selectivity.”", files: [] }] }
 };
 function provBanners() {
   for (const [id, v] of Object.entries(PROV)) {
